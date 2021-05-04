@@ -53,4 +53,15 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+  //Para acceder al Login, cuando este creado
+  // void _navigationToLogin(BuildContext context) {
+  //  Navigator.push(context,
+  //      MaterialPageRoute(builder: (context) => Login()));
+  //}
+  //   //Para acceder al Register, cuando este creado
+  // void _navigationToRegister(BuildContext context) {
+  //  Navigator.push(context,
+  //      MaterialPageRoute(builder: (context) => Register()));
+  //}
 }
