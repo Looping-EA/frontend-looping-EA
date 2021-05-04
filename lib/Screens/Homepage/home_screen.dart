@@ -19,16 +19,16 @@ class HomeScreen extends StatelessWidget {
               style: Styles.title,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 50),
+            SizedBox(height: size.height * 0.075),
             Text(
               "This is the best platform to find new projects to work on. You can also find new teammates to work with in your next amazing project. ",
               style: Styles.subtitle,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 100),
+            SizedBox(height: size.height * 0.15),
             Container(
                 margin: EdgeInsets.fromLTRB(
-                    0, size.width * 0.25, 0, size.width * 0.05),
+                    0, size.height * 0.15, 0, size.height * 0.04),
                 width: size.width * 0.7,
                 height: size.width * 0.1,
                 child: TextButton(
