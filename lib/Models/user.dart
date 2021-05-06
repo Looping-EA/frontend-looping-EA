@@ -1,7 +1,7 @@
 class User {
   String uname;
   String pswrd;
-  String name;
+  String fullname;
   String email;
-  User(this.uname, this.pswrd, this.name, this.email);
+  User(this.uname, this.pswrd, this.fullname, this.email);
 }
