@@ -6,6 +6,8 @@ class Styles {
   static final Color _textColor = _hexToColor('6497b1');
   static final Color _textColorShadowed = _hexToColor('005b96');
   static final Color colorBackground = _hexToColor('03396c');
+  static final linkedText =
+      TextStyle(color: Colors.blue, decoration: TextDecoration.underline);
   static final title = TextStyle(fontSize: _textSizeLarge, color: _textColor);
   static final button_big = TextStyle(fontSize: 20, color: Colors.white);
   static final title_shadowed =
