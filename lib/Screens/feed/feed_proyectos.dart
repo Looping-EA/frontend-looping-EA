@@ -5,6 +5,7 @@ import '../../Models/project.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import '../../styles.dart';
 
 void main() => runApp(FeedProyectos());
 
@@ -27,7 +28,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
       title: 'Feed Proyectos',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Proyectos'),
+          title: Text('Proyectos', style: Styles.subtitle),
         ),
         body: ListView.builder(
             itemCount: projects.length,
@@ -42,6 +43,11 @@ class _FeedProyectosState extends State<FeedProyectos> {
               );
             }),
       ),
+      // Al clicar en un proyecto entrar en el, como no hay pagina de proyecto todavia no esta operativa
+      //void _navigationToProjectDetail(BuildContext context, Project project) {
+      //Navigator.push(context,
+      //MaterialPageRoute(builder: (context) => ProjectDetail(project)));
+      //}
     );
   }
 
