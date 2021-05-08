@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/Project/project_screen.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
 import '../../Models/project.dart';
 import 'package:http/http.dart' as http;
@@ -42,11 +43,6 @@ class _FeedProyectosState extends State<FeedProyectos> {
             }
             return Center(child: CircularProgressIndicator());
           })),
-      // Al clicar en un proyecto entrar en el, como no hay pagina de proyecto todavia no esta operativa
-      //void _navigationToProjectDetail(BuildContext context, Project project) {
-      //Navigator.push(context,
-      //MaterialPageRoute(builder: (context) => ProjectDetail(project)));
-      //}
     );
   }
 
@@ -63,12 +59,20 @@ class _FeedProyectosState extends State<FeedProyectos> {
                   ownersNameStringBuilder(project),
                 ),
                 trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () {},
+                onTap: () {
+                  _navigationToProject(context, project);
+                },
               );
             }),
       );
     }
     return projects;
+  }
+
+  // Al clicar en un proyecto entrar en el
+  void _navigationToProject(BuildContext context, Project project) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ProjectScreen(project)));
   }
 
   String ownersNameStringBuilder(Project x) {
