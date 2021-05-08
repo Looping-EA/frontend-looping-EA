@@ -6,7 +6,7 @@ import '../Models/task.dart';
 class Project {
   String name;
   List<Chat> chats = [];
-  DateTime creationDate;
+  String creationDate;
   List<Team> teams = [];
   List<Task> tasks = [];
   String description;
@@ -35,7 +35,7 @@ class Project {
     return Project(
         json['name'] as String,
         _chats,
-        json['creationDate'] as DateTime,
+        json['creationDate'] as String,
         _teams,
         _tasks,
         json['description'] as String,
