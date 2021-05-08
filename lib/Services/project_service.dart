@@ -4,23 +4,36 @@ import 'dart:convert';
 import '../Models/user.dart';
 import '../Models/project.dart';
 
-/*Future<List<Project>> getProjects() async {
-  //Future<List<Project>> projects = [];
+Future<List<Project>> getProjectsAndOwners() async {
+  List<Project> projects = [];
   final response = await http.post(
-      Uri.https('https://10.0.2.2:8080/api', '/projects'),
+      Uri.parse('http://localhost:8080/api/projects'),
       headers: <String, String>{'Content-Type': 'application/json'});
   if (response.statusCode == 201) {
     var projectsJson = json.decode(response.body);
     print(projectsJson);
     for (var projectJson in projectsJson) {
-      // projects.add(Project.fromJson(projectJson));
+      print("va bien");
+      List<User> ownerslist = [];
+      for (int i = 0; i < projectJson["owners"].length; i++) {
+        User u = new User(projectJson["owners"][i]["uname"], "", "", "");
+        ownerslist.add(u);
+        print(u.uname);
+      }
+
+      print("vabien2");
+      print(projectJson["name"]);
+      projects.add(
+          Project(projectJson["name"], [], "", [], [], "", [], ownerslist));
     }
   }
-  //return projects;
-}*/
+  print(projects[0].name);
+  return projects;
+}
 
 Future<List<Project>> getProjects2() async {
-  final response = await http.post(Uri.parse('10.0.2.2:8080/api/projects/'),
+  final response = await http.post(
+      Uri.parse('http://localhost:8080/api/projects/'),
       headers: <String, String>{'Content-Type': 'application/json'});
   if (response.statusCode == 201) {
     final jsonData = jsonDecode(response.body);

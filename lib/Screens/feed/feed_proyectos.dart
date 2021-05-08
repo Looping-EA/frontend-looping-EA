@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import '../../styles.dart';
+import 'dart:async';
 
 void main() => runApp(FeedProyectos());
 
@@ -16,11 +17,12 @@ class FeedProyectos extends StatefulWidget {
 }
 
 class _FeedProyectosState extends State<FeedProyectos> {
-  //Future<List<Project>> projects;
+  late Future<List<Project>> projects;
   @override
   void initState() {
     super.initState();
-    getProjects2();
+    projects = getProjectsAndOwners();
+    print("hola");
   }
 
   @override
@@ -29,42 +31,37 @@ class _FeedProyectosState extends State<FeedProyectos> {
       title: 'Feed Proyectos',
       home: Scaffold(
           appBar: AppBar(
-            title: Text('Proyectos', style: Styles.subtitle),
+            title: Text('Proyectos', style: Styles.littleTittle),
           ),
           body: FutureBuilder(
-              // future: projects,
+              future: projects,
               builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView(
-                children: listProjects(snapshot.data),
-              );
-            } else if (snapshot.hasError) {
-              return Text("No hay proyectos");
-            }
-            return Center(child: CircularProgressIndicator());
-          })),
+                if (snapshot.hasData) {
+                  return ListView(
+                    children: listProjects(snapshot.data),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("No hay proyectos");
+                }
+                return Center(child: CircularProgressIndicator());
+              })),
     );
   }
 
   List<Widget> listProjects(data) {
     List<Widget> projects = [];
     for (var project in data) {
-      projects.add(
-        ListView.builder(
-            itemCount: projects.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(project.name),
-                subtitle: Text(
-                  ownersNameStringBuilder(project),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  _navigationToProject(context, project);
-                },
-              );
-            }),
-      );
+      projects.add(Card(
+          child: ListTile(
+        title: Text(project.name),
+        subtitle: Text(
+          ownersNameStringBuilder(project),
+        ),
+        trailing: Icon(Icons.arrow_forward_ios),
+        onTap: () {
+          _navigationToProject(context, project);
+        },
+      )));
     }
     return projects;
   }
