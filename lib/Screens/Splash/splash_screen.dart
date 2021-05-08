@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_looping_ea/Screens/Login/Login_screen.dart';
+import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
 import 'package:frontend_looping_ea/styles.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
         const Duration(milliseconds: 2500),
         () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
+              MaterialPageRoute(builder: (context) => LoginPage()),
             ));
   }
 
