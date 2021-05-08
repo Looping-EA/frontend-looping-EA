@@ -15,11 +15,11 @@ class FeedProyectos extends StatefulWidget {
 }
 
 class _FeedProyectosState extends State<FeedProyectos> {
-  //Future<List<Project>> projects;
+  List<Project> projects = [];
   @override
   void initState() {
     super.initState();
-    getProjects2();
+    getProjects().then((value) => projects = value);
   }
 
   @override
