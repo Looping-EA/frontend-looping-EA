@@ -15,11 +15,11 @@ class FeedProyectos extends StatefulWidget {
 }
 
 class _FeedProyectosState extends State<FeedProyectos> {
-  List<Project> projects = [];
+  //Future<List<Project>> projects;
   @override
   void initState() {
     super.initState();
-    projects = getProjects() as List<Project>;
+    getProjects2();
   }
 
   @override
@@ -27,28 +27,48 @@ class _FeedProyectosState extends State<FeedProyectos> {
     return MaterialApp(
       title: 'Feed Proyectos',
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Proyectos', style: Styles.subtitle),
-        ),
-        body: ListView.builder(
-            itemCount: projects.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(projects[index].name),
-                subtitle: Text(
-                  ownersNameStringBuilder(projects[index]),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () {},
+          appBar: AppBar(
+            title: Text('Proyectos', style: Styles.subtitle),
+          ),
+          body: FutureBuilder(
+              // future: projects,
+              builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView(
+                children: listProjects(snapshot.data),
               );
-            }),
-      ),
+            } else if (snapshot.hasError) {
+              return Text("No hay proyectos");
+            }
+            return Center(child: CircularProgressIndicator());
+          })),
       // Al clicar en un proyecto entrar en el, como no hay pagina de proyecto todavia no esta operativa
       //void _navigationToProjectDetail(BuildContext context, Project project) {
       //Navigator.push(context,
       //MaterialPageRoute(builder: (context) => ProjectDetail(project)));
       //}
     );
+  }
+
+  List<Widget> listProjects(data) {
+    List<Widget> projects = [];
+    for (var project in data) {
+      projects.add(
+        ListView.builder(
+            itemCount: projects.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(project.name),
+                subtitle: Text(
+                  ownersNameStringBuilder(project),
+                ),
+                trailing: Icon(Icons.arrow_forward_ios),
+                onTap: () {},
+              );
+            }),
+      );
+    }
+    return projects;
   }
 
   String ownersNameStringBuilder(Project x) {
