@@ -13,10 +13,21 @@ Future<List<Project>> getProjectsAndOwners() async {
     var projectsJson = json.decode(response.body);
     print(projectsJson);
     for (var projectJson in projectsJson) {
-      projects.add(Project(
-          projectJson["name"], [], "", [], "", [], projectJson["owners"]));
+      print("va bien");
+      List<User> ownerslist = [];
+      for (int i = 0; i < projectJson["owners"].length; i++) {
+        User u = new User(projectJson["owners"][i]["uname"], "", "", "");
+        ownerslist.add(u);
+        print(u.uname);
+      }
+
+      print("vabien2");
+      print(projectJson["name"]);
+      projects.add(
+          Project(projectJson["name"], [], "", [], [], "", [], ownerslist));
     }
   }
+  print(projects[0].name);
   return projects;
 }
 

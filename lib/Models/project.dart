@@ -6,7 +6,7 @@ import '../Models/task.dart';
 class Project {
   String name;
   List<Chat> chats = [];
-  DateTime creationDate;
+  String creationDate;
   List<Team> teams = [];
   List<Task> tasks = [];
   String description;
@@ -17,17 +17,12 @@ class Project {
       this.description, this.collaboration, this.owners);
 
   factory Project.fromJson(dynamic json) {
-    if (json['chats'] != null) {
-      var chatObjsJson = json['chats'] as List;
-      List<Chat> _chats =
-          chatObjsJson.map((chatJson) => Chat.fromJson(chatJson)).toList();
-    }
-    if (json['teams'] != null) {
-      var teamObjsJson = json['teams'] as List;
-      List<Team> _teams =
-          teamObjsJson.map((teamJson) => Team.fromJson(teamJson)).toList();
-    }
-
+    var chatObjsJson = json['chats'] as List;
+    List<Chat> _chats =
+        chatObjsJson.map((chatJson) => Chat.fromJson(chatJson)).toList();
+    var teamObjsJson = json['teams'] as List;
+    List<Team> _teams =
+        teamObjsJson.map((teamJson) => Team.fromJson(teamJson)).toList();
     var taskObjsJson = json['tasks'] as List;
     List<Task> _tasks =
         taskObjsJson.map((taskJson) => Task.fromJson(taskJson)).toList();
@@ -40,7 +35,7 @@ class Project {
     return Project(
         json['name'] as String,
         _chats,
-        json['creationDate'] as DateTime,
+        json['creationDate'] as String,
         _teams,
         _tasks,
         json['description'] as String,

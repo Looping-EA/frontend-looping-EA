@@ -1,14 +1,16 @@
 import 'package:frontend_looping_ea/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Models/project.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../../Models/project.dart';
+import 'package:intl/intl.dart';
 
 class CreateProjectState extends State<CreateProjectScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
-  final _user = User("", "", "", "");
+  final _project = Project("", [], "", [], [], "", [], []);
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +37,9 @@ class CreateProjectState extends State<CreateProjectScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Become a ',
+                          'Create a new project ',
                           style: Styles.title,
-                        ),
-                        DecoratedBox(
-                            decoration: BoxDecoration(color: Colors.black),
-                            child: Text(
-                              'Develooper.',
-                              style: Styles.subText,
-                            ))
+                        )
                       ],
                     ),
                     FormBuilder(
@@ -53,73 +49,33 @@ class CreateProjectState extends State<CreateProjectScreen> {
                             child: Column(
                               children: [
                                 FormBuilderTextField(
-                                  name: 'username',
+                                  name: 'name',
                                   validator: FormBuilderValidators.compose([
                                     FormBuilderValidators.required(context),
-                                    FormBuilderValidators.minLength(context, 5),
-                                    (value) {
-                                      if (value!.contains(" ")) {
-                                        return 'may not contain spaces';
-                                      } else {
-                                        return null;
-                                      }
-                                    }
+                                    FormBuilderValidators.minLength(context, 1),
                                   ]),
                                   decoration: InputDecoration(
-                                      hintText: 'Enter your Username',
-                                      labelText: "Username",
+                                      hintText: 'Enter the name of the project',
+                                      labelText: "Name",
                                       border: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10.0)))),
                                 ),
                                 SizedBox(height: 20),
                                 FormBuilderTextField(
-                                  name: 'email',
+                                  maxLines: 7,
+                                  name: 'description',
                                   validator: FormBuilderValidators.compose([
-                                    FormBuilderValidators.email(context),
                                     FormBuilderValidators.required(context)
                                   ]),
                                   decoration: InputDecoration(
-                                      hintText: 'Enter your Email',
-                                      labelText: "Email",
+                                      hintText: 'Enter the description',
+                                      labelText: "Description",
                                       border: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10.0)))),
                                 ),
-                                SizedBox(height: 20),
-                                FormBuilderTextField(
-                                  name: 'fullname',
-                                  validator:
-                                      FormBuilderValidators.required(context),
-                                  decoration: InputDecoration(
-                                      hintText: 'Enter your Full Name',
-                                      labelText: "Full Name",
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0)))),
-                                ),
-                                SizedBox(height: 20),
-                                FormBuilderTextField(
-                                    name: 'password',
-                                    validator: FormBuilderValidators.compose([
-                                      FormBuilderValidators.required(context),
-                                      FormBuilderValidators.minLength(
-                                          context, 5),
-                                      (value) {
-                                        if (value!.contains(" ")) {
-                                          return 'may not contain spaces';
-                                        } else {
-                                          return null;
-                                        }
-                                      }
-                                    ]),
-                                    decoration: InputDecoration(
-                                        hintText: 'Enter your Password',
-                                        labelText: "Password",
-                                        border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)))),
-                                    obscureText: true),
+                                SizedBox(height: 20)
                               ],
                             ))),
                     SizedBox(height: 10),
@@ -142,14 +98,9 @@ class CreateProjectState extends State<CreateProjectScreen> {
                                   primary: Styles.colorBackground,
                                 ),
                                 child: Text(
-                                  'REGISTER',
+                                  'Create',
                                   style: Styles.button_big,
-                                )))),
-                    Text.rich(TextSpan(
-                        text: 'Already have an account? ',
-                        children: <TextSpan>[
-                          TextSpan(text: "Sign in.", style: Styles.linkedText)
-                        ]))
+                                ))))
                   ],
                 ))));
   }
@@ -162,40 +113,45 @@ class CreateProjectState extends State<CreateProjectScreen> {
       _formKey.currentState!.save();
 
       // GRAB THE FIELDS
-      _user.uname = _formKey.currentState!.fields['username']!.value;
-      _user.email = _formKey.currentState!.fields['email']!.value;
-      _user.pswrd = _formKey.currentState!.fields['password']!.value;
-      _user.fullname = _formKey.currentState!.fields['fullname']!.value;
+      _project.name = _formKey.currentState!.fields['name']!.value;
+      _project.description =
+          _formKey.currentState!.fields['description']!.value;
 
       // http?
-      var user = new User("", "", "", "");
-      _registerUser().then((value) => user = value);
-      print(user);
+      var project = new Project("", [], "", [], [], "", [], []);
+      _createProject().then((value) => project = value);
+      print(project);
     } else {}
   }
 
-  Future<User> _registerUser() async {
-    User user = new User("", "", "", "");
+  Future<Project> _createProject() async {
+    Project project = new Project("", [], "", [], [], "", [], []);
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
 
     // create JSON object
     final body = {
-      "uname": _user.uname,
-      "pswd": _user.pswrd,
-      "email": _user.email,
-      "fullname": _user.fullname
+      "name": _project.name,
+      "chats": [],
+      "creationDate": formattedDate,
+      "teams": [],
+      "tasks": [],
+      "description": _project.description,
+      "collaboration": [],
+      "owners": []
     };
     final bodyParsed = json.encode(body);
 
     // finally the POST HTTP operation
     return await http
-        .post(Uri.parse("http://localhost:8080/api/users/register"),
+        .post(Uri.parse("http://localhost:8080/api/projects/add"),
             headers: <String, String>{'Content-Type': 'application/json'},
             body: bodyParsed)
         .then((http.Response response) {
       if (response.statusCode == 201) {
-        return User.fromJson(json.decode(response.body));
+        return Project.fromJson(json.decode(response.body));
       } else {
-        return new User("", "", "", "");
+        return new Project("", [], "", [], [], "", [], []);
       }
     });
   }

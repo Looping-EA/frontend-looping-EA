@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'Screens/Splash/splash_screen.dart';
+import 'Screens/feed/feed_proyectos.dart';
 import 'Screens/feed/feed_proyectos.dart';
 
 void main() {
