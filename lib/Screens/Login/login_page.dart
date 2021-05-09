@@ -18,16 +18,17 @@ class _LoginPageState extends State<LoginPage> {
 
   final _user = User("", "", "", "");
 
-  //bool _remeberMe = false;
+  bool _remeberMe = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Styles.colorBackground,
-      body: Center(
+      body: SingleChildScrollView(
           child: Container(
-              height: 2000.0,
-              margin: const EdgeInsets.all(30.0),
+              height: 600.0,
+              margin: const EdgeInsets.all(30),
+              //margin: const EdgeInsets.fromLTRB(400.0, 15.0, 400.0, 15.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
@@ -118,6 +119,10 @@ class _LoginPageState extends State<LoginPage> {
                                       Icons.lock,
                                       color: Colors.black,
                                     ),
+                                    /* suffixIcon: Icon(
+                                      Icons.visibility,
+                                      color: Colors.black,
+                                    ),*/
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10.0)))),
@@ -133,29 +138,25 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text('Forgot Password?'),
                     ),
                   ),
-                  /*  Container(
-                      child: Row(
-                        children: <Widget>[
-                          Theme(
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        Theme(
                             data:
-                              ThemeData(unselectedWidgetColor: Colors.black),
+                                ThemeData(unselectedWidgetColor: Colors.black),
                             child: Checkbox(
-                              value: _remeberMe,
-                              checkColor: Colors.green,
-                              activeColor: Colors.red,
-                              onChanged: (newValue) {
-                                setState(() =>
-                                  _remeberMe = newValue);
-                                }
-                            )
-                            ),
-                          ),
-                          Text(
-                            'Remember me',
-                          ),
-                        ],
-                      ),
-                    ),*/
+                                value: _remeberMe,
+                                checkColor: Colors.green,
+                                activeColor: Colors.blue,
+                                onChanged: (value) {
+                                  setState(() => _remeberMe = !_remeberMe);
+                                })),
+                        Text(
+                          'Remember me',
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25.0),
@@ -200,8 +201,8 @@ class _LoginPageState extends State<LoginPage> {
                         GestureDetector(
                           onTap: () => print('Login with Facebook'),
                           child: Container(
-                            height: 60.0,
-                            width: 60.0,
+                            height: 40.0,
+                            width: 40.0,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.white,
@@ -219,8 +220,8 @@ class _LoginPageState extends State<LoginPage> {
                         GestureDetector(
                           onTap: () => print('Login with Google'),
                           child: Container(
-                            height: 60.0,
-                            width: 60.0,
+                            height: 40.0,
+                            width: 40.0,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
@@ -230,8 +231,8 @@ class _LoginPageState extends State<LoginPage> {
                         GestureDetector(
                           onTap: () => print('Login with Apple'),
                           child: Container(
-                            height: 60.0,
-                            width: 60.0,
+                            height: 40.0,
+                            width: 40.0,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
