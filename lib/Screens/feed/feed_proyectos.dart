@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import '../../styles.dart';
-import 'dart:async';
 
 void main() => runApp(FeedProyectos());
 
@@ -18,50 +17,109 @@ class FeedProyectos extends StatefulWidget {
 
 class _FeedProyectosState extends State<FeedProyectos> {
   late Future<List<Project>> projects;
+  List<Project> projectNames = [];
+  final TextEditingController _filter = new TextEditingController();
+  String _searchText = "";
+  List<Project> filteredNames = [];
+  Icon _searchIcon = new Icon(Icons.search);
+  Widget _appBarTitle = new Text('Projects proposed by the community');
+
+  _FeedProyectosState() {
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+          filteredNames = projectNames;
+        });
+      } else {
+        setState(() {
+          _searchText = _filter.text;
+        });
+      }
+    });
+  }
   @override
   void initState() {
     super.initState();
-    projects = getProjectsAndOwners();
-    print("hola");
+    getProjectsAndOwners().then((result) {
+      setState(() {
+        projectNames = result;
+        filteredNames = projectNames;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Feed Proyectos',
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text('Proyectos', style: Styles.littleTittle),
+        title: 'Feed Proyectos',
+        home: Scaffold(
+          appBar: _buildBar(context),
+          body: Container(
+            child: _buildList(),
           ),
-          body: FutureBuilder(
-              future: projects,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView(
-                    children: listProjects(snapshot.data),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text("No hay proyectos");
-                }
-                return Center(child: CircularProgressIndicator());
-              })),
+        ));
+  }
+
+  PreferredSizeWidget _buildBar(BuildContext context) {
+    return AppBar(
+        centerTitle: true,
+        title: _appBarTitle,
+        leading: new IconButton(
+          icon: _searchIcon,
+          onPressed: _searchPressed,
+        ));
+  }
+
+  void _searchPressed() {
+    setState(() {
+      if (this._searchIcon.icon == Icons.search) {
+        this._searchIcon = new Icon(Icons.close);
+        this._appBarTitle = new TextField(
+            controller: _filter,
+            decoration: new InputDecoration(
+                prefixIcon: new Icon(Icons.search),
+                hintText: 'Search projects...'));
+      } else {
+        this._searchIcon = new Icon(Icons.search);
+        this._appBarTitle = new Text('Projects proposed by the community');
+        filteredNames = projectNames;
+        _filter.clear();
+      }
+    });
+  }
+
+  Widget _buildList() {
+    if ((_searchText.isNotEmpty)) {
+      List<Project> tempList = [];
+      for (int i = 0; i < filteredNames.length; i++) {
+        if (filteredNames[i]
+            .name
+            .toLowerCase()
+            .contains(_searchText.toLowerCase())) {
+          tempList.add(filteredNames[i]);
+        }
+      }
+      filteredNames = tempList;
+    }
+    return ListView.builder(
+      itemCount: projectNames == null ? 0 : filteredNames.length,
+      itemBuilder: (BuildContext context, int index) {
+        return new ListTile(
+          title: Text(filteredNames[index].name),
+          subtitle: Text(ownersNameStringBuilder(filteredNames[index])),
+          onTap: () {
+            _navigationToProject(context, filteredNames[index]);
+          },
+        );
+      },
     );
   }
 
-  List<Widget> listProjects(data) {
-    List<Widget> projects = [];
+  List<Project> getProjectObjects(data) {
+    List<Project> projects = [];
     for (var project in data) {
-      projects.add(Card(
-          child: ListTile(
-        title: Text(project.name),
-        subtitle: Text(
-          ownersNameStringBuilder(project),
-        ),
-        trailing: Icon(Icons.arrow_forward_ios),
-        onTap: () {
-          _navigationToProject(context, project);
-        },
-      )));
+      projects.add(project);
     }
     return projects;
   }
