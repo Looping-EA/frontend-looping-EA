@@ -30,16 +30,3 @@ Future<List<Project>> getProjectsAndOwners() async {
   print(projects[0].name);
   return projects;
 }
-
-Future<List<Project>> getProjects2() async {
-  final response = await http.post(
-      Uri.parse('http://localhost:8080/api/projects/'),
-      headers: <String, String>{'Content-Type': 'application/json'});
-  if (response.statusCode == 201) {
-    final jsonData = jsonDecode(response.body);
-    print(jsonData);
-    throw Exception("todo bien");
-  } else {
-    throw Exception("pasó algo");
-  }
-}
