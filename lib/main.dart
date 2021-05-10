@@ -3,7 +3,6 @@ import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.d
 import 'Screens/Splash/splash_screen.dart';
 import 'Screens/Profile/profile_screen.dart';
 
-
 void main() {
   runApp(MyApp());
 }

@@ -19,6 +19,7 @@ class Styles {
   static final littleTittle =
       TextStyle(fontSize: _textSizeSmall, color: Colors.white);
 
+
   static Color _hexToColor(String code) {
     return Color(int.parse(code.substring(0, 6), radix: 16) + 0xFF000000);
   }
