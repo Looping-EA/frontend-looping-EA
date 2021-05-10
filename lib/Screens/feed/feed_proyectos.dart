@@ -58,6 +58,10 @@ class _FeedProyectosState extends State<FeedProyectos> {
           body: Container(
             child: _buildList(),
           ),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {},
+          ),
         ));
   }
 
