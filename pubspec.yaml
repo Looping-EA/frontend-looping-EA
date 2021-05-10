@@ -33,7 +33,6 @@ dependencies:
   provider: ^3.2.0
   http: ^0.13.3
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
