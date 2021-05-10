@@ -9,7 +9,7 @@ class User {
   factory User.fromJson(dynamic json) {
     return User(
       json['uname'] as String,
-      json['pswrd'] as String,
+      json['pswd'] as String,
       json['fullname'] as String,
       json['email'] as String,
     );

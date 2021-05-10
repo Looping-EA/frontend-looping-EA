@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
+import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
+import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
+import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 
 import '../../styles.dart';
 
@@ -33,7 +37,12 @@ class HomeScreen extends StatelessWidget {
                 height: size.width * 0.1,
                 child: TextButton(
                     style: Styles.flatButtonStyle,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FeedProyectos()));
+                    },
                     child: Text(
                       "Sign in",
                       style: Styles.subtitle,
@@ -43,7 +52,12 @@ class HomeScreen extends StatelessWidget {
                 height: size.width * 0.1,
                 child: TextButton(
                     style: Styles.flatButtonStyle,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegisterScreen()));
+                    },
                     child: Text(
                       "Sign up",
                       style: Styles.subtitle,

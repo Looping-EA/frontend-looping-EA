@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'Screens/Splash/splash_screen.dart';
-import 'Screens/Profile/profile_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +10,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ProfileScreen(),
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
     );
   }
 }

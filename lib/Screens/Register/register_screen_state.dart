@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
+import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -156,7 +158,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                 ))));
   }
 
-  void _onPressButton() {
+  void _onPressButton() async {
     final validator = _formKey.currentState!.validate();
 
     if (validator) {
@@ -170,15 +172,12 @@ class RegisterScreenState extends State<RegisterScreen> {
       _user.fullname = _formKey.currentState!.fields['fullname']!.value;
 
       // http?
-      var user = new User("", "", "", "");
-      _registerUser().then((value) => user = value);
-      print(user);
+      await _registerUser().then((value) => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => FeedProyectos())));
     } else {}
   }
 
   Future<User> _registerUser() async {
-    User user = new User("", "", "", "");
-
     // create JSON object
     final body = {
       "uname": _user.uname,
@@ -195,6 +194,7 @@ class RegisterScreenState extends State<RegisterScreen> {
             body: bodyParsed)
         .then((http.Response response) {
       if (response.statusCode == 201) {
+        print(response.body);
         return User.fromJson(json.decode(response.body));
       } else {
         return new User("", "", "", "");
