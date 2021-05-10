@@ -16,8 +16,20 @@ class Styles {
       TextStyle(fontSize: _textSizeSmall, color: _textColor);
   static final subText =
       TextStyle(fontSize: _textSizeLarge, color: Colors.white);
+  static final littleTittle =
+      TextStyle(fontSize: _textSizeSmall, color: Colors.white);
+
 
   static Color _hexToColor(String code) {
     return Color(int.parse(code.substring(0, 6), radix: 16) + 0xFF000000);
   }
+
+  static ButtonStyle flatButtonStyle = TextButton.styleFrom(
+    primary: Colors.white,
+    padding: EdgeInsets.symmetric(horizontal: 16.0),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+    ),
+    backgroundColor: Colors.blue,
+  );
 }
