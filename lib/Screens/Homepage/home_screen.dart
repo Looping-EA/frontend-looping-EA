@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             Text(
               "LOOPING",
-              style: Styles.title,
+              style: Styles.titleSplash,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: size.height * 0.075),
@@ -32,16 +32,14 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: size.height * 0.15),
             Container(
                 margin: EdgeInsets.fromLTRB(
-                    0, size.height * 0.15, 0, size.height * 0.04),
+                    0, size.height * 0.08, 0, size.height * 0.04),
                 width: size.width * 0.7,
-                height: size.width * 0.1,
+                height: size.width * 0.05,
                 child: TextButton(
                     style: Styles.flatButtonStyle,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FeedProyectos()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
                     },
                     child: Text(
                       "Sign in",
@@ -49,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                     ))),
             Container(
                 width: size.width * 0.7,
-                height: size.width * 0.1,
+                height: size.width * 0.05,
                 child: TextButton(
                     style: Styles.flatButtonStyle,
                     onPressed: () {
@@ -67,15 +65,4 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
-  //Para acceder al Login, cuando este creado
-  // void _navigationToLogin(BuildContext context) {
-  //  Navigator.push(context,
-  //      MaterialPageRoute(builder: (context) => Login()));
-  //}
-  //   //Para acceder al Register, cuando este creado
-  // void _navigationToRegister(BuildContext context) {
-  //  Navigator.push(context,
-  //      MaterialPageRoute(builder: (context) => Register()));
-  //}
 }

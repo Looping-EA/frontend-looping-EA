@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_looping_ea/Models/project.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
+import 'package:frontend_looping_ea/Screens/Project/project_screen.dart';
+import 'package:frontend_looping_ea/Screens/Project/project_state.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
@@ -66,10 +69,6 @@ class SideMenu extends StatelessWidget {
           title: Text("HOME",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.home),
-          //CUANDO SEPAMOS LAS RUTAS SE APLICA A CADA UNA
-          /*  onTap: (){
-            Navigator.pop(),
-          },*/
         ),
         ListTile(
           title: Text("PROFILE",
