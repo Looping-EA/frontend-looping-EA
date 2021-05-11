@@ -62,6 +62,7 @@ Future<User> loginUser(User user) async {
     "pswd": user.pswrd,
   };
   final bodyParsed = json.encode(body);
+  print(bodyParsed);
 
   // finally the POST HTTP operation
   return await http
@@ -70,7 +71,8 @@ Future<User> loginUser(User user) async {
           body: bodyParsed)
       .then((http.Response response) {
     if (response.statusCode == 201) {
-      User u = User.fromJson(json.decode(response.body));
+      print(response.body);
+      User u = User.grabUnameFromJSON(json.decode(response.body));
       return u;
     } else {
       return new User("", "", "", "");

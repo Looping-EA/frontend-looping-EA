@@ -14,4 +14,8 @@ class User {
       json['email'] as String,
     );
   }
+
+  factory User.grabUnameFromJSON(dynamic json) {
+    return User(json['uname'] as String, "", "", "");
+  }
 }

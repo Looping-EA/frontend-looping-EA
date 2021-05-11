@@ -268,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _onPressButton() {
+  void _onPressButton() async {
     final validator = _formKey.currentState!.validate();
 
     if (validator) {
@@ -281,8 +281,12 @@ class _LoginPageState extends State<LoginPage> {
 
       // http?
       try {
-        loginUser(_user).then((value) {
+        print("preparing _user $_user");
+        await loginUser(_user).then((value) {
+          print("seting ${value.uname} to shared preferences.");
           setUsernameToSharedPref(value.uname);
+
+          print("pushing to next view.");
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => FeedProyectos()));
         });
