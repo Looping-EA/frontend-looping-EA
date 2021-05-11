@@ -34,6 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: Styles.title,
               textAlign: TextAlign.center,
             ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
             Text(
               "A very serious business",
               style: Styles.subtitle,
