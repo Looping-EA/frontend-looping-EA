@@ -60,28 +60,33 @@ class _FeedProyectosState extends State<FeedProyectos> {
     return MaterialApp(
         title: 'Feed Proyectos',
         home: Scaffold(
-          appBar: _buildBar(context),
-          drawer: SideMenu(),
-          body: Container(
-            child: _buildList(),
-          ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              _navigationToCreateProject(context);
-            },
-          ),
-        ));
+            appBar: _buildBar(context),
+            drawer: SideMenu(),
+            body: Container(
+              child: _buildList(),
+            ),
+            floatingActionButton: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () {
+                      _navigationToCreateProject(context);
+                    }),
+                FloatingActionButton(
+                    child: Icon(Icons.search),
+                    onPressed: () {
+                      _searchPressed();
+                    })
+              ],
+            )));
   }
 
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
-        centerTitle: true,
-        title: _appBarTitle,
-        leading: new IconButton(
-          icon: _searchIcon,
-          onPressed: _searchPressed,
-        ));
+      centerTitle: true,
+      title: _appBarTitle,
+    );
   }
 
   void _searchPressed() {
