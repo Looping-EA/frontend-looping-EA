@@ -57,13 +57,17 @@ class ProjectState extends State<ProjectScreen> {
 
   String ownersNameStringBuilder(Project x) {
     //Builds a string with owners' names
-    String names = x.owners[0].uname;
-    if (x.owners.length > 1) {
-      for (int i = 0; i < x.owners.length; i++) {
-        names = names + ", " + x.owners[i].uname;
+    if (x.owners.length != 0) {
+      String names = x.owners[0].uname;
+      if (x.owners.length > 1) {
+        for (int i = 0; i < x.owners.length; i++) {
+          names = names + ", " + x.owners[i].uname;
+        }
       }
+      return names;
+    } else {
+      return "";
     }
-    return names;
   }
 
   void _onPressButton() {}

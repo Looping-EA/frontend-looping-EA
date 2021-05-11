@@ -17,7 +17,7 @@ class Styles {
   static final title_shadowed =
       TextStyle(fontSize: _textSizeLarge, color: _textColorShadowed);
   static final subtitle =
-      TextStyle(fontSize: _textSizeSmall, color: _textColor);
+      TextStyle(fontSize: _textSizeSmall, color: Colors.white);
   static final subText =
       TextStyle(fontSize: _textSizeLarge, color: Colors.white);
   static final littleTittle =

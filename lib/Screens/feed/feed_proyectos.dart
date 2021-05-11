@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:frontend_looping_ea/Screens/Project/project_screen.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
@@ -66,7 +67,9 @@ class _FeedProyectosState extends State<FeedProyectos> {
           ),
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              _navigationToCreateProject(context);
+            },
           ),
         ));
   }
@@ -138,6 +141,11 @@ class _FeedProyectosState extends State<FeedProyectos> {
   void _navigationToProject(BuildContext context, Project project) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ProjectScreen(project)));
+  }
+
+  void _navigationToCreateProject(BuildContext context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CreateProjectScreen()));
   }
 
   String ownersNameStringBuilder(Project x) {
