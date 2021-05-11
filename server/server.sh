@@ -15,7 +15,7 @@ cd build/web/
 
 # Start the server
 echo 'Starting server on port' $PORT '...'
-python3 -m http.server $PORT
+python3 -m http.server $PORT --bind 0.0.0.0
 
 # Exit
 echo 'Server exited...'
