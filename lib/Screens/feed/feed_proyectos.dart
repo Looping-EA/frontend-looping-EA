@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/Project/project_screen.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
+import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import '../../Models/project.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -59,6 +60,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
         title: 'Feed Proyectos',
         home: Scaffold(
           appBar: _buildBar(context),
+          drawer: SideMenu(),
           body: Container(
             child: _buildList(),
           ),

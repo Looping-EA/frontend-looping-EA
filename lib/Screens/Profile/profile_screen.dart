@@ -71,7 +71,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                     Container(
                         alignment: Alignment.bottomLeft,
                         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 4.0, 0.0),
-                        child: Text('k',
+                        child: Text('${user.fullname}',
                             style: TextStyle(
                                 fontSize: 30.0, color: Colors.white))),
                   ],
@@ -98,7 +98,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               fontWeight: FontWeight.bold))),
                   Container(
                       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                      child: Text('k',
+                      child: Text('${user.email}',
                           style:
                               TextStyle(fontSize: 15.0, color: Colors.black))),
                 ],
@@ -121,7 +121,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               fontWeight: FontWeight.bold))),
                   Container(
                       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                      child: Text('k',
+                      child: Text('${user.email}',
                           style:
                               TextStyle(fontSize: 15.0, color: Colors.black))),
                 ],
@@ -144,7 +144,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                             fontWeight: FontWeight.bold))),
                 Container(
                     padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                    child: Text('k',
+                    child: Text('${user.email}',
                         style: TextStyle(fontSize: 15.0, color: Colors.black))),
               ],
             ),

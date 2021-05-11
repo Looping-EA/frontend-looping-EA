@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/project.dart';
+import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Project/project_screen.dart';
 import 'package:frontend_looping_ea/Screens/Project/project_state.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
+import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
+import 'package:frontend_looping_ea/Models/user.dart';
 
 class SideMenu extends StatelessWidget {
   Future<void> createAlertDialog(BuildContext context) {
@@ -51,13 +54,19 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    late final User user;
+    String? username;
+    getUsernameFromSharedPref().then((value) => username = value);
+    getUser(username).then((value) => user = value);
+
     return new Drawer(
         child: ListView(
       children: <Widget>[
         UserAccountsDrawerHeader(
-          accountName: new Text("Albert Sáez",
+          accountName: new Text("${user.fullname}",
               style: TextStyle(fontSize: 20.0, color: Colors.white)),
-          accountEmail: new Text("Bill Gates come de sus migas",
+          accountEmail: new Text("${user.email}",
               style: TextStyle(fontSize: 15.0, color: Colors.white)),
           decoration: BoxDecoration(
             color: Colors.grey,
@@ -69,6 +78,10 @@ class SideMenu extends StatelessWidget {
           title: Text("HOME",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.home),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => FeedProyectos()));
+          },
         ),
         ListTile(
           title: Text("PROFILE",
@@ -80,9 +93,13 @@ class SideMenu extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text("CHATS",
+          title: Text("CREATE PROJECT",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.chat),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreateProjectScreen()));
+          },
         ),
         ListTile(
           title: Text("FORUMS",

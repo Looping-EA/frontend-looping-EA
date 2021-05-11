@@ -1,3 +1,4 @@
+import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:frontend_looping_ea/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -15,6 +16,14 @@ class CreateProjectState extends State<CreateProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        //An App Bar is created with the name of the current page
+        appBar: AppBar(
+          backgroundColor: Colors.blueGrey,
+          title: Text('Profile'),
+        ),
+
+        //The drawer opens a side menu
+        drawer: SideMenu(),
         backgroundColor: Styles.colorBackground,
         body: Center(
             child: Container(
