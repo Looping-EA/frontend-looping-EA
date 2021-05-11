@@ -6,6 +6,7 @@ import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
@@ -174,35 +175,15 @@ class RegisterScreenState extends State<RegisterScreen> {
       _user.fullname = _formKey.currentState!.fields['fullname']!.value;
 
       // http?
-      await _registerUser().then((value) => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => FeedProyectos())));
-    } else {}
-  }
-
-  Future<User> _registerUser() async {
-    // create JSON object
-    final body = {
-      "uname": _user.uname,
-      "pswd": _user.pswrd,
-      "email": _user.email,
-      "fullname": _user.fullname
-    };
-    final bodyParsed = json.encode(body);
-
-    // finally the POST HTTP operation
-    return await http
-        .post(Uri.parse("http://localhost:8080/api/users/register"),
-            headers: <String, String>{'Content-Type': 'application/json'},
-            body: bodyParsed)
-        .then((http.Response response) {
-      if (response.statusCode == 201) {
-        print(response.body);
-        User u = User.fromJson(json.decode(response.body));
-        setUsernameToSharedPref(u.uname);
-        return u;
-      } else {
-        return new User("", "", "", "");
+      try {
+        await registerUser(_user).then((value) {
+          setUsernameToSharedPref(value.uname);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => FeedProyectos()));
+        });
+      } catch (err) {
+        print(err);
       }
-    });
+    } else {}
   }
 }

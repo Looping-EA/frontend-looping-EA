@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
+import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -265,35 +267,15 @@ class _LoginPageState extends State<LoginPage> {
       _user.pswrd = _formKey.currentState!.fields['password']!.value;
 
       // http?
-      var user = new User("", "", "", "");
-      _registerUser().then((value) => user = value);
-      print(user);
-    } else {}
-  }
-
-  Future<User> _registerUser() async {
-    User user = new User("", "", "", "");
-
-    // create JSON object
-    final body = {
-      "uname": _user.uname,
-      "pswd": _user.pswrd,
-    };
-    final bodyParsed = json.encode(body);
-
-    // finally the POST HTTP operation
-    return await http
-        .post(Uri.parse("http://localhost:8080/api/users/register"),
-            headers: <String, String>{'Content-Type': 'application/json'},
-            body: bodyParsed)
-        .then((http.Response response) {
-      if (response.statusCode == 201) {
-        User u = User.fromJson(json.decode(response.body));
-        setUsernameToSharedPref(u.uname);
-        return u;
-      } else {
-        return new User("", "", "", "");
+      try {
+        loginUser(_user).then((value) {
+          setUsernameToSharedPref(value.uname);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => FeedProyectos()));
+        });
+      } catch (err) {
+        print(err);
       }
-    });
+    } else {}
   }
 }

@@ -3,9 +3,9 @@ import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/styles.dart';
 import 'profile_image.dart';
 import 'package:http/http.dart' as http;
-import 'package:frontend_looping_ea/Services/profile_service.dart';
+import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
-import 'package:frontend_looping_ea/Services/profile_service.dart';
+import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {

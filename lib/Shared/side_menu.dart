@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
-import 'package:frontend_looping_ea/Services/profile_service.dart';
+import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
 class SideMenu extends StatelessWidget {
