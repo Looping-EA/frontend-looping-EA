@@ -1,37 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
+import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
+import 'package:frontend_looping_ea/Services/profile_service.dart';
 
 class SideMenu extends StatelessWidget {
   Future<void> createAlertDialog(BuildContext context) {
-  TextEditingController customController = TextEditingController();
-  String confirmation = "I understand";
+    TextEditingController customController = TextEditingController();
+    String confirmation = "I understand";
 
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-              "Are you sure you want to leave us?  Write!:' I understand '"),
-          content: TextField(
-            controller: customController,
-          ),
-          actions: <Widget>[
-            MaterialButton(
-              elevation: 5.0,
-              child: Text('Send'),
-              onPressed: () {
-                Navigator.of(context).pop(customController.text.toString());
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()));
-              },
-            )
-          ],
-        );
-      });
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+                "Are you sure you want to leave us?  Write!:' I understand '"),
+            content: TextField(
+              controller: customController,
+            ),
+            actions: <Widget>[
+              MaterialButton(
+                elevation: 5.0,
+                child: Text('Send'),
+                onPressed: () {
+                  String answer = "hola";
+                  deleteUser(uname).then((value) => answer = value);
+                  if (answer == "deleted") {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterScreen()));
+                  } else {
+                    Navigator.of(context).pop(customController.text.toString());
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileScreen()));
+                  }
+                },
+              )
+            ],
+          );
+        });
   }
+
   @override
   Widget build(BuildContext context) {
-    
     return new Drawer(
         child: ListView(
       children: <Widget>[
@@ -59,7 +72,10 @@ class SideMenu extends StatelessWidget {
           title: Text("PROFILE",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.account_box),
-          onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));},
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()));
+          },
         ),
         ListTile(
           title: Text("CHATS",

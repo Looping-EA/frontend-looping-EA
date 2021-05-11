@@ -5,17 +5,14 @@ import 'profile_image.dart';
 import 'package:http/http.dart' as http;
 import 'package:frontend_looping_ea/Services/profile_service.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
+import 'package:frontend_looping_ea/Services/profile_service.dart';
 
 class ProfileScreen extends StatefulWidget {
-
   @override
   _ProfileScreen createState() => _ProfileScreen();
-
 }
 
-class _ProfileScreen extends State<ProfileScreen>{
-  
-
+class _ProfileScreen extends State<ProfileScreen> {
   //asignar las shared preferences para que pueda pasar al usuario
 
   //late final User user;
@@ -26,7 +23,7 @@ class _ProfileScreen extends State<ProfileScreen>{
     super.initState();
     getUser(user.uname);
   }*/
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,5 +150,4 @@ class _ProfileScreen extends State<ProfileScreen>{
       ),
     );
   }
-
 }
