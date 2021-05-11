@@ -11,22 +11,23 @@ Future<List<Project>> getProjectsAndOwners() async {
       headers: <String, String>{'Content-Type': 'application/json'});
   if (response.statusCode == 201) {
     var projectsJson = json.decode(response.body);
-    print(projectsJson);
-    for (var projectJson in projectsJson) {
-      print("va bien");
-      List<User> ownerslist = [];
-      for (int i = 0; i < projectJson["owners"].length; i++) {
-        User u = new User(projectJson["owners"][i]["uname"], "", "", "");
-        ownerslist.add(u);
-        print(u.uname);
-      }
+    try {
+      for (var projectJson in projectsJson) {
+        List<User> ownerslist = [];
+        for (int i = 0; i < projectJson["owners"].length; i++) {
+          User u = new User(projectJson["owners"][i]["uname"], "", "", "");
+          ownerslist.add(u);
+          print(u.uname);
+        }
 
-      print("vabien2");
-      print(projectJson["name"]);
-      projects.add(
-          Project(projectJson["name"], [], "", [], [], "", [], ownerslist));
+        print(projectJson["name"]);
+        projects.add(
+            Project(projectJson["name"], [], "", [], [], "", [], ownerslist));
+      }
+    } catch (e) {
+      print(e);
     }
   }
-  print(projects[0].name);
+
   return projects;
 }
