@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
           children: <Widget>[
             Text(
               "LOOPING",
-              style: Styles.title,
+              style: Styles.titleSplash,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.1),

@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
+import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -248,7 +251,17 @@ class _LoginPageState extends State<LoginPage> {
                   Text.rich(TextSpan(
                       text: 'Do not have an account yet? ',
                       children: <TextSpan>[
-                        TextSpan(text: "Sign up", style: Styles.linkedText)
+                        TextSpan(
+                            text: "Sign up",
+                            style: Styles.linkedText,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            RegisterScreen()));
+                              })
                       ]))
                 ],
               ))),

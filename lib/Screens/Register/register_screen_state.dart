@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
@@ -23,8 +25,7 @@ class RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: Styles.colorBackground,
         body: Center(
             child: Container(
-                width: 700,
-                height: 700,
+                margin: const EdgeInsets.all(30),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
@@ -155,7 +156,16 @@ class RegisterScreenState extends State<RegisterScreen> {
                     Text.rich(TextSpan(
                         text: 'Already have an account? ',
                         children: <TextSpan>[
-                          TextSpan(text: "Sign in.", style: Styles.linkedText)
+                          TextSpan(
+                              text: "Sign in.",
+                              style: Styles.linkedText,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginPage()));
+                                })
                         ]))
                   ],
                 ))));
