@@ -4,6 +4,7 @@ import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
 //import styles
 import 'package:frontend_looping_ea/styles.dart';
@@ -287,7 +288,9 @@ class _LoginPageState extends State<LoginPage> {
             body: bodyParsed)
         .then((http.Response response) {
       if (response.statusCode == 201) {
-        return User.fromJson(json.decode(response.body));
+        User u = User.fromJson(json.decode(response.body));
+        setUsernameToSharedPref(u.uname);
+        return u;
       } else {
         return new User("", "", "", "");
       }

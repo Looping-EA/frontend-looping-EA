@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Services/profile_service.dart';
+import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
 class SideMenu extends StatelessWidget {
   Future<void> createAlertDialog(BuildContext context) {
     TextEditingController customController = TextEditingController();
     String confirmation = "I understand";
+    String? uname;
+    getUsernameFromSharedPref().then((value) => uname = value);
 
     return showDialog(
         context: context,

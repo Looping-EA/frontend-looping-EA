@@ -6,6 +6,8 @@ import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
 //import styles
 import 'package:frontend_looping_ea/styles.dart';
@@ -195,7 +197,9 @@ class RegisterScreenState extends State<RegisterScreen> {
         .then((http.Response response) {
       if (response.statusCode == 201) {
         print(response.body);
-        return User.fromJson(json.decode(response.body));
+        User u = User.fromJson(json.decode(response.body));
+        setUsernameToSharedPref(u.uname);
+        return u;
       } else {
         return new User("", "", "", "");
       }

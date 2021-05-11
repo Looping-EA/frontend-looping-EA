@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:frontend_looping_ea/Services/profile_service.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:frontend_looping_ea/Services/profile_service.dart';
+import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -15,14 +16,16 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreen extends State<ProfileScreen> {
   //asignar las shared preferences para que pueda pasar al usuario
 
-  //late final User user;
+  late final User user;
 
   //Get the user
-  /*@override
+  @override
   void initState() {
     super.initState();
-    getUser(user.uname);
-  }*/
+    String? username;
+    getUsernameFromSharedPref().then((value) => username = value);
+    getUser(username).then((value) => user = value);
+  }
 
   @override
   Widget build(BuildContext context) {
