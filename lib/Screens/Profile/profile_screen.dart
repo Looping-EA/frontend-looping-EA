@@ -2,8 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/styles.dart';
 import 'profile_image.dart';
+import 'package:http/http.dart' as http;
+import 'package:frontend_looping_ea/Services/profile_service.dart';
+import 'package:frontend_looping_ea/Shared/side_menu.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+
+  @override
+  _ProfileScreen createState() => _ProfileScreen();
+
+}
+
+class _ProfileScreen extends State<ProfileScreen>{
+  
+
+  //asignar las shared preferences para que pueda pasar al usuario
+
+  //late final User user;
+
+  //Get the user
+  /*@override
+  void initState() {
+    super.initState();
+    getUser(user.uname);
+  }*/
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +71,7 @@ class ProfileScreen extends StatelessWidget {
                     Container(
                         alignment: Alignment.bottomLeft,
                         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 4.0, 0.0),
-                        child: Text('Albert Sáez',
+                        child: Text('k',
                             style: TextStyle(
                                 fontSize: 30.0, color: Colors.white))),
                   ],
@@ -75,7 +98,7 @@ class ProfileScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold))),
                   Container(
                       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                      child: Text('I love the Apple ecosystem',
+                      child: Text('k',
                           style:
                               TextStyle(fontSize: 15.0, color: Colors.black))),
                 ],
@@ -98,7 +121,7 @@ class ProfileScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold))),
                   Container(
                       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                      child: Text('Hockey',
+                      child: Text('k',
                           style:
                               TextStyle(fontSize: 15.0, color: Colors.black))),
                 ],
@@ -121,7 +144,7 @@ class ProfileScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold))),
                 Container(
                     padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                    child: Text('Looping',
+                    child: Text('k',
                         style: TextStyle(fontSize: 15.0, color: Colors.black))),
               ],
             ),
@@ -130,85 +153,5 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-//The SideMenu functions contains a basic information of the user and the different routes of the app
-class SideMenu extends StatelessWidget {
-  Future<void> createAlertDialog(BuildContext context) {
-    TextEditingController customController = TextEditingController();
-    String confirmation = "I understand";
-
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-                "Are you sure you want to leave us?  Write!:' I understand '"),
-            content: TextField(
-              controller: customController,
-            ),
-            actions: <Widget>[
-              MaterialButton(
-                elevation: 5.0,
-                child: Text('Send'),
-                onPressed: () {
-                  Navigator.of(context).pop(customController.text.toString());
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ProfileScreen()));
-                },
-              )
-            ],
-          );
-        });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Drawer(
-        child: ListView(
-      children: <Widget>[
-        UserAccountsDrawerHeader(
-          accountName: new Text("Albert Sáez",
-              style: TextStyle(fontSize: 20.0, color: Colors.white)),
-          accountEmail: new Text("Bill Gates come de sus migas",
-              style: TextStyle(fontSize: 15.0, color: Colors.white)),
-          decoration: BoxDecoration(
-            color: Colors.grey,
-          ),
-          currentAccountPicture:
-              const CircleAvatar(child: FlutterLogo(size: 42.00)),
-        ),
-        ListTile(
-          title: Text("HOME",
-              style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.home),
-          //CUANDO SEPAMOS LAS RUTAS SE APLICA A CADA UNA
-          /*  onTap: (){
-            Navigator.pop(),
-          },*/
-        ),
-        ListTile(
-          title: Text("PROFILE",
-              style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.account_box),
-        ),
-        ListTile(
-          title: Text("CHATS",
-              style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.chat),
-        ),
-        ListTile(
-          title: Text("FORUMS",
-              style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.forum),
-        ),
-        ListTile(
-          title: Text("DELETE ACCOUNT",
-              style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.delete_forever_sharp),
-          onTap: () => createAlertDialog(context),
-        ),
-      ],
-    ));
-  }
 }
