@@ -15,7 +15,16 @@ class User {
     );
   }
 
+  factory User.fromJSONnoPass(dynamic json) {
+    return User(
+      json['uname'] as String,
+      "",
+      json['fullname'] as String,
+      json['email'] as String,
+    );
+  }
+
   factory User.grabUnameFromJSON(dynamic json) {
-    return User(json['uname'] as String, "", "", "");
+    return User(json['uname'] as String, "", json['fullname'], json['email']);
   }
 }

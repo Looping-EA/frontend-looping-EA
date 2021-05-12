@@ -24,7 +24,7 @@ class ProjectState extends State<ProjectScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
-                            '${project.name}',
+                            project.name,
                             style: Styles.title,
                           ),
                           SizedBox(),

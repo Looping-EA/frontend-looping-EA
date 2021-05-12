@@ -1,3 +1,5 @@
+import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:frontend_looping_ea/styles.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +12,15 @@ import '../../Models/project.dart';
 import 'package:intl/intl.dart';
 
 class CreateProjectState extends State<CreateProjectScreen> {
+  final User user;
+  CreateProjectState(this.user);
+
   final _formKey = GlobalKey<FormBuilderState>();
   final _project = Project("", [], "", [], [], "", [], []);
 
   @override
   Widget build(BuildContext context) {
+    print(user.uname);
     return Scaffold(
         //An App Bar is created with the name of the current page
         appBar: AppBar(
@@ -23,7 +29,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
         ),
 
         //The drawer opens a side menu
-        drawer: SideMenu(),
+        drawer: SideMenu(user: this.user),
         backgroundColor: Styles.colorBackground,
         body: Center(
             child: Container(
@@ -127,9 +133,18 @@ class CreateProjectState extends State<CreateProjectScreen> {
           _formKey.currentState!.fields['description']!.value;
 
       // http?
-      var project = new Project("", [], "", [], [], "", [], []);
-      _createProject().then((value) => project = value);
-      print(project);
+      try {
+        var project = new Project("", [], "", [], [], "", [], []);
+        _createProject().then((value) {
+          project = value;
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FeedProyectos(user: this.user)));
+        });
+      } catch (err) {
+        print(err);
+      }
     } else {}
   }
 

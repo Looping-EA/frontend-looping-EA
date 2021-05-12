@@ -188,8 +188,10 @@ class RegisterScreenState extends State<RegisterScreen> {
       try {
         await registerUser(_user).then((value) {
           setUsernameToSharedPref(value.uname);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => FeedProyectos()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FeedProyectos(user: value)));
         });
       } catch (err) {
         print(err);

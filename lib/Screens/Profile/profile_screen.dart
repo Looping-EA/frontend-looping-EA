@@ -1,31 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
-import 'package:frontend_looping_ea/styles.dart';
-import 'profile_image.dart';
-import 'package:http/http.dart' as http;
-import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
-import 'package:frontend_looping_ea/Services/user_service.dart';
-import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
+// ignore: must_be_immutable
 class ProfileScreen extends StatefulWidget {
+  final User user;
+  ProfileScreen({Key? key, required this.user}) : super(key: key);
+
   @override
-  _ProfileScreen createState() => _ProfileScreen();
+  _ProfileScreenState createState() => _ProfileScreenState(this.user);
 }
 
-class _ProfileScreen extends State<ProfileScreen> {
-  //asignar las shared preferences para que pueda pasar al usuario
-
-  late final User user;
-
-  //Get the user
-  @override
-  void initState() {
-    super.initState();
-    String? username;
-    getUsernameFromSharedPref().then((value) => username = value);
-    getUser(username).then((value) => user = value);
-  }
+class _ProfileScreenState extends State<ProfileScreen> {
+  final User user;
+  _ProfileScreenState(this.user) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +25,7 @@ class _ProfileScreen extends State<ProfileScreen> {
       ),
 
       //The drawer opens a side menu
-      drawer: SideMenu(),
+      drawer: SideMenu(user: this.user),
 
       //BackgroundColor of the page
       backgroundColor: Colors.white10,
@@ -71,7 +59,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                     Container(
                         alignment: Alignment.bottomLeft,
                         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 4.0, 0.0),
-                        child: Text('${user.fullname}',
+                        child: Text(user.fullname,
                             style: TextStyle(
                                 fontSize: 30.0, color: Colors.white))),
                   ],
@@ -98,7 +86,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               fontWeight: FontWeight.bold))),
                   Container(
                       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                      child: Text('${user.email}',
+                      child: Text(user.email,
                           style:
                               TextStyle(fontSize: 15.0, color: Colors.black))),
                 ],
@@ -121,7 +109,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               fontWeight: FontWeight.bold))),
                   Container(
                       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                      child: Text('${user.email}',
+                      child: Text(user.email,
                           style:
                               TextStyle(fontSize: 15.0, color: Colors.black))),
                 ],
@@ -144,7 +132,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                             fontWeight: FontWeight.bold))),
                 Container(
                     padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                    child: Text('${user.email}',
+                    child: Text(user.email,
                         style: TextStyle(fontSize: 15.0, color: Colors.black))),
               ],
             ),

@@ -10,14 +10,16 @@ import 'dart:async';
 import 'dart:convert';
 import '../../styles.dart';
 
-void main() => runApp(FeedProyectos());
-
 class FeedProyectos extends StatefulWidget {
+  final User user;
+  FeedProyectos({Key? key, required this.user}) : super(key: key);
+
   @override
-  _FeedProyectosState createState() => _FeedProyectosState();
+  _FeedProyectosState createState() => _FeedProyectosState(this.user);
 }
 
 class _FeedProyectosState extends State<FeedProyectos> {
+  final User user;
   late Future<List<Project>> projects;
   List<Project> projectNames = [];
   final TextEditingController _filter = new TextEditingController();
@@ -26,7 +28,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
   Icon _searchIcon = new Icon(Icons.search);
   Widget _appBarTitle = new Text('Projects proposed by the community');
 
-  _FeedProyectosState() {
+  _FeedProyectosState(this.user) {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
@@ -57,11 +59,13 @@ class _FeedProyectosState extends State<FeedProyectos> {
 
   @override
   Widget build(BuildContext context) {
+    print(this.user.uname);
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Feed Proyectos',
         home: Scaffold(
             appBar: _buildBar(context),
-            drawer: SideMenu(),
+            drawer: SideMenu(user: this.user),
             body: Container(
               child: _buildList(),
             ),
@@ -149,8 +153,10 @@ class _FeedProyectosState extends State<FeedProyectos> {
   }
 
   void _navigationToCreateProject(BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CreateProjectScreen()));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CreateProjectScreen(user: this.user)));
   }
 
   String ownersNameStringBuilder(Project x) {

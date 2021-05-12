@@ -283,12 +283,17 @@ class _LoginPageState extends State<LoginPage> {
       try {
         print("preparing _user $_user");
         await loginUser(_user).then((value) {
-          print("seting ${value.uname} to shared preferences.");
-          setUsernameToSharedPref(value.uname);
+          print(value);
+          if (value.uname != "") {
+            print("seting ${value.uname} to shared preferences.");
+            setUsernameToSharedPref(value.uname);
 
-          print("pushing to next view.");
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => FeedProyectos()));
+            print("pushing to next view.");
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FeedProyectos(user: value)));
+          } else {}
         });
       } catch (err) {
         print(err);
