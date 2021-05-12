@@ -18,8 +18,12 @@ class Styles {
       TextStyle(fontSize: _textSizeLarge, color: _textColorShadowed);
   static final subtitle =
       TextStyle(fontSize: _textSizeSmall, color: Colors.white);
-  static final subtitleblue =
-      TextStyle(fontSize: _textSizeSmall, color: colorBackground);
+  static final projectText = TextStyle(
+      fontSize: _textSizeSmall,
+      color: colorBackground,
+      fontWeight: FontWeight.bold);
+  static final projectTextTitle = TextStyle(
+      fontSize: 30, color: colorBackground, fontWeight: FontWeight.bold);
   static final subText =
       TextStyle(fontSize: _textSizeLarge, color: Colors.white);
   static final littleTittle =
