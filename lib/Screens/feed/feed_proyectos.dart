@@ -131,7 +131,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
           title: Text(filteredNames[index].name),
           subtitle: Text(ownersNameStringBuilder(filteredNames[index])),
           onTap: () {
-            _navigationToProject(context, filteredNames[index]);
+            _navigationToProject(context, filteredNames[index], user);
           },
         );
       },
@@ -147,9 +147,9 @@ class _FeedProyectosState extends State<FeedProyectos> {
   }
 
   // Al clicar en un proyecto entrar en el
-  void _navigationToProject(BuildContext context, Project project) {
+  void _navigationToProject(BuildContext context, Project project, User user) {
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ProjectScreen(project)));
+        MaterialPageRoute(builder: (context) => ProjectScreen(project, user)));
   }
 
   void _navigationToCreateProject(BuildContext context) {

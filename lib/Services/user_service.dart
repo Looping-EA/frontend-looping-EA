@@ -6,7 +6,7 @@ Future<User> getUser(uname) async {
   print("getting user $uname");
   //Cuando metamos las shared preferences cogeremos el uname
   final response = await http.get(
-      Uri.parse('http://backend:8080/api/users/$uname'),
+      Uri.parse('http://localhost:8080/api/users/$uname'),
       headers: <String, String>{'Content-Type': 'application/json'});
   if (response.statusCode == 200) {
     print(response.body);
@@ -24,7 +24,7 @@ Future<String> deleteUser(uname) async {
   };
   final bodyParsed = json.encode(body);
   final response = await http.post(
-      Uri.parse('http://backend:8080/api/users/delete'),
+      Uri.parse('http://localhost:8080/api/users/delete'),
       headers: <String, String>{'Content-Type': 'application/json'},
       body: bodyParsed);
 
@@ -47,7 +47,7 @@ Future<User> registerUser(User user) async {
 
   // finally the POST HTTP operation
   return await http
-      .post(Uri.parse("http://backend:8080/api/users/register"),
+      .post(Uri.parse("http://localhost:8080/api/users/register"),
           headers: <String, String>{'Content-Type': 'application/json'},
           body: bodyParsed)
       .then((http.Response response) {
@@ -72,7 +72,7 @@ Future<User> loginUser(User user) async {
 
   // finally the POST HTTP operation
   return await http
-      .post(Uri.parse("http://backend:8080/api/users/login"),
+      .post(Uri.parse("http://localhost:8080/api/users/login"),
           headers: <String, String>{'Content-Type': 'application/json'},
           body: bodyParsed)
       .then((http.Response response) {

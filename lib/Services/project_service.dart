@@ -6,7 +6,7 @@ import '../Models/user.dart';
 Future<List<Project>> getProjectsAndOwners() async {
   List<Project> projects = [];
   final response = await http.post(
-      Uri.parse('http://backend:8080/api/projects'),
+      Uri.parse('http://localhost:8080/api/projects'),
       headers: <String, String>{'Content-Type': 'application/json'});
   if (response.statusCode == 201) {
     var projectsJson = json.decode(response.body);
@@ -20,8 +20,15 @@ Future<List<Project>> getProjectsAndOwners() async {
         }
 
         print(projectJson["name"]);
-        projects.add(
-            Project(projectJson["name"], [], "", [], [], "", [], ownerslist));
+        projects.add(Project(
+            projectJson["name"],
+            [],
+            projectJson["creationDate"],
+            [],
+            [],
+            projectJson["description"],
+            [],
+            ownerslist));
       }
     } catch (e) {
       print(e);
