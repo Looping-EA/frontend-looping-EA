@@ -1,4 +1,3 @@
-import '../Models/project.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Models/user.dart';
@@ -7,7 +6,7 @@ Future<User> getUser(uname) async {
   print("getting user $uname");
   //Cuando metamos las shared preferences cogeremos el uname
   final response = await http.get(
-      Uri.parse('http://localhost:8080/api/users/$uname'),
+      Uri.parse('http://backend:8080/api/users/$uname'),
       headers: <String, String>{'Content-Type': 'application/json'});
   if (response.statusCode == 200) {
     print(response.body);
@@ -25,7 +24,7 @@ Future<String> deleteUser(uname) async {
   };
   final bodyParsed = json.encode(body);
   final response = await http.post(
-      Uri.parse('http://localhost:8080/api/users/delete'),
+      Uri.parse('http://backend:8080/api/users/delete'),
       headers: <String, String>{'Content-Type': 'application/json'},
       body: bodyParsed);
 

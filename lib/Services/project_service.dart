@@ -2,12 +2,11 @@ import '../Models/project.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Models/user.dart';
-import '../Models/project.dart';
 
 Future<List<Project>> getProjectsAndOwners() async {
   List<Project> projects = [];
   final response = await http.post(
-      Uri.parse('http://localhost:8080/api/projects'),
+      Uri.parse('http://backend:8080/api/projects'),
       headers: <String, String>{'Content-Type': 'application/json'});
   if (response.statusCode == 201) {
     var projectsJson = json.decode(response.body);
