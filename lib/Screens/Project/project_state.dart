@@ -21,7 +21,7 @@ class ProjectState extends State<ProjectScreen> {
         appBar: _buildBar(context),
         drawer: SideMenu(user: this.user),
         body: Container(
-            margin: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+            margin: EdgeInsets.fromLTRB(width * 0.1, 0, width * 0.1, 0),
             width: width,
             height: MediaQuery.of(context).size.height,
             child: Column(
@@ -51,15 +51,32 @@ class ProjectState extends State<ProjectScreen> {
                     ]),
                 SizedBox(height: height * 0.1),
                 Container(
-                    child: Text(
-                  "Description: " + project.description,
-                  style: Styles.projectText,
-                )),
+                    height: height * 0.3,
+                    width: width * 0.8,
+                    decoration: BoxDecoration(
+                        color: Styles.colorRelleno,
+                        borderRadius: BorderRadius.circular(width * 0.05)),
+                    child: Container(
+                        margin: EdgeInsets.fromLTRB(width * 0.025,
+                            width * 0.025, width * 0.025, width * 0.025),
+                        child: Text(
+                          project.description,
+                          style: Styles.projectText,
+                        ))),
                 SizedBox(height: height * 0.1),
-                Text(
-                  ownersNameStringBuilder(project),
-                  style: Styles.projectText,
-                ),
+                Container(
+                    height: height * 0.2,
+                    width: width * 0.8,
+                    decoration: BoxDecoration(
+                        color: Styles.colorRelleno,
+                        borderRadius: BorderRadius.circular(width * 0.05)),
+                    child: Container(
+                        margin: EdgeInsets.fromLTRB(width * 0.025,
+                            width * 0.025, width * 0.025, width * 0.025),
+                        child: Text(
+                          "Members: " + ownersNameStringBuilder(project),
+                          style: Styles.projectText,
+                        ))),
               ],
             )));
   }
