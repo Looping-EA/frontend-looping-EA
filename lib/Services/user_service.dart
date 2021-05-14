@@ -72,7 +72,7 @@ Future<User> loginUser(User user) async {
 
   // finally the POST HTTP operation
   return await http
-      .post(Uri.parse("http://localhost:8080/api/users/login"),
+      .post(Uri.parse("http://backend:8080/api/users/login"),
           headers: <String, String>{'Content-Type': 'application/json'},
           body: bodyParsed)
       .then((http.Response response) {
