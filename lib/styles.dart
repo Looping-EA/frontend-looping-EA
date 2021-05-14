@@ -7,6 +7,7 @@ class Styles {
   static final Color _textColorRegister = _hexToColor('000000');
   static final Color _textColorShadowed = _hexToColor('005b96');
   static final Color colorBackground = _hexToColor('03396c');
+  static final Color colorRelleno = _hexToColor('e5e5e5');
   static final linkedText =
       TextStyle(color: Colors.blue, decoration: TextDecoration.underline);
   static final title =
@@ -20,7 +21,7 @@ class Styles {
       TextStyle(fontSize: _textSizeSmall, color: Colors.white);
   static final projectText = TextStyle(
       fontSize: _textSizeSmall,
-      color: colorBackground,
+      color: _textColorShadowed,
       fontWeight: FontWeight.bold);
   static final projectTextTitle = TextStyle(
       fontSize: 30, color: colorBackground, fontWeight: FontWeight.bold);
