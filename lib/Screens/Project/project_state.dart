@@ -1,3 +1,5 @@
+import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:frontend_looping_ea/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -7,52 +9,59 @@ import 'project_screen.dart';
 
 class ProjectState extends State<ProjectScreen> {
   final Project project;
+  final User user;
+  Widget _appBarTitle = new Text('Project');
 
-  ProjectState(this.project);
+  ProjectState(this.project, this.user);
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
-        body: Center(
-            child: Container(
-                width: width,
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            project.name,
-                            style: Styles.title,
-                          ),
-                          SizedBox(),
-                          SizedBox(
-                              width: width * 0.25,
-                              height: height * 0.1,
-                              child: ElevatedButton(
-                                  onPressed: _onPressButton,
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Styles.colorBackground,
-                                  ),
-                                  child: Text(
-                                    'Apply',
-                                    style: Styles.button_big,
-                                  )))
-                        ]),
-                    SizedBox(height: height * 0.1),
-                    Text(
-                      '${project.description}',
-                      style: Styles.subtitle,
-                    ),
-                    SizedBox(height: height * 0.1),
-                    Text(
-                      ownersNameStringBuilder(project),
-                      style: Styles.subtitle,
-                    ),
-                  ],
-                ))));
+        appBar: _buildBar(context),
+        drawer: SideMenu(user: this.user),
+        body: Container(
+            margin: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+            width: width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: height * 0.05),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        project.name,
+                        style: Styles.projectTextTitle,
+                      ),
+                      SizedBox(
+                          width: width * 0.25,
+                          height: height * 0.1,
+                          child: ElevatedButton(
+                              onPressed: _onPressButton,
+                              style: ElevatedButton.styleFrom(
+                                primary: Styles.colorBackground,
+                              ),
+                              child: Text(
+                                'Apply',
+                                style: Styles.button_big,
+                              )))
+                    ]),
+                SizedBox(height: height * 0.1),
+                Container(
+                    child: Text(
+                  "Description: " + project.description,
+                  style: Styles.projectText,
+                )),
+                SizedBox(height: height * 0.1),
+                Text(
+                  ownersNameStringBuilder(project),
+                  style: Styles.projectText,
+                ),
+              ],
+            )));
   }
 
   String ownersNameStringBuilder(Project x) {
@@ -68,6 +77,13 @@ class ProjectState extends State<ProjectScreen> {
     } else {
       return "";
     }
+  }
+
+  PreferredSizeWidget _buildBar(BuildContext context) {
+    return AppBar(
+      centerTitle: true,
+      title: _appBarTitle,
+    );
   }
 
   void _onPressButton() {}

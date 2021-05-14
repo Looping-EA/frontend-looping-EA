@@ -20,8 +20,15 @@ Future<List<Project>> getProjectsAndOwners() async {
         }
 
         print(projectJson["name"]);
-        projects.add(
-            Project(projectJson["name"], [], "", [], [], "", [], ownerslist));
+        projects.add(Project(
+            projectJson["name"],
+            [],
+            projectJson["creationDate"],
+            [],
+            [],
+            projectJson["description"],
+            [],
+            ownerslist));
       }
     } catch (e) {
       print(e);
