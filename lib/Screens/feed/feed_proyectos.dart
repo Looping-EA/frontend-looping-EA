@@ -45,17 +45,17 @@ class _FeedProyectosState extends State<FeedProyectos> {
   @override
   void initState() {
     super.initState();
-    try {
-      getProjectsAndOwners().then((result) {
-        setState(() {
-          projectNames = result;
-          filteredNames = projectNames;
-        });
+    // try {
+    getProjectsAndOwners().then((result) {
+      setState(() {
+        projectNames = result;
+        filteredNames = projectNames;
       });
-    } catch (e) {
-      print(e);
-    }
+    });
+    // } catch (e) {
+    //   print(e);
   }
+//}
 
   @override
   Widget build(BuildContext context) {
