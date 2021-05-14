@@ -25,7 +25,7 @@ RUN flutter config --enable-web
 RUN mkdir /app/
 COPY . /app/
 WORKDIR /app/
-RUN flutter build web --source-maps --verbose --no-shrink
+RUN flutter build web --no-shrink
 
 # Stage 2 - Create the run-time image
 FROM nginx
