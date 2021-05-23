@@ -12,13 +12,16 @@ Future<List<Project>> getProjectsAndOwners() async {
   String? token;
   try {
     await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
   } catch (err) {
     print(err);
   }
 
-  final response = await http.get(
-      Uri.parse('http://localhost:8080/api/projects/'),
-      headers: <String, String>{'Authorization': 'Bearer $token'});
+  final response = await http
+      .get(Uri.parse('http://localhost:8080/api/projects/'), headers: {
+    'Authorization': 'Bearer $token',
+    'Content-Type': 'application/json'
+  });
   if (response.statusCode == 201) {
     var projectsJson = json.decode(response.body);
     try {

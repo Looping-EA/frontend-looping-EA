@@ -5,11 +5,20 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
 Future<User> getUser(uname) async {
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+  } catch (err) {
+    print(err);
+  }
   print("getting user $uname");
   //Cuando metamos las shared preferences cogeremos el uname
-  final response = await http.get(
-      Uri.parse('http://localhost:8080/api/users/$uname'),
-      headers: <String, String>{'Content-Type': 'application/json'});
+  final response = await http
+      .get(Uri.parse('http://localhost:8080/api/users/$uname'), headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token'
+  });
   if (response.statusCode == 200) {
     print(response.body);
 
@@ -20,6 +29,13 @@ Future<User> getUser(uname) async {
 }
 
 Future<String> deleteUser(uname) async {
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+  } catch (err) {
+    print(err);
+  }
   String exito = "deleted";
   String fail = "failed";
   final body = {
@@ -28,7 +44,10 @@ Future<String> deleteUser(uname) async {
   final bodyParsed = json.encode(body);
   final response = await http.post(
       Uri.parse('http://localhost:8080/api/users/delete'),
-      headers: <String, String>{'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
       body: bodyParsed);
 
   print(response.statusCode);
