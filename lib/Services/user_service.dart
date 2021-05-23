@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Models/user.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
 Future<User> getUser(uname) async {
   print("getting user $uname");
@@ -10,6 +12,7 @@ Future<User> getUser(uname) async {
       headers: <String, String>{'Content-Type': 'application/json'});
   if (response.statusCode == 200) {
     print(response.body);
+
     User u = User.fromJSONnoPass(json.decode(response.body));
     return u;
   } else
@@ -53,7 +56,12 @@ Future<User> registerUser(User user) async {
       .then((http.Response response) {
     if (response.statusCode == 201) {
       print(response.body);
-      User u = User.fromJson(json.decode(response.body));
+      var token = json.decode(response.body);
+      print(token["accessToken"].toString());
+      setTokenToSharedPref(token["accessToken"].toString());
+      Map<String, dynamic> payload =
+          Jwt.parseJwt(token["accessToken"].toString());
+      User u = User.fromJson(payload);
       return u;
     } else {
       return new User("", "", "", "");
@@ -78,8 +86,12 @@ Future<User> loginUser(User user) async {
       .then((http.Response response) {
     print("asdasdasdasd");
     if (response.statusCode == 201) {
-      print(response.body);
-      User u = User.grabUnameFromJSON(json.decode(response.body));
+      var token = json.decode(response.body);
+      print(token["accessToken"].toString());
+      setTokenToSharedPref(token["accessToken"].toString());
+      Map<String, dynamic> payload =
+          Jwt.parseJwt(token["accessToken"].toString());
+      User u = User.grabUnameFromJSON(payload);
       return u;
     } else {
       return new User("", "", "", "");

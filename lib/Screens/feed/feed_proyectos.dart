@@ -73,11 +73,13 @@ class _FeedProyectosState extends State<FeedProyectos> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FloatingActionButton(
+                    heroTag: "add",
                     child: Icon(Icons.add),
                     onPressed: () {
                       _navigationToCreateProject(context);
                     }),
                 FloatingActionButton(
+                    heroTag: "search",
                     child: Icon(Icons.search),
                     onPressed: () {
                       _searchPressed();

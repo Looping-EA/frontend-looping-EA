@@ -1,13 +1,24 @@
+import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../Models/project.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Models/user.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
 Future<List<Project>> getProjectsAndOwners() async {
   List<Project> projects = [];
-  final response = await http.post(
-      Uri.parse('http://localhost:8080/api/projects'),
-      headers: <String, String>{'Content-Type': 'application/json'});
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+  } catch (err) {
+    print(err);
+  }
+
+  final response = await http.get(
+      Uri.parse('http://localhost:8080/api/projects/'),
+      headers: <String, String>{'Authorization': 'Bearer $token'});
   if (response.statusCode == 201) {
     var projectsJson = json.decode(response.body);
     try {
