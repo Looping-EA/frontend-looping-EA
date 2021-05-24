@@ -9,6 +9,8 @@ import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import '../../Shared/google_signin_api.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
 //import styles
@@ -223,8 +225,8 @@ class _LoginPageState extends State<LoginPage> {
                                     image: AssetImage('images/facebook.png'))),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () => print('Login with Google'),
+                        InkWell(
+                          onTap: () => signInGoogle(),
                           child: Container(
                             height: 40.0,
                             width: 40.0,
@@ -299,5 +301,27 @@ class _LoginPageState extends State<LoginPage> {
         print(err);
       }
     } else {}
+  }
+
+  Future signInGoogle() async {
+    GoogleSignInAccount userGoogle = await GoogleSignInApi.login();
+    if (userGoogle == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Sign in Failed')));
+    } else {
+      User user = new User(userGoogle.displayName.toString(), "",
+          userGoogle.displayName.toString(), userGoogle.email);
+      try {
+        await loginUser(user).then((value) {
+          setUsernameToSharedPref(value.uname);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FeedProyectos(user: value)));
+        });
+      } catch (err) {
+        print(err);
+      }
+    }
   }
 }
