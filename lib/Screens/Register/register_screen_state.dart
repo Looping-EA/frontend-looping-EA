@@ -252,8 +252,8 @@ class RegisterScreenState extends State<RegisterScreen> {
 
       // http?
       try {
-        await registerUser(_user).then((value) {
-          setUsernameToSharedPref(value.uname);
+        await registerUser(_user).then((value) async {
+          await setUsernameToSharedPref(value.uname);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -274,8 +274,8 @@ class RegisterScreenState extends State<RegisterScreen> {
       User user = new User(userGoogle.displayName.toString(), "",
           userGoogle.displayName.toString(), userGoogle.email);
       try {
-        await registerUser(user).then((value) {
-          setUsernameToSharedPref(value.uname);
+        await registerUser(user).then((value) async {
+          await setUsernameToSharedPref(value.uname);
           Navigator.push(
               context,
               MaterialPageRoute(
