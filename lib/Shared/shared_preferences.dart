@@ -20,6 +20,6 @@ Future<void> setTokenToSharedPref(String token) async {
 
 Future<String?> getTokenFromSharedPrefs() async {
   final prefs = await SharedPreferences.getInstance();
-  final token = await prefs.getString('token');
+  final token = prefs.getString('token');
   return token;
 }

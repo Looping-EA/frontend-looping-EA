@@ -7,6 +7,7 @@ import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:async';
 import '../../Shared/google_signin_api.dart';
@@ -23,7 +24,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormBuilderState>();
-
   final _user = User("", "", "", "");
 
   bool _remeberMe = false;
@@ -284,11 +284,11 @@ class _LoginPageState extends State<LoginPage> {
       // http?
       try {
         print("preparing _user $_user");
-        await loginUser(_user).then((value) {
+        await loginUser(_user).then((value) async {
           print(value);
           if (value.uname != "") {
             print("seting ${value.uname} to shared preferences.");
-            setUsernameToSharedPref(value.uname);
+            await setUsernameToSharedPref(value.uname);
 
             print("pushing to next view.");
             Navigator.push(
@@ -312,8 +312,9 @@ class _LoginPageState extends State<LoginPage> {
       User user = new User(userGoogle.displayName.toString(), "",
           userGoogle.displayName.toString(), userGoogle.email);
       try {
-        await loginUser(user).then((value) {
-          setUsernameToSharedPref(value.uname);
+        await loginUser(user).then((value) async {
+          final hola = SharedPreferences.getInstance();
+          await setUsernameToSharedPref(value.uname);
           Navigator.push(
               context,
               MaterialPageRoute(
