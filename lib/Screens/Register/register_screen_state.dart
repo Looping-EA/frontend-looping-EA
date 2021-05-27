@@ -275,11 +275,16 @@ class RegisterScreenState extends State<RegisterScreen> {
           userGoogle.displayName.toString(), userGoogle.email);
       try {
         await registerUser(user).then((value) async {
-          await setUsernameToSharedPref(value.uname);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => FeedProyectos(user: value)));
+          if (value.uname != "") {
+            await setUsernameToSharedPref(value.uname);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FeedProyectos(user: value)));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('Are you already registered? Try loging in')));
+          }
         });
       } catch (err) {
         print(err);

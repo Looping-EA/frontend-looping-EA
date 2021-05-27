@@ -313,12 +313,16 @@ class _LoginPageState extends State<LoginPage> {
           userGoogle.displayName.toString(), userGoogle.email);
       try {
         await loginUser(user).then((value) async {
-          final hola = SharedPreferences.getInstance();
-          await setUsernameToSharedPref(value.uname);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => FeedProyectos(user: value)));
+          if (value.uname != "") {
+            await setUsernameToSharedPref(value.uname);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FeedProyectos(user: value)));
+          } else {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('Are you registered?')));
+          }
         });
       } catch (err) {
         print(err);
