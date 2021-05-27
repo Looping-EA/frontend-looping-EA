@@ -17,7 +17,7 @@ class ChatScreen extends StatelessWidget {
                 )))));
   }
 
-  void _onPressButton() {
+  void _onPressButton() async{
     print('se intenta');
 
     IO.Socket socket = IO.io('http://localhost:3000');
