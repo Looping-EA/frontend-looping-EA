@@ -13,6 +13,7 @@ Future<List<Project>> getProjectsAndOwners() async {
   try {
     await getTokenFromSharedPrefs().then((value) => token = value);
     print(token);
+    print("token printed above");
   } catch (err) {
     print(err);
   }
