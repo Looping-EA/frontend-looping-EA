@@ -17,17 +17,28 @@ class ChatScreen extends StatelessWidget {
                 )))));
   }
 
-  void _onPressButton() async{
+  void _onPressButton() async {
     print('se intenta');
+    var url = 'http://localhost:3000';
+    print(url);
 
-    IO.Socket socket = IO.io('http://localhost:3000');
+    try {
+      IO.Socket socket = IO.io(url, <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': false,
+      });
+      print("hola");
+      socket.connect();
+      socket.onConnect((_) => {print('connect')});
+      socket.on('event', (data) => print(data));
+      socket.on('disconnect', (_) => print('disconnect'));
+      socket.on('fromServer', (_) => print(_));
+    } catch (e) {
+      print("error");
+      print(e);
+    }
+    ;
 
-    socket.onConnect((_) {
-      print('connect');
-      socket.emit('msg', 'test');
-    });
-    socket.on('event', (data) => print(data));
-    socket.on("disconnect", (_) => print('disconnect'));
-    socket.on('fromServer', (_) => print(_));
+    // Dart client
   }
 }
