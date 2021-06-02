@@ -29,7 +29,7 @@ Future<List<Project>> getProjectsAndOwners() async {
       for (var projectJson in projectsJson) {
         List<User> ownerslist = [];
         for (int i = 0; i < projectJson["owners"].length; i++) {
-          User u = new User(projectJson["owners"][i]["uname"], "", "", "");
+          User u = new User(projectJson["owners"][i]["uname"], "", "", "", []);
           ownerslist.add(u);
           print(u.uname);
         }

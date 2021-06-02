@@ -3,13 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
-import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:frontend_looping_ea/Services/user_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../Shared/google_signin_api.dart';
@@ -19,7 +15,7 @@ import 'package:frontend_looping_ea/styles.dart';
 
 class RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
-  final _user = User("", "", "", "");
+  final _user = User("", "", "", "", []);
 
   @override
   Widget build(BuildContext context) {
@@ -253,6 +249,8 @@ class RegisterScreenState extends State<RegisterScreen> {
       // http?
       try {
         await registerUser(_user).then((value) async {
+          await updateInsigniae(_user, "Iniciado")
+              .then((value) => print(value));
           await setUsernameToSharedPref(value.uname);
           Navigator.push(
               context,
@@ -272,7 +270,7 @@ class RegisterScreenState extends State<RegisterScreen> {
           .showSnackBar(SnackBar(content: Text('Sign in Failed')));
     } else {
       User user = new User(userGoogle.displayName.toString(), "",
-          userGoogle.displayName.toString(), userGoogle.email);
+          userGoogle.displayName.toString(), userGoogle.email, []);
       try {
         await registerUser(user).then((value) async {
           if (value.uname != "") {

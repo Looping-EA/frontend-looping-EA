@@ -137,6 +137,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+            color: Colors.grey,
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                    child: Text('Insignias',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold))),
+                Container(
+                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                    child: Text(user.insignias.toString(),
+                        style: TextStyle(fontSize: 15.0, color: Colors.black))),
+              ],
+            ),
+          ),
         ],
       ),
     );

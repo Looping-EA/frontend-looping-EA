@@ -24,7 +24,7 @@ Future<User> getUser(uname) async {
     User u = User.fromJSONnoPass(json.decode(response.body));
     return u;
   } else
-    return new User("", "", "", "");
+    return new User("", "", "", "", []);
 }
 
 Future<String> deleteUser(uname) async {
@@ -82,7 +82,24 @@ Future<User> registerUser(User user) async {
       User u = User.fromJson(payload);
       return u;
     } else {
-      return new User("", "", "", "");
+      return new User("", "", "", "", []);
+    }
+  });
+}
+
+Future<String> updateInsigniae(User user, String insigniaeName) async {
+  final body = {"uname": user.uname, "name": insigniaeName};
+  final bodyParsed = json.encode(body);
+
+  return await http
+      .post(Uri.parse("http://localhost:8080/api/users/updateInsigniae"),
+          headers: <String, String>{'Content-Type': 'application/json'},
+          body: bodyParsed)
+      .then((http.Response response) async {
+    if (response.statusCode == 200) {
+      return "valid";
+    } else {
+      return "no valid";
     }
   });
 }
@@ -112,7 +129,7 @@ Future<User> loginUser(User user) async {
       User u = User.grabUnameFromJSON(payload);
       return u;
     } else {
-      return new User("", "", "", "");
+      return new User("", "", "", "", []);
     }
   });
 }
