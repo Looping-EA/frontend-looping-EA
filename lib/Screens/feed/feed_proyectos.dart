@@ -83,7 +83,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
                     child: Icon(Icons.search),
                     onPressed: () {
                       _searchPressed();
-                    })
+                    }),
               ],
             )));
   }
