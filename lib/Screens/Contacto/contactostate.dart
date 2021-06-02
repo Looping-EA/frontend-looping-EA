@@ -155,6 +155,7 @@ class ContactoState extends State<ContactoScreen> {
     };
     final bodyParsed = json.encode(body);
 
+
     // finally the POST HTTP operation
     return await http
         .post(Uri.parse("http://localhost:8080/api/contacto/add"),
