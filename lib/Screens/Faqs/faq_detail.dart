@@ -17,13 +17,13 @@ class FaqDetail extends StatelessWidget {
             children: <Widget>[
           Text(
             faq.quest,
-            style: Styles.titleSplash,
+            style: Styles.projectTextTitle,
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 100),
           Text(
             faq.resp,
-            style: Styles.subtitle,
+            style: Styles.projectText,
             textAlign: TextAlign.center,
           ),
         ]));
