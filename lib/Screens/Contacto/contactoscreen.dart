@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
-import 'contacto_state.dart';
+import 'contactostate.dart';
 
 class ContactoScreen extends StatefulWidget {
   final User user;
