@@ -135,7 +135,7 @@ class ContactoState extends State<ContactoScreen> {
   }
 
   Future<Contacto> _createContacto() async {
-    Project contacto = new Contacto("", "", "");
+    Contacto contacto = new Contacto("", "", "");
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd').format(now);
     String? token;
@@ -150,14 +150,14 @@ class ContactoState extends State<ContactoScreen> {
     // create JSON object
     final body = {
       "uname": user.uname,
-      "creationDate": formattedDate,
-      "message": _project.message,
+      "date": formattedDate,
+      "message": _contacto.message,
     };
     final bodyParsed = json.encode(body);
 
     // finally the POST HTTP operation
     return await http
-        .post(Uri.parse("http://localhost:8080/api/projects/contacto"),
+        .post(Uri.parse("http://localhost:8080/api/contacto/add"),
             headers: {
               'Authorization': 'Bearer $token',
               'Content-Type': 'application/json'
@@ -165,9 +165,9 @@ class ContactoState extends State<ContactoScreen> {
             body: bodyParsed)
         .then((http.Response response) {
       if (response.statusCode == 201) {
-        return Project.fromJson(json.decode(response.body));
+        return Contacto.fromJson(json.decode(response.body));
       } else {
-        return new Project("", "", "");
+        return new Contacto("", "", "");
       }
     });
   }
