@@ -17,13 +17,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _ProfileScreenState(this.user) : super();
   bool _isEditingAboutMe = false;
   late TextEditingController _editingAboutMe;
-  late String initialAboutMe = user.aboutMe;
+  late String? initialAboutMe = user.aboutMe;
 
   @override
   void initState() {
     super.initState();
     _editingAboutMe = TextEditingController(text: initialAboutMe);
-    initialAboutMe = user.aboutMe;
+    if (user.aboutMe == null) {
+      initialAboutMe = "Hello!";
+    } else {
+      initialAboutMe = user.aboutMe;
+    }
   }
 
   @override
@@ -180,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _isEditingAboutMe = true;
           });
         },
-        child: Text(initialAboutMe,
-            style: TextStyle(color: Colors.black, fontSize: 18.0)));
+        child: Text(initialAboutMe.toString(),
+            style: TextStyle(color: Colors.black, fontSize: 16.0)));
   }
 }
