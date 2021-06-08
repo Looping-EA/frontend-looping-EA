@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
+import 'package:frontend_looping_ea/Services/user_service.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatefulWidget {
@@ -12,8 +13,23 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final User user;
+  User user = new User("", "", "", "");
   _ProfileScreenState(this.user) : super();
+  bool _isEditingAboutMe = false;
+  late TextEditingController _editingAboutMe;
+  String initialAboutMe = "Hello!";
+
+  @override
+  void initState() {
+    super.initState();
+    _editingAboutMe = TextEditingController(text: initialAboutMe);
+  }
+
+  @override
+  void dispose() {
+    _editingAboutMe.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +87,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           //This container contains the information about me
           Container(
-              margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-              color: Colors.grey,
-              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-              child: Column(
+            margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+            color: Colors.grey,
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -85,12 +101,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black,
                               fontWeight: FontWeight.bold))),
                   Container(
-                      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                      child: Text(user.email,
-                          style:
-                              TextStyle(fontSize: 15.0, color: Colors.black))),
-                ],
-              )),
+                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                    child: _editAboutMeTextField(),
+                  )
+                ]),
+          ),
 
           //This container constains the information Skills
           Container(
@@ -140,5 +155,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
+  }
+
+  Widget _editAboutMeTextField() {
+    if (_isEditingAboutMe)
+      return Center(
+        child: TextField(
+          onSubmitted: (newValue) {
+            setState(() {
+              initialAboutMe = newValue;
+              _isEditingAboutMe = false;
+              updateAboutMe(user.uname, newValue);
+            });
+          },
+          autofocus: true,
+          controller: _editingAboutMe,
+        ),
+      );
+    return InkWell(
+        onTap: () {
+          setState(() {
+            _isEditingAboutMe = true;
+          });
+        },
+        child: Text(initialAboutMe,
+            style: TextStyle(color: Colors.black, fontSize: 18.0)));
   }
 }
