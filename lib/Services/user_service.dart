@@ -24,7 +24,7 @@ Future<User> getUser(uname) async {
     User u = User.fromJSONnoPass(json.decode(response.body));
     return u;
   } else
-    return new User("", "", "", "");
+    return new User("", "", "", "", "");
 }
 
 Future<String> deleteUser(uname) async {
@@ -109,7 +109,7 @@ Future<User> registerUser(User user) async {
       User u = User.fromJson(payload);
       return u;
     } else {
-      return new User("", "", "", "");
+      return new User("", "", "", "", "");
     }
   });
 }
@@ -136,10 +136,11 @@ Future<User> loginUser(User user) async {
       await setTokenToSharedPref(token["accessToken"].toString());
       Map<String, dynamic> payload =
           Jwt.parseJwt(token["accessToken"].toString());
+      print(payload);
       User u = User.grabUnameFromJSON(payload);
       return u;
     } else {
-      return new User("", "", "", "");
+      return new User("", "", "", "", "");
     }
   });
 }

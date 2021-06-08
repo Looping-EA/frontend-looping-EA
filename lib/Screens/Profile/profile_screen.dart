@@ -13,16 +13,17 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User user = new User("", "", "", "");
+  User user = new User("", "", "", "", "");
   _ProfileScreenState(this.user) : super();
   bool _isEditingAboutMe = false;
   late TextEditingController _editingAboutMe;
-  String initialAboutMe = "Hello!";
+  late String initialAboutMe = user.aboutMe;
 
   @override
   void initState() {
     super.initState();
     _editingAboutMe = TextEditingController(text: initialAboutMe);
+    initialAboutMe = user.aboutMe;
   }
 
   @override
@@ -166,6 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               initialAboutMe = newValue;
               _isEditingAboutMe = false;
               updateAboutMe(user.uname, newValue);
+              user.aboutMe = newValue;
             });
           },
           autofocus: true,

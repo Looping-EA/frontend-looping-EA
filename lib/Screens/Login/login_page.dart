@@ -24,7 +24,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormBuilderState>();
-  final _user = User("", "", "", "");
+  final _user = User("", "", "", "", "");
 
   bool _remeberMe = false;
 
@@ -310,7 +310,7 @@ class _LoginPageState extends State<LoginPage> {
           .showSnackBar(SnackBar(content: Text('Sign in Failed')));
     } else {
       User user = new User(userGoogle.displayName.toString(), "",
-          userGoogle.displayName.toString(), userGoogle.email);
+          userGoogle.displayName.toString(), userGoogle.email, "");
       try {
         await loginUser(user).then((value) async {
           if (value.uname != "") {
