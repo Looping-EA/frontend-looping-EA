@@ -2,7 +2,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatelessWidget {
+class UsersScreen extends StatelessWidget {
   final url = 'http://localhost:3000';
   final IO.Socket socket = IO.io('http://localhost:3000', <String, dynamic>{
     'transports': ['websocket'],
