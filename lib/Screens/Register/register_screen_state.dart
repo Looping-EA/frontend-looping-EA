@@ -17,7 +17,7 @@ import 'package:frontend_looping_ea/styles.dart';
 
 class RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
-  final _user = User("", "", "", "");
+  final _user = User("", "", "", "", "");
 
   @override
   Widget build(BuildContext context) {
