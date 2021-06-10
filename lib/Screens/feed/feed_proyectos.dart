@@ -131,7 +131,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
       itemBuilder: (BuildContext context, int index) {
         return new ListTile(
           title: Text(filteredNames[index].name),
-          subtitle: Text(ownersNameStringBuilder(filteredNames[index])),
+          subtitle: Text(filteredNames[index].owner.uname),
           onTap: () {
             _navigationToProject(context, filteredNames[index], user);
           },
@@ -161,7 +161,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
             builder: (context) => CreateProjectScreen(user: this.user)));
   }
 
-  String ownersNameStringBuilder(Project x) {
+  /* String ownersNameStringBuilder(Project x) {
     //Builds a string with owners' names
     if (x.owners.length != 0) {
       String names = x.owners[0].uname;
@@ -174,5 +174,5 @@ class _FeedProyectosState extends State<FeedProyectos> {
     } else {
       return "";
     }
-  }
+  }*/
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_looping_ea/Models/project.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
@@ -13,34 +14,29 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User user = new User("", "", "", "", "", "", "");
+  User user = new User("", "", "", "", "", "");
   _ProfileScreenState(this.user) : super();
   bool _isEditingAboutMe = false;
   bool _isEditingSkills = false;
   bool _isEditingProjects = false;
   late TextEditingController _editingAboutMe;
   late TextEditingController _editingSkills;
-  late TextEditingController _editingProjects;
   late String? initialAboutMe = user.aboutMe;
   late String? initialSkills = user.skills;
-  late String? initialProjects = user.projects;
 
   @override
   void initState() {
     super.initState();
     _editingAboutMe = TextEditingController(text: initialAboutMe);
     _editingSkills = TextEditingController(text: initialSkills);
-    _editingProjects = TextEditingController(text: initialProjects);
     if (user.aboutMe == null) {
       initialAboutMe = "Hello!";
-    } else if (user.skills == null) {
-      initialSkills = "Hello!";
-    } else if (user.projects == null) {
-      initialProjects = "Hello!";
+    }
+    if (user.skills == null) {
+      initialSkills = "Write here your skills!";
     } else {
       initialAboutMe = user.aboutMe;
       initialSkills = user.skills;
-      initialProjects = user.projects;
     }
   }
 
@@ -48,7 +44,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void dispose() {
     _editingAboutMe.dispose();
     _editingSkills.dispose();
-    _editingProjects.dispose();
     super.dispose();
   }
 
@@ -167,7 +162,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontWeight: FontWeight.bold))),
                 Container(
                   padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                  child: _editProjectsTextField(),
+                  child: Text(
+                      "Aqui tienen que aparecer los proyectos de los cuales es owner y en los que participa"),
                 )
               ],
             ),
@@ -229,29 +225,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             style: TextStyle(color: Colors.black, fontSize: 16.0)));
   }
 
-  Widget _editProjectsTextField() {
-    if (_isEditingProjects)
-      return Center(
-        child: TextField(
-          onSubmitted: (newValue) {
-            setState(() {
-              initialProjects = newValue;
-              _isEditingProjects = false;
-              updateProjects(user.uname, newValue);
-              user.projects = newValue;
-            });
-          },
-          autofocus: true,
-          controller: _editingProjects,
-        ),
-      );
-    return InkWell(
-        onTap: () {
-          setState(() {
-            _isEditingProjects = true;
-          });
-        },
-        child: Text(initialProjects.toString(),
-            style: TextStyle(color: Colors.black, fontSize: 16.0)));
+  String buildProjectsOwned(List<Project> projectsOwned) {
+    String projectsText = "";
+    for (int i = 0; i < projectsOwned.length; i++) {
+      projectsText = projectsText + ", " + projectsOwned[i].name;
+    }
+    return projectsText;
   }
 }
