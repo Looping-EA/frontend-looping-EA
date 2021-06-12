@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
+import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
 import 'package:frontend_looping_ea/Screens/Map/map_screen.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
@@ -81,6 +82,15 @@ class _SideMenuState extends State<SideMenu> {
           leading: const Icon(Icons.forum),
         ),
         ListTile(
+          title: Text("LOG OUT",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.exit_to_app),
+          onTap: () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => LoginPage()));
+          }
+        ),
+        ListTile(
           title: Text("MAP",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.chat),
@@ -90,6 +100,7 @@ class _SideMenuState extends State<SideMenu> {
                 MaterialPageRoute(
                     builder: (context) =>
                         MapScreen(user: this.user)));
+
           },
         ),
         ListTile(

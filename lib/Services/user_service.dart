@@ -24,7 +24,7 @@ Future<User> getUser(uname) async {
     User u = User.fromJSONnoPass(json.decode(response.body));
     return u;
   } else
-    return new User("", "", "", "");
+    return new User("", "", "", "", "", "");
 }
 
 Future<String> deleteUser(uname) async {
@@ -56,6 +56,87 @@ Future<String> deleteUser(uname) async {
     return fail;
 }
 
+Future<int> updateAboutMe(String uname, String aboutMe) async {
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+  } catch (err) {
+    print(err);
+  }
+  final body = {
+    "uname": uname,
+    "aboutMe": aboutMe,
+  };
+  final bodyParsed = json.encode(body);
+  print(bodyParsed);
+  final response = await http.post(
+      Uri.parse('http://localhost:8080/api/users/updateAboutMe'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: bodyParsed);
+  if (response.statusCode == 201) {
+    return 0;
+  } else
+    return 1;
+}
+
+Future<int> updateSkills(String uname, String skills) async {
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+  } catch (err) {
+    print(err);
+  }
+  final body = {
+    "uname": uname,
+    "skills": skills,
+  };
+  final bodyParsed = json.encode(body);
+  print(bodyParsed);
+  final response = await http.post(
+      Uri.parse('http://localhost:8080/api/users/updateSkills'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: bodyParsed);
+  if (response.statusCode == 201) {
+    return 0;
+  } else
+    return 1;
+}
+
+Future<int> updateProjects(String uname, String projects) async {
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+  } catch (err) {
+    print(err);
+  }
+  final body = {
+    "uname": uname,
+    "projects": projects,
+  };
+  final bodyParsed = json.encode(body);
+  print(bodyParsed);
+  final response = await http.post(
+      Uri.parse('http://localhost:8080/api/users/updateProjects'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: bodyParsed);
+  if (response.statusCode == 201) {
+    return 0;
+  } else
+    return 1;
+}
+
 Future<User> registerUser(User user) async {
   // create JSON object
   final body = {
@@ -82,7 +163,7 @@ Future<User> registerUser(User user) async {
       User u = User.fromJson(payload);
       return u;
     } else {
-      return new User("", "", "", "");
+      return new User("", "", "", "", "", "");
     }
   });
 }
@@ -109,10 +190,11 @@ Future<User> loginUser(User user) async {
       await setTokenToSharedPref(token["accessToken"].toString());
       Map<String, dynamic> payload =
           Jwt.parseJwt(token["accessToken"].toString());
+      print(payload);
       User u = User.grabUnameFromJSON(payload);
       return u;
     } else {
-      return new User("", "", "", "");
+      return new User("", "", "", "", "", "");
     }
   });
 }
