@@ -4,21 +4,21 @@ import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:frontend_looping_ea/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:frontend_looping_ea/Models/project.dart';
-import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../Models/project.dart';
 import 'package:intl/intl.dart';
 
 import '../../Shared/shared_preferences.dart';
+import 'package:frontend_looping_ea/Models/contacto.dart';
+import 'package:frontend_looping_ea/Screens/Contacto/contactoscreen.dart';
 
-class CreateProjectState extends State<CreateProjectScreen> {
+class ContactoState extends State<ContactoScreen> {
   final User user;
-  CreateProjectState(this.user);
+  ContactoState(this.user);
 
   final _formKey = GlobalKey<FormBuilderState>();
-  late final _project = Project("", [], "", [], [], "", [], user);
+  final _contacto = Contacto("","","");
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
         //An App Bar is created with the name of the current page
         appBar: AppBar(
           backgroundColor: Colors.blueGrey,
-          title: Text('Profile'),
+          title: Text('Contacto'),
         ),
 
         //The drawer opens a side menu
@@ -54,7 +54,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Create a new project ',
+                          'Help us improve!',
                           style: Styles.title,
                         )
                       ],
@@ -66,28 +66,14 @@ class CreateProjectState extends State<CreateProjectScreen> {
                             child: Column(
                               children: [
                                 FormBuilderTextField(
-                                  name: 'name',
-                                  validator: FormBuilderValidators.compose([
-                                    FormBuilderValidators.required(context),
-                                    FormBuilderValidators.minLength(context, 1),
-                                  ]),
-                                  decoration: InputDecoration(
-                                      hintText: 'Enter the name of the project',
-                                      labelText: "Name",
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0)))),
-                                ),
-                                SizedBox(height: 20),
-                                FormBuilderTextField(
                                   maxLines: 7,
-                                  name: 'description',
+                                  name: 'message',
                                   validator: FormBuilderValidators.compose([
                                     FormBuilderValidators.required(context)
                                   ]),
                                   decoration: InputDecoration(
-                                      hintText: 'Enter the description',
-                                      labelText: "Description",
+                                      hintText: 'Enter your message',
+                                      labelText: "Message",
                                       border: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10.0)))),
@@ -115,7 +101,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
                                   primary: Styles.colorBackground,
                                 ),
                                 child: Text(
-                                  'Create',
+                                  'Send!',
                                   style: Styles.button_big,
                                 ))))
                   ],
@@ -130,19 +116,17 @@ class CreateProjectState extends State<CreateProjectScreen> {
       _formKey.currentState!.save();
 
       // GRAB THE FIELDS
-      _project.name = _formKey.currentState!.fields['name']!.value;
-      _project.description =
-          _formKey.currentState!.fields['description']!.value;
+      _contacto.message = _formKey.currentState!.fields['message']!.value;
 
       // http?
       try {
-        var project = new Project("", [], "", [], [], "", [], user);
-        _createProject().then((value) {
-          //project = value;
+        var contacto = new Contacto("", "", "");
+        _createContacto().then((value) {
+          contacto = value;
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => FeedProyectos(user: this.user)));
+                  builder: (context) => ContactoScreen(user: this.user)));
         });
       } catch (err) {
         print(err);
@@ -150,8 +134,8 @@ class CreateProjectState extends State<CreateProjectScreen> {
     } else {}
   }
 
-  Future<int> _createProject() async {
-    Project project = new Project("", [], "", [], [], "", [], user);
+  Future<Contacto> _createContacto() async {
+    Contacto contacto = new Contacto("", "", "");
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd').format(now);
     String? token;
@@ -165,20 +149,16 @@ class CreateProjectState extends State<CreateProjectScreen> {
 
     // create JSON object
     final body = {
-      "name": _project.name,
-      "chats": [],
-      "creationDate": formattedDate,
-      "teams": [],
-      "tasks": [],
-      "description": _project.description,
-      "collaboration": [],
-      "owner": user.uname
+      "uname": user.uname,
+      "date": formattedDate,
+      "message": _contacto.message,
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
+
+
     // finally the POST HTTP operation
     return await http
-        .post(Uri.parse("http://localhost:8080/api/projects/add"),
+        .post(Uri.parse("http://localhost:8080/api/contacto/add"),
             headers: {
               'Authorization': 'Bearer $token',
               'Content-Type': 'application/json'
@@ -186,11 +166,9 @@ class CreateProjectState extends State<CreateProjectScreen> {
             body: bodyParsed)
         .then((http.Response response) {
       if (response.statusCode == 201) {
-        //return Project.fromJson(json.decode(response.body));
-        return 0;
+        return Contacto.fromJson(json.decode(response.body));
       } else {
-        //return new Project("", [], "", [], [], "", [], user);
-        return 1;
+        return new Contacto("", "", "");
       }
     });
   }

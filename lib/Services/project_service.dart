@@ -25,15 +25,10 @@ Future<List<Project>> getProjectsAndOwners() async {
   });
   if (response.statusCode == 201) {
     var projectsJson = json.decode(response.body);
+    print(response.body + " proyectosrsfbaegdb");
     try {
       for (var projectJson in projectsJson) {
-        List<User> ownerslist = [];
-        for (int i = 0; i < projectJson["owners"].length; i++) {
-          User u = new User(projectJson["owners"][i]["uname"], "", "", "");
-          ownerslist.add(u);
-          print(u.uname);
-        }
-
+        User owner = User.fromJSONnoPass(projectJson["owner"]);
         print(projectJson["name"]);
         projects.add(Project(
             projectJson["name"],
@@ -43,7 +38,7 @@ Future<List<Project>> getProjectsAndOwners() async {
             [],
             projectJson["description"],
             [],
-            ownerslist));
+            owner));
       }
     } catch (e) {
       print(e);

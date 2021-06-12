@@ -11,10 +11,10 @@ class Project {
   List<Task> tasks = [];
   String description;
   List<User> collaboration = [];
-  List<User> owners = [];
+  User owner;
 
   Project(this.name, this.chats, this.creationDate, this.teams, this.tasks,
-      this.description, this.collaboration, this.owners);
+      this.description, this.collaboration, this.owner);
 
   factory Project.fromJson(dynamic json) {
     var chatObjsJson = json['chats'] as List;
@@ -29,9 +29,6 @@ class Project {
     var collabObjsJson = json['collaboration'] as List;
     List<User> _collaboration =
         collabObjsJson.map((collabJson) => User.fromJson(collabJson)).toList();
-    var ownerObjsJson = json['owners'] as List;
-    List<User> _owners =
-        ownerObjsJson.map((ownerJson) => User.fromJson(ownerJson)).toList();
     return Project(
         json['name'] as String,
         _chats,
@@ -40,6 +37,6 @@ class Project {
         _tasks,
         json['description'] as String,
         _collaboration,
-        _owners);
+        json['owner'] as User);
   }
 }
