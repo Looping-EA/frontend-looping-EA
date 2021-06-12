@@ -11,6 +11,7 @@ import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/Contacto/contactoscreen.dart';
 
 // ignore: must_be_immutable
 class SideMenu extends StatefulWidget {
@@ -84,6 +85,18 @@ class _SideMenuState extends State<SideMenu> {
                 MaterialPageRoute(
                     builder: (context) =>
                         CreateProjectScreen(user: this.user)));
+          },
+        ),
+        ListTile(
+          title: Text("CONTACT",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.chat),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ContactoScreen(user: this.user)));
           },
         ),
         ListTile(
