@@ -27,6 +27,38 @@ Future<User> getUser(uname) async {
     return new User("", "", "", "", "", "");
 }
 
+Future<List<User>> getUsers() async {
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+  } catch (err) {
+    print(err);
+  }
+  print("getting users");
+  final response = await http
+      .post(Uri.parse('http://localhost:8080/api/users/'), headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token'
+  });
+  if (response.statusCode == 201) {
+    print(response.body);
+    var users = json.decode(response.body);
+    List<User> usuarios = [];
+    try {
+      for (var userJson in users) {
+        User u = new User(userJson["uname"], userJson["pswd"],
+            userJson["fullname"], userJson["email"]);
+        usuarios.add(u);
+      }
+    } catch (e) {
+      print(e);
+    }
+    return usuarios;
+  } else
+    return new List<User>.empty();
+}
+
 Future<String> deleteUser(uname) async {
   String? token;
   try {

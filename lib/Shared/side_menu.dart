@@ -11,6 +11,7 @@ import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/Stadistics/stadistics_screen.dart';
 import 'package:frontend_looping_ea/Screens/Contacto/contactoscreen.dart';
 
 // ignore: must_be_immutable
@@ -132,6 +133,16 @@ class _SideMenuState extends State<SideMenu> {
           leading: const Icon(Icons.delete_forever_sharp),
           onTap: () => _createAlertDialog(context, this.user.uname),
         ),
+        ListTile(
+            title: Text("STADISTICS",
+                style: TextStyle(fontSize: 18.0, color: Colors.black)),
+            leading: const Icon(Icons.accessibility_outlined),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StadisticsScreen(user: this.user)));
+            })
       ],
     ));
   }
