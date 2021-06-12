@@ -21,7 +21,6 @@ Future<User> getUser(uname) async {
   });
   if (response.statusCode == 200) {
     print(response.body);
-
     User u = User.fromJSONnoPass(json.decode(response.body));
     return u;
   } else
@@ -72,12 +71,12 @@ Future<User> registerUser(User user) async {
       .post(Uri.parse("http://localhost:8080/api/users/register"),
           headers: <String, String>{'Content-Type': 'application/json'},
           body: bodyParsed)
-      .then((http.Response response) {
+      .then((http.Response response) async {
     if (response.statusCode == 201) {
       print(response.body);
       var token = json.decode(response.body);
       print(token["accessToken"].toString());
-      setTokenToSharedPref(token["accessToken"].toString());
+      await setTokenToSharedPref(token["accessToken"].toString());
       Map<String, dynamic> payload =
           Jwt.parseJwt(token["accessToken"].toString());
       User u = User.fromJson(payload);
@@ -102,12 +101,12 @@ Future<User> loginUser(User user) async {
       .post(Uri.parse("http://localhost:8080/api/users/login"),
           headers: <String, String>{'Content-Type': 'application/json'},
           body: bodyParsed)
-      .then((http.Response response) {
+      .then((http.Response response) async {
     print("asdasdasdasd");
     if (response.statusCode == 201) {
       var token = json.decode(response.body);
       print(token["accessToken"].toString());
-      setTokenToSharedPref(token["accessToken"].toString());
+      await setTokenToSharedPref(token["accessToken"].toString());
       Map<String, dynamic> payload =
           Jwt.parseJwt(token["accessToken"].toString());
       User u = User.grabUnameFromJSON(payload);

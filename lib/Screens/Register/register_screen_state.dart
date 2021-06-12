@@ -11,6 +11,8 @@ import 'dart:convert';
 import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import '../../Shared/google_signin_api.dart';
 
 //import styles
 import 'package:frontend_looping_ea/styles.dart';
@@ -153,6 +155,70 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   'REGISTER',
                                   style: Styles.button_big,
                                 )))),
+                    Container(
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            '- OR USE -',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () => print('Login with Facebook'),
+                            child: Container(
+                              height: 40.0,
+                              width: 40.0,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      offset: Offset(0, 2),
+                                      blurRadius: 6.0,
+                                    )
+                                  ],
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('images/facebook.png'))),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => signInGoogle(),
+                            child: Container(
+                              height: 40.0,
+                              width: 40.0,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: AssetImage('images/google.png'))),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => print('Login with Apple'),
+                            child: Container(
+                              height: 40.0,
+                              width: 40.0,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: AssetImage('images/apple.png'))),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Text.rich(TextSpan(
                         text: 'Already have an account? ',
                         children: <TextSpan>[
@@ -186,8 +252,8 @@ class RegisterScreenState extends State<RegisterScreen> {
 
       // http?
       try {
-        await registerUser(_user).then((value) {
-          setUsernameToSharedPref(value.uname);
+        await registerUser(_user).then((value) async {
+          await setUsernameToSharedPref(value.uname);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -197,5 +263,32 @@ class RegisterScreenState extends State<RegisterScreen> {
         print(err);
       }
     } else {}
+  }
+
+  Future signInGoogle() async {
+    GoogleSignInAccount userGoogle = await GoogleSignInApi.login();
+    if (userGoogle == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Sign in Failed')));
+    } else {
+      User user = new User(userGoogle.displayName.toString(), "",
+          userGoogle.displayName.toString(), userGoogle.email);
+      try {
+        await registerUser(user).then((value) async {
+          if (value.uname != "") {
+            await setUsernameToSharedPref(value.uname);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FeedProyectos(user: value)));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('Are you already registered? Try loging in')));
+          }
+        });
+      } catch (err) {
+        print(err);
+      }
+    }
   }
 }

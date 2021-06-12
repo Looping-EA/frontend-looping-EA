@@ -11,6 +11,8 @@ import 'dart:convert';
 import '../../Models/project.dart';
 import 'package:intl/intl.dart';
 
+import '../../Shared/shared_preferences.dart';
+
 class CreateProjectState extends State<CreateProjectScreen> {
   final User user;
   CreateProjectState(this.user);
@@ -152,6 +154,14 @@ class CreateProjectState extends State<CreateProjectScreen> {
     Project project = new Project("", [], "", [], [], "", [], []);
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    String? token;
+    try {
+      await getTokenFromSharedPrefs().then((value) => token = value);
+      print(token);
+      print("token printed above");
+    } catch (err) {
+      print(err);
+    }
 
     // create JSON object
     final body = {
@@ -169,7 +179,10 @@ class CreateProjectState extends State<CreateProjectScreen> {
     // finally the POST HTTP operation
     return await http
         .post(Uri.parse("http://localhost:8080/api/projects/add"),
-            headers: <String, String>{'Content-Type': 'application/json'},
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json'
+            },
             body: bodyParsed)
         .then((http.Response response) {
       if (response.statusCode == 201) {

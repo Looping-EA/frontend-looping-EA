@@ -7,8 +7,11 @@ import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:async';
+import '../../Shared/google_signin_api.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 
 //import styles
@@ -21,7 +24,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormBuilderState>();
-
   final _user = User("", "", "", "");
 
   bool _remeberMe = false;
@@ -223,8 +225,8 @@ class _LoginPageState extends State<LoginPage> {
                                     image: AssetImage('images/facebook.png'))),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () => print('Login with Google'),
+                        InkWell(
+                          onTap: () => signInGoogle(),
                           child: Container(
                             height: 40.0,
                             width: 40.0,
@@ -282,11 +284,11 @@ class _LoginPageState extends State<LoginPage> {
       // http?
       try {
         print("preparing _user $_user");
-        await loginUser(_user).then((value) {
+        await loginUser(_user).then((value) async {
           print(value);
           if (value.uname != "") {
             print("seting ${value.uname} to shared preferences.");
-            setUsernameToSharedPref(value.uname);
+            await setUsernameToSharedPref(value.uname);
 
             print("pushing to next view.");
             Navigator.push(
@@ -299,5 +301,32 @@ class _LoginPageState extends State<LoginPage> {
         print(err);
       }
     } else {}
+  }
+
+  Future signInGoogle() async {
+    GoogleSignInAccount userGoogle = await GoogleSignInApi.login();
+    if (userGoogle == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Sign in Failed')));
+    } else {
+      User user = new User(userGoogle.displayName.toString(), "",
+          userGoogle.displayName.toString(), userGoogle.email);
+      try {
+        await loginUser(user).then((value) async {
+          if (value.uname != "") {
+            await setUsernameToSharedPref(value.uname);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FeedProyectos(user: value)));
+          } else {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('Are you registered?')));
+          }
+        });
+      } catch (err) {
+        print(err);
+      }
+    }
   }
 }
