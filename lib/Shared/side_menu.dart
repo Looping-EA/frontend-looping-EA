@@ -3,6 +3,8 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:frontend_looping_ea/Screens/Faqs/faqs_screen.dart';
+import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
+import 'package:frontend_looping_ea/Screens/Map/map_screen.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
@@ -88,6 +90,28 @@ class _SideMenuState extends State<SideMenu> {
           title: Text("FORUMS",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.forum),
+        ),
+        ListTile(
+          title: Text("LOG OUT",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.exit_to_app),
+          onTap: () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => LoginPage()));
+          }
+        ),
+        ListTile(
+          title: Text("MAP",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.chat),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MapScreen(user: this.user)));
+
+          },
         ),
         ListTile(
           title: Text("DELETE ACCOUNT",
