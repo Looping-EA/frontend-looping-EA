@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
+import 'package:frontend_looping_ea/Screens/Faqs/faqs_screen.dart';
 import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
 import 'package:frontend_looping_ea/Screens/Map/map_screen.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
@@ -62,6 +63,15 @@ class _SideMenuState extends State<SideMenu> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ProfileScreen(user: this.user)));
+          },
+        ),
+        ListTile(
+          title: Text("FAQS",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.account_box),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => FaqsScreen()));
           },
         ),
         ListTile(
