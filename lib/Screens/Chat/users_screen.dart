@@ -1,6 +1,6 @@
 import 'package:frontend_looping_ea/Models/chat.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
-import 'package:frontend_looping_ea/Screens/Chat/user_card.dart';
+import 'package:frontend_looping_ea/Screens/Chat/Cards/user_card.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/material.dart';

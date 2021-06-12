@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 
-import '../../styles.dart';
+import '../../../styles.dart';
 
 class UserCard extends StatelessWidget {
   const UserCard({Key? key, required this.contact}) : super(key: key);
