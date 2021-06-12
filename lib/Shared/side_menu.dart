@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
+import 'package:frontend_looping_ea/Screens/Map/map_screen.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
@@ -78,6 +79,18 @@ class _SideMenuState extends State<SideMenu> {
           title: Text("FORUMS",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.forum),
+        ),
+        ListTile(
+          title: Text("MAP",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.chat),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MapScreen(user: this.user)));
+          },
         ),
         ListTile(
           title: Text("DELETE ACCOUNT",
