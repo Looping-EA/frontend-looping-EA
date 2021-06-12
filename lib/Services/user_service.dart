@@ -48,7 +48,7 @@ Future<List<User>> getUsers() async {
     try {
       for (var userJson in users) {
         User u = new User(userJson["uname"], userJson["pswd"],
-            userJson["fullname"], userJson["email"]);
+            userJson["fullname"], userJson["email"], userJson["aboutMe"], userJson["skills"]);
         usuarios.add(u);
       }
     } catch (e) {
