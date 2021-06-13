@@ -36,19 +36,24 @@ Future<List<User>> getUsers() async {
     print(err);
   }
   print("getting users");
-  final response = await http
-      .post(Uri.parse('http://localhost:8080/api/users/'), headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer $token'
-  });
+  final response = await http.get(Uri.parse('http://localhost:8080/api/users/'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      });
   if (response.statusCode == 201) {
     print(response.body);
     var users = json.decode(response.body);
     List<User> usuarios = [];
     try {
       for (var userJson in users) {
-        User u = new User(userJson["uname"], userJson["pswd"],
-            userJson["fullname"], userJson["email"], userJson["aboutMe"], userJson["skills"]);
+        User u = new User(
+            userJson["uname"],
+            userJson["pswd"],
+            userJson["fullname"],
+            userJson["email"],
+            userJson["aboutMe"],
+            userJson["skills"]);
         usuarios.add(u);
       }
     } catch (e) {
