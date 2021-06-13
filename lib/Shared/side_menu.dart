@@ -96,8 +96,7 @@ class _SideMenuState extends State<SideMenu> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ContactoScreen(user: this.user)));
+                    builder: (context) => ContactoScreen(user: this.user)));
           },
         ),
         ListTile(
@@ -106,14 +105,13 @@ class _SideMenuState extends State<SideMenu> {
           leading: const Icon(Icons.forum),
         ),
         ListTile(
-          title: Text("LOG OUT",
-              style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.exit_to_app),
-          onTap: () {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => LoginPage()));
-          }
-        ),
+            title: Text("LOG OUT",
+                style: TextStyle(fontSize: 18.0, color: Colors.black)),
+            leading: const Icon(Icons.exit_to_app),
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => LoginPage()));
+            }),
         ListTile(
           title: Text("MAP",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
@@ -122,9 +120,7 @@ class _SideMenuState extends State<SideMenu> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        MapScreen(user: this.user)));
-
+                    builder: (context) => MapScreen(user: this.user)));
           },
         ),
         ListTile(
@@ -134,7 +130,7 @@ class _SideMenuState extends State<SideMenu> {
           onTap: () => _createAlertDialog(context, this.user.uname),
         ),
         ListTile(
-            title: Text("STADISTICS",
+            title: Text("STATISTICS",
                 style: TextStyle(fontSize: 18.0, color: Colors.black)),
             leading: const Icon(Icons.accessibility_outlined),
             onTap: () {

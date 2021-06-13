@@ -23,7 +23,7 @@ class _StadisticsScreenState extends State<StadisticsScreen> {
   String numberProjects = "";
   String numberUsers = "";
   String numberProjectOwners = "";
-  Widget _appBarTitle = new Text('Stadistics');
+  Widget _appBarTitle = new Text('Statistics');
   @override
   void initState() {
     super.initState();
