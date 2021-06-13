@@ -16,9 +16,10 @@ class _ChatsScreenState extends State<ChatsScreen> {
       false,
       "16:04",
       "Hola Xape has acabado ya el chat?",
+      1,
     ),
-    Chat("Albert", false, "13:19", "Has visto a Cacaman?"),
-    Chat("Victor", false, "04:52", "Mandale"),
+    Chat("Albert", false, "13:19", "Has visto a Cacaman?", 2),
+    Chat("Victor", false, "04:52", "Mandale", 3),
   ];
   @override
   Widget build(BuildContext context) {

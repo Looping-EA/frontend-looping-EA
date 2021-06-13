@@ -2,15 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/chat.dart';
 import 'package:frontend_looping_ea/Screens/Chat/Cards/ownMessage_card.dart';
 import 'package:frontend_looping_ea/Screens/Chat/Cards/reply_card.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class IndividualChat extends StatefulWidget {
   IndividualChat({key, required this.chat}) : super(key: key);
   final Chat chat;
+  //final int id;
   @override
   State<StatefulWidget> createState() => _IndividualChatState();
 }
 
 class _IndividualChatState extends State<IndividualChat> {
+  late IO.Socket socket;
+  TextEditingController _controller = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    connect();
+  }
+
+  void connect() {
+    String url = 'http://localhost:3000';
+    socket = IO.io(url, <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+    });
+    socket.connect();
+    socket.on("connect", (data) => {print("You are connected.")});
+    socket.emit("/test", "Hola Xape");
+  }
+
+  void sendMessage(String message, int sourceId, int targetId) {
+    socket.emit("message",
+        {"message": message, "sourceId": sourceId, "targetId": targetId});
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -59,6 +85,7 @@ class _IndividualChatState extends State<IndividualChat> {
                                   borderRadius:
                                       BorderRadius.circular(size.width * 0.05)),
                               child: TextFormField(
+                                controller: _controller,
                                 textAlignVertical: TextAlignVertical.center,
                                 keyboardType: TextInputType.multiline,
                                 maxLines: 3,
@@ -73,13 +100,15 @@ class _IndividualChatState extends State<IndividualChat> {
                           height: size.height * 0.05,
                           width: size.width * 0.1,
                           child: ElevatedButton(
-                              onPressed: onPressed, child: Text("Send"))),
+                              onPressed: () {
+                                sendMessage(_controller.text, 1, 2);
+                                _controller.clear();
+                              },
+                              child: Text("Send"))),
                     ],
                   ))
             ])),
       )
     ]);
   }
-
-  void onPressed() {}
 }

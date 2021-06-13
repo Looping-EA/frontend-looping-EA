@@ -7,6 +7,7 @@ class Chat {
   bool isGroup;
   String time;
   String currentMessage;
+  int id;
   //List<User> members = [];
   //List<Message> messages = [];
 
@@ -16,6 +17,7 @@ class Chat {
     this.isGroup,
     this.time,
     this.currentMessage,
+    this.id,
   );
 
   factory Chat.fromJson(dynamic json) {
@@ -27,6 +29,7 @@ class Chat {
       json['isGroup'] as bool,
       json['time'] as String,
       json['currentMessage'] as String,
+      json['id'] as int,
     );
   }
 }
