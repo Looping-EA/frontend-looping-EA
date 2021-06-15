@@ -7,9 +7,9 @@ class User {
   String email;
   String? aboutMe;
   String? skills;
-
+  List<dynamic> notifications;
   User(this.uname, this.pswrd, this.fullname, this.email, this.aboutMe,
-      this.skills);
+      this.skills, this.notifications);
 
   factory User.fromJson(dynamic json) {
     var projectsOwnedObjsJson = json['projectsOwned'] as List;
@@ -17,24 +17,24 @@ class User {
         .map((projectsOwnedJson) => Project.fromJson(projectsOwnedJson))
         .toList();
     return User(
-      json['uname'] as String,
-      json['pswd'] as String,
-      json['fullname'] as String,
-      json['email'] as String,
-      json['aboutMe'] as String?,
-      json['skills'] as String?,
-    );
+        json['uname'] as String,
+        json['pswd'] as String,
+        json['fullname'] as String,
+        json['email'] as String,
+        json['aboutMe'] as String?,
+        json['skills'] as String?,
+        json['notifications'] as List<dynamic>);
   }
 
   factory User.fromJSONnoPass(dynamic json) {
     return User(
-      json['uname'] as String,
-      "",
-      json['fullname'] as String,
-      json['email'] as String,
-      json['aboutMe'] as String?,
-      json['skills'] as String?,
-    );
+        json['uname'] as String,
+        "",
+        json['fullname'] as String,
+        json['email'] as String,
+        json['aboutMe'] as String?,
+        json['skills'] as String?,
+        json['notifications'] as List<dynamic>);
   }
 
   factory User.grabUnameFromJSON(dynamic json) {
@@ -42,7 +42,13 @@ class User {
     List<Project> _projectsOwned = projectsOwnedObjsJson
         .map((projectsOwnedJson) => Project.fromJson(projectsOwnedJson))
         .toList();
-    return User(json['uname'] as String, "", json['fullname'], json['email'],
-        json['aboutMe'] as String?, json['skills'] as String?);
+    return User(
+        json['uname'] as String,
+        "",
+        json['fullname'],
+        json['email'],
+        json['aboutMe'] as String?,
+        json['skills'] as String?,
+        json['notifications'] as List<dynamic>);
   }
 }

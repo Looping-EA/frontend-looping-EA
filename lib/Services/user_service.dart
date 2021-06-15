@@ -24,7 +24,7 @@ Future<User> getUser(uname) async {
     User u = User.fromJSONnoPass(json.decode(response.body));
     return u;
   } else
-    return new User("", "", "", "", "", "");
+    return new User("", "", "", "", "", "", []);
 }
 
 Future<List<User>> getUsers() async {
@@ -53,7 +53,8 @@ Future<List<User>> getUsers() async {
             userJson["fullname"],
             userJson["email"],
             userJson["aboutMe"],
-            userJson["skills"]);
+            userJson["skills"],
+            userJson["notifications"]);
         usuarios.add(u);
       }
     } catch (e) {
@@ -200,7 +201,7 @@ Future<User> registerUser(User user) async {
       User u = User.fromJson(payload);
       return u;
     } else {
-      return new User("", "", "", "", "", "");
+      return new User("", "", "", "", "", "", []);
     }
   });
 }
@@ -231,7 +232,7 @@ Future<User> loginUser(User user) async {
       User u = User.grabUnameFromJSON(payload);
       return u;
     } else {
-      return new User("", "", "", "", "", "");
+      return new User("", "", "", "", "", "", []);
     }
   });
 }

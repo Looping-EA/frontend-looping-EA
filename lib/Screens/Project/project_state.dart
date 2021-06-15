@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:frontend_looping_ea/Models/project.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'project_screen.dart';
+import 'package:frontend_looping_ea/Services/project_service.dart';
 
 class ProjectState extends State<ProjectScreen> {
   final Project project;
@@ -103,5 +104,16 @@ class ProjectState extends State<ProjectScreen> {
     );
   }
 
-  void _onPressButton() {}
+  void _onPressButton() async {
+    await applyToProject(project, user, project.owner).then((value) async {
+      print(value);
+      if (value == 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Application sent correctly')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error sending the application')));
+      }
+    });
+  }
 }

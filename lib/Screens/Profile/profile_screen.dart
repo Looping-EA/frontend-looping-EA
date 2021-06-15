@@ -14,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User user = new User("", "", "", "", "", "");
+  User user = new User("", "", "", "", "", "", []);
   _ProfileScreenState(this.user) : super();
   bool _isEditingAboutMe = false;
   bool _isEditingSkills = false;

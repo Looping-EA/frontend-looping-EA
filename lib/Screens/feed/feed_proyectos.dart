@@ -19,6 +19,7 @@ class FeedProyectos extends StatefulWidget {
 }
 
 class _FeedProyectosState extends State<FeedProyectos> {
+  int notifications = 0;
   final User user;
   late Future<List<Project>> projects;
   List<Project> projectNames = [];
@@ -50,6 +51,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
       setState(() {
         projectNames = result;
         filteredNames = projectNames;
+        notifications = user.notifications.length;
       });
     });
     // } catch (e) {
@@ -89,10 +91,38 @@ class _FeedProyectosState extends State<FeedProyectos> {
   }
 
   PreferredSizeWidget _buildBar(BuildContext context) {
-    return AppBar(
-      centerTitle: true,
-      title: _appBarTitle,
-    );
+    return AppBar(centerTitle: true, title: _appBarTitle, actions: <Widget>[
+      new Stack(children: <Widget>[
+        new IconButton(
+          icon: Icon(Icons.notifications),
+          onPressed: () {
+            setState(() {
+              notifications = 0;
+              _showDialog();
+            });
+          },
+        ),
+        notifications != 0
+            ? new Positioned(
+                right: 11,
+                top: 11,
+                child: new Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: new BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  constraints: BoxConstraints(minWidth: 14, minHeight: 14),
+                  child: Text(
+                    '$notifications',
+                    style: TextStyle(color: Colors.white, fontSize: 8),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
+            : new Container()
+      ])
+    ]);
   }
 
   void _searchPressed() {
@@ -111,6 +141,29 @@ class _FeedProyectosState extends State<FeedProyectos> {
         _filter.clear();
       }
     });
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Notifications"),
+          content: Container(child: _buildNotifications()),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildList() {
@@ -138,6 +191,20 @@ class _FeedProyectosState extends State<FeedProyectos> {
         );
       },
     );
+  }
+
+  Widget _buildNotifications() {
+    return Container(
+        height: 300.0,
+        width: 300.0,
+        child: ListView.builder(
+            itemCount: user.notifications.length,
+            itemBuilder: (BuildContext context, int index) {
+              return new ListTile(
+                title: Text(user.notifications[index]),
+                onTap: () {},
+              );
+            }));
   }
 
   List<Project> getProjectObjects(data) {
