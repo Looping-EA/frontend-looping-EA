@@ -36,7 +36,7 @@ Future<List<User>> getUsers() async {
     print(err);
   }
   print("getting users");
-  final response = await http.get(Uri.parse('http://localhost:8080/api/users/'),
+  final response = await http.get(Uri.parse('http://backend:8080/api/users/'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token'
@@ -108,7 +108,7 @@ Future<int> updateAboutMe(String uname, String aboutMe) async {
   final bodyParsed = json.encode(body);
   print(bodyParsed);
   final response = await http.post(
-      Uri.parse('http://localhost:8080/api/users/updateAboutMe'),
+      Uri.parse('http://backend:8080/api/users/updateAboutMe'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token'
@@ -135,7 +135,7 @@ Future<int> updateSkills(String uname, String skills) async {
   final bodyParsed = json.encode(body);
   print(bodyParsed);
   final response = await http.post(
-      Uri.parse('http://localhost:8080/api/users/updateSkills'),
+      Uri.parse('http://backend:8080/api/users/updateSkills'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token'
@@ -162,7 +162,7 @@ Future<int> updateProjects(String uname, String projects) async {
   final bodyParsed = json.encode(body);
   print(bodyParsed);
   final response = await http.post(
-      Uri.parse('http://localhost:8080/api/users/updateProjects'),
+      Uri.parse('http://backend:8080/api/users/updateProjects'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token'
