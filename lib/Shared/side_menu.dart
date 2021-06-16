@@ -2,12 +2,17 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
+import 'package:frontend_looping_ea/Screens/Faqs/faqs_screen.dart';
+import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
+import 'package:frontend_looping_ea/Screens/Map/map_screen.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/Stadistics/stadistics_screen.dart';
+import 'package:frontend_looping_ea/Screens/Contacto/contactoscreen.dart';
 
 // ignore: must_be_immutable
 class SideMenu extends StatefulWidget {
@@ -63,6 +68,15 @@ class _SideMenuState extends State<SideMenu> {
           },
         ),
         ListTile(
+          title: Text("FAQS",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.account_box),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => FaqsScreen()));
+          },
+        ),
+        ListTile(
           title: Text("CREATE PROJECT",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.chat),
@@ -75,9 +89,39 @@ class _SideMenuState extends State<SideMenu> {
           },
         ),
         ListTile(
+          title: Text("CONTACT",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.chat),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ContactoScreen(user: this.user)));
+          },
+        ),
+        ListTile(
           title: Text("FORUMS",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.forum),
+        ),
+        ListTile(
+            title: Text("LOG OUT",
+                style: TextStyle(fontSize: 18.0, color: Colors.black)),
+            leading: const Icon(Icons.exit_to_app),
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => LoginPage()));
+            }),
+        ListTile(
+          title: Text("MAP",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.chat),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MapScreen(user: this.user)));
+          },
         ),
         ListTile(
           title: Text("DELETE ACCOUNT",
@@ -85,6 +129,16 @@ class _SideMenuState extends State<SideMenu> {
           leading: const Icon(Icons.delete_forever_sharp),
           onTap: () => _createAlertDialog(context, this.user.uname),
         ),
+        ListTile(
+            title: Text("STATISTICS",
+                style: TextStyle(fontSize: 18.0, color: Colors.black)),
+            leading: const Icon(Icons.accessibility_outlined),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StadisticsScreen(user: this.user)));
+            })
       ],
     ));
   }

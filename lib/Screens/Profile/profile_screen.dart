@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_looping_ea/Models/project.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
+import 'package:frontend_looping_ea/Services/user_service.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatefulWidget {
@@ -12,8 +14,38 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final User user;
+  User user = new User("", "", "", "", "", "");
   _ProfileScreenState(this.user) : super();
+  bool _isEditingAboutMe = false;
+  bool _isEditingSkills = false;
+  bool _isEditingProjects = false;
+  late TextEditingController _editingAboutMe;
+  late TextEditingController _editingSkills;
+  late String? initialAboutMe = user.aboutMe;
+  late String? initialSkills = user.skills;
+
+  @override
+  void initState() {
+    super.initState();
+    _editingAboutMe = TextEditingController(text: initialAboutMe);
+    _editingSkills = TextEditingController(text: initialSkills);
+    if (user.aboutMe == null) {
+      initialAboutMe = "Hello!";
+    }
+    if (user.skills == null) {
+      initialSkills = "Write here your skills!";
+    } else {
+      initialAboutMe = user.aboutMe;
+      initialSkills = user.skills;
+    }
+  }
+
+  @override
+  void dispose() {
+    _editingAboutMe.dispose();
+    _editingSkills.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +103,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           //This container contains the information about me
           Container(
-              margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-              color: Colors.grey,
-              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-              child: Column(
+            margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+            color: Colors.grey,
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -85,19 +117,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black,
                               fontWeight: FontWeight.bold))),
                   Container(
-                      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                      child: Text(user.email,
-                          style:
-                              TextStyle(fontSize: 15.0, color: Colors.black))),
-                ],
-              )),
+                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                    child: _editAboutMeTextField(),
+                  )
+                ]),
+          ),
 
           //This container constains the information Skills
           Container(
-              margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-              color: Colors.grey,
-              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-              child: Column(
+            margin: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+            color: Colors.grey,
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -108,12 +139,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black,
                               fontWeight: FontWeight.bold))),
                   Container(
-                      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                      child: Text(user.email,
-                          style:
-                              TextStyle(fontSize: 15.0, color: Colors.black))),
-                ],
-              )),
+                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                    child: _editSkillsTextField(),
+                  )
+                ]),
+          ),
 
           //This container contains the information of the Projects
           Container(
@@ -131,14 +161,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.black,
                             fontWeight: FontWeight.bold))),
                 Container(
-                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                    child: Text(user.email,
-                        style: TextStyle(fontSize: 15.0, color: Colors.black))),
+                  padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                  child: Text(
+                      "Aqui tienen que aparecer los proyectos de los cuales es owner y en los que participa"),
+                )
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _editAboutMeTextField() {
+    if (_isEditingAboutMe)
+      return Center(
+        child: TextField(
+          onSubmitted: (newValue) {
+            setState(() {
+              initialAboutMe = newValue;
+              _isEditingAboutMe = false;
+              updateAboutMe(user.uname, newValue);
+              user.aboutMe = newValue;
+            });
+          },
+          autofocus: true,
+          controller: _editingAboutMe,
+        ),
+      );
+    return InkWell(
+        onTap: () {
+          setState(() {
+            _isEditingAboutMe = true;
+          });
+        },
+        child: Text(initialAboutMe.toString(),
+            style: TextStyle(color: Colors.black, fontSize: 16.0)));
+  }
+
+  Widget _editSkillsTextField() {
+    if (_isEditingSkills)
+      return Center(
+        child: TextField(
+          onSubmitted: (newValue) {
+            setState(() {
+              initialSkills = newValue;
+              _isEditingSkills = false;
+              updateSkills(user.uname, newValue);
+              user.skills = newValue;
+            });
+          },
+          autofocus: true,
+          controller: _editingSkills,
+        ),
+      );
+    return InkWell(
+        onTap: () {
+          setState(() {
+            _isEditingSkills = true;
+          });
+        },
+        child: Text(initialSkills.toString(),
+            style: TextStyle(color: Colors.black, fontSize: 16.0)));
+  }
+
+  String buildProjectsOwned(List<Project> projectsOwned) {
+    String projectsText = "";
+    for (int i = 0; i < projectsOwned.length; i++) {
+      projectsText = projectsText + ", " + projectsOwned[i].name;
+    }
+    return projectsText;
   }
 }
