@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:async';
-import '../../Models/Project.dart';
+import '../../Models/project.dart';
 import '../../Shared/google_signin_api.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
