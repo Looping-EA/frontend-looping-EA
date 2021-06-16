@@ -1,11 +1,9 @@
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Models/project.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Models/user.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 
 Future<List<Project>> getProjectsAndOwners() async {
   List<Project> projects = [];
@@ -19,7 +17,7 @@ Future<List<Project>> getProjectsAndOwners() async {
   }
 
   final response = await http
-      .get(Uri.parse('http://localhost:8080/api/projects/'), headers: {
+      .get(Uri.parse('http://backend:8080/api/projects/'), headers: {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json'
   });
