@@ -74,14 +74,14 @@ class ProjectState extends State<ProjectScreen> {
                         margin: EdgeInsets.fromLTRB(width * 0.025,
                             width * 0.025, width * 0.025, width * 0.025),
                         child: Text(
-                          "Members: " + ownersNameStringBuilder(project),
+                          "Members: " + project.owner.uname,
                           style: Styles.projectText,
                         ))),
               ],
             )));
   }
 
-  String ownersNameStringBuilder(Project x) {
+  /*String ownersNameStringBuilder(Project x) {
     //Builds a string with owners' names
     if (x.owners.length != 0) {
       String names = x.owners[0].uname;
@@ -94,7 +94,7 @@ class ProjectState extends State<ProjectScreen> {
     } else {
       return "";
     }
-  }
+  }*/
 
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
