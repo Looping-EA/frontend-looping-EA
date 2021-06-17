@@ -1,11 +1,13 @@
 import '../Models/faq.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:frontend_looping_ea/environment.dart';
 
 Future<List<Faq>> getFaqs() async {
   List<Faq> faqs = [];
+  Environment _environment = Environment();
 
-  final response = await http.get(Uri.parse('http://backend:8080/api/faqs/'),
+  final response = await http.get(Uri.parse(_environment.url() + 'faqs/'),
       headers: {'Content-Type': 'application/json'});
   if (response.statusCode == 201) {
     var faqsJson = json.decode(response.body);
