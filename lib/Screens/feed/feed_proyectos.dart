@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_looping_ea/Models/notification.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:frontend_looping_ea/Screens/Project/project_screen.dart';
@@ -7,6 +8,7 @@ import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import '../../Models/project.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+import 'package:frontend_looping_ea/Screens/Notifications/notifications_screen.dart';
 import 'dart:convert';
 import '../../styles.dart';
 
@@ -201,8 +203,11 @@ class _FeedProyectosState extends State<FeedProyectos> {
             itemCount: user.notifications.length,
             itemBuilder: (BuildContext context, int index) {
               return new ListTile(
-                title: Text(user.notifications[index]),
-                onTap: () {},
+                title: Text(user.notifications[index].message),
+                onTap: () {
+                  _navigationToNotification(
+                      context, user, user.notifications[index]);
+                },
               );
             }));
   }
@@ -219,6 +224,16 @@ class _FeedProyectosState extends State<FeedProyectos> {
   void _navigationToProject(BuildContext context, Project project, User user) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ProjectScreen(project, user)));
+  }
+
+  void _navigationToNotification(
+      BuildContext context, User user, Notifictn notif) {
+    if ((notif.project != null) && (notif.user != null)) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => NotificationsScreen(user, notif)));
+    }
   }
 
   void _navigationToCreateProject(BuildContext context) {

@@ -14,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User user = new User("", "", "", "", "", "", []);
+  User user = new User("", "", "", "", "", "", [], []);
   _ProfileScreenState(this.user) : super();
   bool _isEditingAboutMe = false;
   bool _isEditingSkills = false;
@@ -23,19 +23,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late TextEditingController _editingSkills;
   late String? initialAboutMe = user.aboutMe;
   late String? initialSkills = user.skills;
+  String proyectosMios = "No projects owned";
 
   @override
   void initState() {
     super.initState();
     _editingAboutMe = TextEditingController(text: initialAboutMe);
     _editingSkills = TextEditingController(text: initialSkills);
+    if (user.projectsOwned.length != 0) {
+      proyectosMios = buildProjectsOwned(user.projectsOwned);
+    }
     if (user.aboutMe == null) {
       initialAboutMe = "Hello!";
+    } else {
+      initialAboutMe = user.aboutMe;
     }
     if (user.skills == null) {
       initialSkills = "Write here your skills!";
     } else {
-      initialAboutMe = user.aboutMe;
       initialSkills = user.skills;
     }
   }
@@ -162,8 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontWeight: FontWeight.bold))),
                 Container(
                   padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                  child: Text(
-                      "Aqui tienen que aparecer los proyectos de los cuales es owner y en los que participa"),
+                  child: Text(proyectosMios),
                 )
               ],
             ),
@@ -227,7 +231,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   String buildProjectsOwned(List<Project> projectsOwned) {
     String projectsText = "";
-    for (int i = 0; i < projectsOwned.length; i++) {
+    if (projectsOwned.length != 0) {
+      projectsText = projectsOwned[0].name;
+    }
+    for (int i = 1; i < projectsOwned.length; i++) {
       projectsText = projectsText + ", " + projectsOwned[i].name;
     }
     return projectsText;

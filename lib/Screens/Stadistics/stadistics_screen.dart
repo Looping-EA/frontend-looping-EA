@@ -39,10 +39,7 @@ class _StadisticsScreenState extends State<StadisticsScreen> {
     });
     getUsers().then((result) {
       setState(() {
-        int numberUsuarios = 0;
-        for (int x = 0; x < result.length; x++) {
-          numberUsuarios++;
-        }
+        int numberUsuarios = result;
         numberUsers = numberUsuarios.toString();
       });
     });

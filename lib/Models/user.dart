@@ -1,4 +1,5 @@
 import '../Models/project.dart';
+import '../Models/notification.dart';
 
 class User {
   String uname;
@@ -7,15 +8,18 @@ class User {
   String email;
   String? aboutMe;
   String? skills;
-  List<dynamic> notifications;
+  List<Notifictn> notifications;
+  List<Project> projectsOwned;
   User(this.uname, this.pswrd, this.fullname, this.email, this.aboutMe,
-      this.skills, this.notifications);
+      this.skills, this.notifications, this.projectsOwned);
 
   factory User.fromJson(dynamic json) {
-    var projectsOwnedObjsJson = json['projectsOwned'] as List;
-    List<Project> _projectsOwned = projectsOwnedObjsJson
-        .map((projectsOwnedJson) => Project.fromJson(projectsOwnedJson))
-        .toList();
+    var notifications = json['notifications'] as List;
+    List<Notifictn> _notifications =
+        notifications.map((notif) => Notifictn.fromJson(notif)).toList();
+    var projectsOwned = json['projectsOwned'] as List;
+    List<Project> _projectsOwned =
+        projectsOwned.map((project) => Project.fromJson(project)).toList();
     return User(
         json['uname'] as String,
         json['pswd'] as String,
@@ -23,7 +27,8 @@ class User {
         json['email'] as String,
         json['aboutMe'] as String?,
         json['skills'] as String?,
-        json['notifications'] as List<dynamic>);
+        _notifications,
+        _projectsOwned);
   }
 
   factory User.fromJSONnoPass(dynamic json) {
@@ -33,22 +38,25 @@ class User {
         json['fullname'] as String,
         json['email'] as String,
         json['aboutMe'] as String?,
-        json['skills'] as String?,
-        json['notifications'] as List<dynamic>);
+        json['skills'] as String?, [], []);
   }
 
   factory User.grabUnameFromJSON(dynamic json) {
-    var projectsOwnedObjsJson = json['projectsOwned'] as List;
-    List<Project> _projectsOwned = projectsOwnedObjsJson
-        .map((projectsOwnedJson) => Project.fromJson(projectsOwnedJson))
+    var notifications = json['notifications'] as List;
+    List<Notifictn> _notifications =
+        notifications.map((notif) => Notifictn.fromJson(notif)).toList();
+    var projectsOwned = json['projectsOwned'] as List;
+    List<Project> _projectsOwned = projectsOwned
+        .map((project) => Project.fromJsonHereditary(project))
         .toList();
     return User(
         json['uname'] as String,
         "",
-        json['fullname'],
-        json['email'],
+        json['fullname'] as String,
+        json['email'] as String,
         json['aboutMe'] as String?,
         json['skills'] as String?,
-        json['notifications'] as List<dynamic>);
+        _notifications,
+        _projectsOwned);
   }
 }

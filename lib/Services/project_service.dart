@@ -36,6 +36,68 @@ Future<int> applyToProject(Project p, User u, User owner) async {
     return 1;
 }
 
+Future<int> acceptRequest(
+    String? project, String? userAccepted, String uname) async {
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+    print("token printed above");
+  } catch (err) {
+    print(err);
+  }
+  final body = {
+    "projectName": project,
+    "userAccepted": userAccepted,
+    "uname": uname,
+  };
+  final bodyParsed = json.encode(body);
+  print(bodyParsed);
+  final response = await http.post(
+      Uri.parse('http://localhost:8080/api/projects/acceptMember'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json'
+      },
+      body: bodyParsed);
+  if (response.statusCode == 201) {
+    return 0;
+  } else if (response.statusCode == 409) {
+    return 2;
+  } else
+    return 1;
+}
+
+Future<int> rejectRequest(
+    String? project, String? userRejected, String uname) async {
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+    print("token printed above");
+  } catch (err) {
+    print(err);
+  }
+  final body = {
+    "projectName": project,
+    "userRejected": userRejected,
+    "uname": uname,
+  };
+  final bodyParsed = json.encode(body);
+  print(bodyParsed);
+  final response = await http.post(
+      Uri.parse('http://localhost:8080/api/projects/rejectMember'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json'
+      },
+      body: bodyParsed);
+  if (response.statusCode == 201) {
+    return 0;
+  } else
+    return 1;
+}
+
 Future<List<Project>> getProjectsAndOwners() async {
   List<Project> projects = [];
   String? token;
@@ -57,16 +119,20 @@ Future<List<Project>> getProjectsAndOwners() async {
     print(response.body + " proyectosrsfbaegdb");
     try {
       for (var projectJson in projectsJson) {
-        User owner = User.fromJSONnoPass(projectJson["owner"]);
-        print(projectJson["name"]);
+        User owner = User.fromJSONnoPass(projectJson['owner']);
+        var collabObjsJson = projectJson['collaboration'] as List;
+        List<User> _collaboration = collabObjsJson
+            .map((collabJson) => User.fromJSONnoPass(collabJson))
+            .toList();
+        print(projectJson['name']);
         projects.add(Project(
-            projectJson["name"],
+            projectJson['name'],
             [],
-            projectJson["creationDate"],
+            projectJson['creationDate'],
             [],
             [],
-            projectJson["description"],
-            [],
+            projectJson['description'],
+            _collaboration,
             owner));
       }
     } catch (e) {

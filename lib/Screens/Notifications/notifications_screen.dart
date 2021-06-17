@@ -4,16 +4,27 @@ import 'package:frontend_looping_ea/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:frontend_looping_ea/Models/project.dart';
+import 'package:frontend_looping_ea/Models/notification.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
-import 'project_screen.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
 
-class ProjectState extends State<ProjectScreen> {
-  final Project project;
+class NotificationsScreen extends StatefulWidget {
+  final Notifictn notif;
   final User user;
-  Widget _appBarTitle = new Text('Project');
+  NotificationsScreen(this.user, this.notif);
 
-  ProjectState(this.project, this.user);
+  @override
+  State<StatefulWidget> createState() {
+    return NotificationsState(user, notif);
+  }
+}
+
+class NotificationsState extends State<NotificationsScreen> {
+  final User user;
+  final Notifictn notif;
+  Widget _appBarTitle = new Text('Notifications');
+
+  NotificationsState(this.user, this.notif);
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -33,10 +44,6 @@ class ProjectState extends State<ProjectScreen> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        project.name,
-                        style: Styles.projectTextTitle,
-                      ),
                       SizedBox(
                           width: width * 0.25,
                           height: height * 0.1,
@@ -46,7 +53,19 @@ class ProjectState extends State<ProjectScreen> {
                                 primary: Styles.colorBackground,
                               ),
                               child: Text(
-                                'Apply',
+                                'Accept',
+                                style: Styles.button_big,
+                              ))),
+                      SizedBox(
+                          width: width * 0.25,
+                          height: height * 0.1,
+                          child: ElevatedButton(
+                              onPressed: _onPressReject,
+                              style: ElevatedButton.styleFrom(
+                                primary: Styles.colorBackground,
+                              ),
+                              child: Text(
+                                'Reject',
                                 style: Styles.button_big,
                               )))
                     ]),
@@ -61,26 +80,10 @@ class ProjectState extends State<ProjectScreen> {
                         margin: EdgeInsets.fromLTRB(width * 0.025,
                             width * 0.025, width * 0.025, width * 0.025),
                         child: Text(
-                          project.description,
+                          notif.message,
                           style: Styles.projectText,
                         ))),
                 SizedBox(height: height * 0.1),
-                Container(
-                    height: height * 0.2,
-                    width: width * 0.8,
-                    decoration: BoxDecoration(
-                        color: Styles.colorRelleno,
-                        borderRadius: BorderRadius.circular(width * 0.05)),
-                    child: Container(
-                        margin: EdgeInsets.fromLTRB(width * 0.025,
-                            width * 0.025, width * 0.025, width * 0.025),
-                        child: Text(
-                          "Members: " +
-                              project.owner.uname +
-                              ", " +
-                              collaborationStringBuilder(project),
-                          style: Styles.projectText,
-                        ))),
               ],
             )));
   }
@@ -99,19 +102,6 @@ class ProjectState extends State<ProjectScreen> {
       return "";
     }
   }*/
-  String collaborationStringBuilder(Project x) {
-    String names = "";
-    if (x.collaboration!.length != 0) {
-      names = x.collaboration![0].uname;
-    }
-    if (x.collaboration!.length > 1) {
-      for (int i = 1; i < x.collaboration!.length; i++) {
-        names = names + ", " + x.collaboration![i].uname;
-      }
-    }
-
-    return names;
-  }
 
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
@@ -121,21 +111,38 @@ class ProjectState extends State<ProjectScreen> {
   }
 
   void _onPressButton() async {
-    if ((project.owner.uname != user.uname) &&
-        (!project.collaboration!.contains(user))) {
-      await applyToProject(project, user, project.owner).then((value) async {
-        print(value);
-        if (value == 0) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Application sent correctly')));
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error sending the application')));
-        }
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('You are already participating in this project...')));
-    }
+    await acceptRequest(notif.project, notif.user, user.uname)
+        .then((value) async {
+      print(value);
+      if (value == 0) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('User accepted succesfully')));
+      }
+      if (value == 2) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('You already handled this request')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error sending the application')));
+      }
+    });
+  }
+
+  void _onPressReject() async {
+    await rejectRequest(notif.project, notif.user, user.uname)
+        .then((value) async {
+      print(value);
+      if (value == 0) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Rejection sent correctly')));
+      }
+      if (value == 2) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('You already handled this request')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error sending the application')));
+      }
+    });
   }
 }
