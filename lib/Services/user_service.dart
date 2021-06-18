@@ -21,7 +21,7 @@ Future<User> getUser(uname) async {
   });
   if (response.statusCode == 200) {
     print(response.body);
-    User u = User.fromJSONnoPass(json.decode(response.body));
+    User u = User.grabUnameFromJSON(json.decode(response.body));
     return u;
   } else
     return new User("", "", "", "", "", "", [], []);

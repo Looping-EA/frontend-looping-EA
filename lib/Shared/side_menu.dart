@@ -60,11 +60,13 @@ class _SideMenuState extends State<SideMenu> {
           title: Text("PROFILE",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.account_box),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ProfileScreen(user: this.user)));
+          onTap: () async {
+            await getUser(user.uname).then((value) async {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new ProfileScreen(user: value)));
+            });
           },
         ),
         ListTile(

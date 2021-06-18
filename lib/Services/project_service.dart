@@ -30,8 +30,14 @@ Future<int> applyToProject(Project p, User u, User owner) async {
         'Content-Type': 'application/json'
       },
       body: bodyParsed);
-  if (response.statusCode == 204 || response.statusCode == 201) {
+  if (response.statusCode == 201) {
     return 0;
+  }
+  if (response.statusCode == 409) {
+    return 2;
+  }
+  if (response.statusCode == 204) {
+    return 3;
   } else
     return 1;
 }
@@ -62,8 +68,12 @@ Future<int> acceptRequest(
       body: bodyParsed);
   if (response.statusCode == 201) {
     return 0;
-  } else if (response.statusCode == 409) {
+  }
+  if (response.statusCode == 409) {
     return 2;
+  }
+  if (response.statusCode == 204) {
+    return 3;
   } else
     return 1;
 }
@@ -94,6 +104,12 @@ Future<int> rejectRequest(
       body: bodyParsed);
   if (response.statusCode == 201) {
     return 0;
+  }
+  if (response.statusCode == 409) {
+    return 2;
+  }
+  if (response.statusCode == 204) {
+    return 3;
   } else
     return 1;
 }

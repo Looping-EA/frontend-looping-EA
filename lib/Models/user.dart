@@ -18,8 +18,9 @@ class User {
     List<Notifictn> _notifications =
         notifications.map((notif) => Notifictn.fromJson(notif)).toList();
     var projectsOwned = json['projectsOwned'] as List;
-    List<Project> _projectsOwned =
-        projectsOwned.map((project) => Project.fromJson(project)).toList();
+    List<Project> _projectsOwned = projectsOwned
+        .map((project) => Project.fromJsonHereditary(project))
+        .toList();
     return User(
         json['uname'] as String,
         json['pswd'] as String,

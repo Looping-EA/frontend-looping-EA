@@ -1,4 +1,5 @@
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:frontend_looping_ea/styles.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:frontend_looping_ea/Models/project.dart';
 import 'package:frontend_looping_ea/Models/notification.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
+import 'package:frontend_looping_ea/Services/user_service.dart';
 
 class NotificationsScreen extends StatefulWidget {
   final Notifictn notif;
@@ -121,10 +123,18 @@ class NotificationsState extends State<NotificationsScreen> {
       if (value == 2) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('You already handled this request')));
+      }
+      if (value == 3) {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error sending the application')));
       }
+    });
+    await getUser(user.uname).then((value) async {
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => new FeedProyectos(user: value)));
     });
   }
 
@@ -139,6 +149,8 @@ class NotificationsState extends State<NotificationsScreen> {
       if (value == 2) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('You already handled this request')));
+      }
+      if (value == 3) {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error sending the application')));

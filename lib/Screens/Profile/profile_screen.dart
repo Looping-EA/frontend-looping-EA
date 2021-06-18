@@ -14,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User user = new User("", "", "", "", "", "", [], []);
+  final User user;
   _ProfileScreenState(this.user) : super();
   bool _isEditingAboutMe = false;
   bool _isEditingSkills = false;
@@ -23,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late TextEditingController _editingSkills;
   late String? initialAboutMe = user.aboutMe;
   late String? initialSkills = user.skills;
-  String proyectosMios = "No projects owned";
+  String proyectosMios = "No projects until now";
 
   @override
   void initState() {

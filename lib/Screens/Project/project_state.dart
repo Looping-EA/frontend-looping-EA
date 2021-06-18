@@ -128,6 +128,12 @@ class ProjectState extends State<ProjectScreen> {
         if (value == 0) {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Application sent correctly')));
+        }
+        if (value == 2) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('You already sent an application')));
+        }
+        if (value == 3) {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error sending the application')));
