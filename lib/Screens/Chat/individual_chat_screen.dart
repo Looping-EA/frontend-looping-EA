@@ -28,8 +28,15 @@ class _IndividualChatState extends State<IndividualChat> {
       'autoConnect': false,
     });
     socket.connect();
-    socket.on("connect", (data) => {print("You are connected.")});
+    socket.on("connect", (data) {
+      print("You are connected.");
+      socket.on("message", (msg) {
+        print(msg);
+      });
+    });
     socket.emit("/test", "Hola Xape");
+    //Pasar id del usuario, hay que cambirarlo por la id correcta
+    socket.emit("signin", 1);
   }
 
   void sendMessage(String message, int sourceId, int targetId) {
