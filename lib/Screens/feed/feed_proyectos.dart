@@ -4,6 +4,7 @@ import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:frontend_looping_ea/Screens/Project/project_screen.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
+import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import '../../Models/project.dart';
 import 'package:http/http.dart' as http;
@@ -155,6 +156,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
           title: new Text("Notifications"),
           content: Container(child: _buildNotifications()),
           actions: <Widget>[
+            new Text("Tap a notification to interact or delete it"),
             // usually buttons at the bottom of the dialog
             new FlatButton(
               child: new Text("Close"),
@@ -227,12 +229,28 @@ class _FeedProyectosState extends State<FeedProyectos> {
   }
 
   void _navigationToNotification(
-      BuildContext context, User user, Notifictn notif) {
+      BuildContext context, User user, Notifictn notif) async {
     if ((notif.project != null) && (notif.user != null)) {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => NotificationsScreen(user, notif)));
+    } else {
+      await deleteNotif(user.uname, notif.message).then((value) async {
+        if (value == 0) {
+          int i = 0;
+          for (i; i < user.notifications.length; i++) {
+            if (user.notifications[i].message == notif.message) {
+              user.notifications.remove(notif);
+            }
+          }
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Notification deleted')));
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Something went wrong')));
+        }
+      });
     }
   }
 

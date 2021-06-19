@@ -77,7 +77,6 @@ class ProjectState extends State<ProjectScreen> {
                         child: Text(
                           "Members: " +
                               project.owner.uname +
-                              ", " +
                               collaborationStringBuilder(project),
                           style: Styles.projectText,
                         ))),
@@ -102,7 +101,7 @@ class ProjectState extends State<ProjectScreen> {
   String collaborationStringBuilder(Project x) {
     String names = "";
     if (x.collaboration!.length != 0) {
-      names = x.collaboration![0].uname;
+      names = ", " + x.collaboration![0].uname;
     }
     if (x.collaboration!.length > 1) {
       for (int i = 1; i < x.collaboration!.length; i++) {

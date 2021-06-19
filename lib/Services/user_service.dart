@@ -27,6 +27,30 @@ Future<User> getUser(uname) async {
     return new User("", "", "", "", "", "", [], []);
 }
 
+Future<int> deleteNotif(String user, String notification) async {
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+  } catch (err) {
+    print(err);
+  }
+  final body = {"notification": notification, "user": user};
+  final bodyParsed = json.encode(body);
+  print(bodyParsed);
+  final response = await http.delete(
+      Uri.parse('http://localhost:8080/api/notification/delete'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: bodyParsed);
+  if (response.statusCode == 201) {
+    return 0;
+  } else
+    return 1;
+}
+
 Future<int> getUsers() async {
   String? token;
   try {
