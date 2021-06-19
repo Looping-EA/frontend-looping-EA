@@ -36,6 +36,7 @@ dependencies:
   jwt_decode: ^0.3.1
   google_sign_in: ^5.0.3
   flutter_map: any
+  socket_io_client: ^1.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
