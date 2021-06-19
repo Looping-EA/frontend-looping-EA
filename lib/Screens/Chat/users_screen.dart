@@ -5,16 +5,24 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter/material.dart';
 
-class UsersScreen extends StatelessWidget {
-  get data => null;
+class UsersScreen extends StatefulWidget {
+  final User user;
+  UsersScreen({Key? key, required this.user}) : super(key: key);
+  @override
+  _UsersScreenState createState() => _UsersScreenState(this.user);
+}
+
+class _UsersScreenState extends State<UsersScreen> {
+  final User user;
+  late Future<List<User>> users;
+  String _searchText = "";
+  _UsersScreenState(this.user);
   @override
   Widget build(BuildContext context) {
     List<User> contacts = [
-      User("Xape", "xape23", "Marc Xapelli", "marcxapelli@hotmail.com",
-          "45GHF%678IK"),
-      User("Luis", "luis54", "Luis Domingo", "luis.domingo@gmail.com",
-          "61HJ9LM45"),
-      User("MaFe", "mafe45", "Marc Ferre", "marcferre@upc.edu", "IYT42D678G")
+      User("Xape", "xape23", "Marc Xapelli", "marcxapelli@hotmail.com"),
+      User("Luis", "luis54", "Luis Domingo", "luis.domingo@gmail.com"),
+      User("MaFe", "mafe45", "Marc Ferre", "marcferre@upc.edu")
     ];
     return Scaffold(
       body:
@@ -23,43 +31,6 @@ class UsersScreen extends StatelessWidget {
         itemBuilder: (context, index) => UserCard(contact: contacts[index]),
         itemCount: contacts.length,
       ),
-      //Container(
-      //child: Column(
-      //mainAxisAlignment: MainAxisAlignment.center,
-      //children: <Widget>[
-      //ElevatedButton(
-      // onPressed: _onPressButton,
-      //style: ElevatedButton.styleFrom(),
-      //child: Text(
-      // 'Get Socket',
-      //)),
-      //SizedBox(height: 50),
-      //ElevatedButton(
-      // onPressed: _sendMessage,
-      // style: ElevatedButton.styleFrom(),
-      // child: Text(
-      //   'Send Message',
-      // )),]))])
     );
-  }
-
-  //void _onPressButton() async {
-  //socket.connect();
-  //socket.on("connect", (_) => {print("You are connected.")});
-  //socket.on(
-  //"disconnect", (_) => print('You have disconnected from the server.'));
-  //socket.on("new message", (data) => _addChatMessage(data));
-  // Dart client
-  //}
-
-  //void _sendMessage() async {
-  //socket.emit("new message", "Hola");
-  //print("Message sent");
-  //}
-
-  void _addChatMessage(data) {
-    print("Message received");
-    //print(data.message);
-    //print(data.id);
   }
 }

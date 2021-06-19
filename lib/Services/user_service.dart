@@ -25,7 +25,7 @@ Future<User> getUser(uname) async {
     User u = User.fromJSONnoPass(json.decode(response.body));
     return u;
   } else
-    return new User("", "", "", "", "");
+    return new User("", "", "", "");
 }
 
 Future<String> deleteUser(uname) async {
@@ -83,7 +83,7 @@ Future<User> registerUser(User user) async {
       User u = User.fromJson(payload);
       return u;
     } else {
-      return new User("", "", "", "", "");
+      return new User("", "", "", "");
     }
   });
 }
@@ -113,7 +113,39 @@ Future<User> loginUser(User user) async {
       User u = User.grabUnameFromJSON(payload);
       return u;
     } else {
-      return new User("", "", "", "", "");
+      return new User("", "", "", "");
     }
   });
+}
+
+Future<List<User>> getUsers() async {
+  List<User> users = [];
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+  } catch (err) {
+    print(err);
+  }
+
+  final response = await http.get(Uri.parse('http://localhost:8080/api/users/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json'
+      });
+  if (response.statusCode == 201) {
+    var usersJson = json.decode(response.body);
+    try {
+      for (var userJson in usersJson) {
+        print(userJson["name"]);
+
+        users.add(User(
+            userJson["uname"], "", userJson["email"], userJson["fullname"]));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  return users;
 }
