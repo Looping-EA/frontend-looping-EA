@@ -1,16 +1,13 @@
 import '../Models/user.dart';
 
 class Message {
-  DateTime date;
-  String message;
-  List<User> users = [];
-
-  Message(this.date, this.message, this.users);
+  String type;
+  String text;
+  String time;
+  Message(this.type, this.text, this.time);
 
   factory Message.fromJson(dynamic json) {
-    var usersObjsJson = json['members'] as List;
-    List<User> _users =
-        usersObjsJson.map((memberJson) => User.fromJson(memberJson)).toList();
-    return Message(json['date'] as DateTime, json['message'] as String, _users);
+    return Message(
+        json['type'] as String, json['text'] as String, json['time'] as String);
   }
 }
