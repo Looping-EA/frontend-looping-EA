@@ -22,15 +22,32 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
   String myprivacidad = "no";
 
   @override
+  void initState() {
+    super.initState();
+    if (mynotificaciones == "si") {
+      //notificationChecked = true;
+      bool val = true;
+      setState(() {
+        notificationChecked = val;
+      });
+    } else if (myseguridad == "si") {
+      securityChecked = true;
+    } else if (myprivacidad == "si") {
+      privacityChecked = true;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Set your preference"),
+        backgroundColor: Colors.blueGrey,
+        title: Text("Set your account preferences"),
         centerTitle: true,
       ),
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CheckboxListTile(
               value: notificationChecked,
