@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend_looping_ea/Models/photo.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
@@ -13,8 +14,9 @@ import '../../Shared/google_signin_api.dart';
 import 'package:frontend_looping_ea/styles.dart';
 
 class RegisterScreenState extends State<RegisterScreen> {
+  final _user = User("", "", "", "", "", "", [], [], "");
+
   final _formKey = GlobalKey<FormState>();
-  final _user = User("", "", "", "", "", "");
 
   UserService userService = new UserService();
 
@@ -278,8 +280,17 @@ class RegisterScreenState extends State<RegisterScreen> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Sign in Failed')));
     } else {
-      User user = new User(userGoogle.displayName.toString(), "",
-          userGoogle.displayName.toString(), userGoogle.email, "", "");
+      Photo p = new Photo("");
+      User user = new User(
+          userGoogle.displayName.toString(),
+          "",
+          userGoogle.displayName.toString(),
+          userGoogle.email,
+          "",
+          "",
+          [],
+          [],
+          "");
       try {
         await userService.registerUser(user).then((value) async {
           print(value.uname + " chikilicuatre");

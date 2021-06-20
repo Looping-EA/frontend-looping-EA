@@ -1,3 +1,5 @@
+import 'package:frontend_looping_ea/Models/photo.dart';
+
 import '../Models/user.dart';
 import '../Models/chat.dart';
 import '../Models/team.dart';
@@ -7,14 +9,20 @@ class Project {
   String name;
   List<Chat> chats = [];
   String creationDate;
-  List<Team> teams = [];
-  List<Task> tasks = [];
+  List<Team>? teams = [];
+  List<Task>? tasks = [];
   String description;
-  List<User> collaboration = [];
+  List<User>? collaboration = [];
   User owner;
 
   Project(this.name, this.chats, this.creationDate, this.teams, this.tasks,
       this.description, this.collaboration, this.owner);
+
+  factory Project.fromJsonHereditary(dynamic json) {
+    User u = new User("", "", "", "", "", "", [], [], "");
+    return Project(json['name'] as String, [], json['creationDate'] as String,
+        [], [], json['description'] as String, [], u);
+  }
 
   factory Project.fromJson(dynamic json) {
     var chatObjsJson = json['chats'] as List;

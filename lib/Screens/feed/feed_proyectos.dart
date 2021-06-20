@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_looping_ea/Models/notification.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:frontend_looping_ea/Screens/Project/project_screen.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
+import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import '../../Models/project.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+import 'package:frontend_looping_ea/Screens/Notifications/notifications_screen.dart';
 import 'dart:convert';
 import '../../styles.dart';
 
@@ -19,6 +22,7 @@ class FeedProyectos extends StatefulWidget {
 }
 
 class _FeedProyectosState extends State<FeedProyectos> {
+  int notifications = 0;
   final User user;
   late Future<List<Project>> projects;
   List<Project> projectNames = [];
@@ -52,6 +56,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
       setState(() {
         projectNames = result;
         filteredNames = projectNames;
+        notifications = user.notifications.length;
       });
     });
     // } catch (e) {
@@ -91,10 +96,38 @@ class _FeedProyectosState extends State<FeedProyectos> {
   }
 
   PreferredSizeWidget _buildBar(BuildContext context) {
-    return AppBar(
-      centerTitle: true,
-      title: _appBarTitle,
-    );
+    return AppBar(centerTitle: true, title: _appBarTitle, actions: <Widget>[
+      new Stack(children: <Widget>[
+        new IconButton(
+          icon: Icon(Icons.notifications),
+          onPressed: () {
+            setState(() {
+              notifications = 0;
+              _showDialog();
+            });
+          },
+        ),
+        notifications != 0
+            ? new Positioned(
+                right: 11,
+                top: 11,
+                child: new Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: new BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  constraints: BoxConstraints(minWidth: 14, minHeight: 14),
+                  child: Text(
+                    '$notifications',
+                    style: TextStyle(color: Colors.white, fontSize: 8),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
+            : new Container()
+      ])
+    ]);
   }
 
   void _searchPressed() {
@@ -113,6 +146,30 @@ class _FeedProyectosState extends State<FeedProyectos> {
         _filter.clear();
       }
     });
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Notifications"),
+          content: Container(child: _buildNotifications()),
+          actions: <Widget>[
+            new Text("Tap a notification to interact or delete it"),
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildList() {
@@ -142,6 +199,23 @@ class _FeedProyectosState extends State<FeedProyectos> {
     );
   }
 
+  Widget _buildNotifications() {
+    return Container(
+        height: 300.0,
+        width: 300.0,
+        child: ListView.builder(
+            itemCount: user.notifications.length,
+            itemBuilder: (BuildContext context, int index) {
+              return new ListTile(
+                title: Text(user.notifications[index].message),
+                onTap: () {
+                  _navigationToNotification(
+                      context, user, user.notifications[index]);
+                },
+              );
+            }));
+  }
+
   List<Project> getProjectObjects(data) {
     List<Project> projects = [];
     for (var project in data) {
@@ -154,6 +228,32 @@ class _FeedProyectosState extends State<FeedProyectos> {
   void _navigationToProject(BuildContext context, Project project, User user) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ProjectScreen(project, user)));
+  }
+
+  void _navigationToNotification(
+      BuildContext context, User user, Notifictn notif) async {
+    if ((notif.project != null) && (notif.user != null)) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => NotificationsScreen(user, notif)));
+    } else {
+      await deleteNotif(user.uname, notif.message).then((value) async {
+        if (value == 0) {
+          int i = 0;
+          for (i; i < user.notifications.length; i++) {
+            if (user.notifications[i].message == notif.message) {
+              user.notifications.remove(notif);
+            }
+          }
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Notification deleted')));
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Something went wrong')));
+        }
+      });
+    }
   }
 
   void _navigationToCreateProject(BuildContext context) {
