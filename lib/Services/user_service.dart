@@ -30,7 +30,7 @@ class UserService{
     } else
           return new User("", "", "", "", "", "", [], [], "");
   }
-
+Future<int> getUsers() async {
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
     } catch (err) {
