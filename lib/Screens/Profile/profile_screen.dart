@@ -24,6 +24,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String? initialAboutMe = user.aboutMe;
   late String? initialSkills = user.skills;
 
+  UserService userService = new UserService();
+
   @override
   void initState() {
     super.initState();
@@ -181,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             setState(() {
               initialAboutMe = newValue;
               _isEditingAboutMe = false;
-              updateAboutMe(user.uname, newValue);
+              userService.updateAboutMe(user.uname, newValue);
               user.aboutMe = newValue;
             });
           },
@@ -207,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             setState(() {
               initialSkills = newValue;
               _isEditingSkills = false;
-              updateSkills(user.uname, newValue);
+              userService.updateSkills(user.uname, newValue);
               user.skills = newValue;
             });
           },

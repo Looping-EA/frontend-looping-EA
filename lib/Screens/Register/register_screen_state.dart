@@ -16,6 +16,8 @@ class RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _user = User("", "", "", "", "", "");
 
+  UserService userService = new UserService();
+
   TextEditingController unameEditingController = TextEditingController();
   TextEditingController passwordEditingController = TextEditingController();
   TextEditingController emailEditingController= TextEditingController();
@@ -252,12 +254,17 @@ class RegisterScreenState extends State<RegisterScreen> {
 
       // http?
       try {
-        await registerUser(_user).then((value) async {
-          await setUsernameToSharedPref(value.uname);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => FeedProyectos(user: value)));
+        await userService.registerUser(_user).then((value) async {
+          if(value.uname != ""){
+            await setUsernameToSharedPref(value.uname);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FeedProyectos(user: value)));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('Are you already registered? Try loging in')));
+          }
         });
       } catch (err) {
         print(err);
@@ -274,7 +281,8 @@ class RegisterScreenState extends State<RegisterScreen> {
       User user = new User(userGoogle.displayName.toString(), "",
           userGoogle.displayName.toString(), userGoogle.email, "", "");
       try {
-        await registerUser(user).then((value) async {
+        await userService.registerUser(user).then((value) async {
+          print(value.uname + " chikilicuatre");
           if (value.uname != "") {
             await setUsernameToSharedPref(value.uname);
             Navigator.push(

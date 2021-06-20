@@ -25,6 +25,7 @@ class SideMenu extends StatefulWidget {
 
 class _SideMenuState extends State<SideMenu> {
   final User user;
+  UserService userService = new UserService();
 
   _SideMenuState(this.user);
 
@@ -160,7 +161,7 @@ class _SideMenuState extends State<SideMenu> {
                 elevation: 5.0,
                 child: Text('Send'),
                 onPressed: () {
-                  deleteUser(uname).then((value) {
+                  userService.deleteUser(uname).then((value) {
                     if (value == "deleted") {
                       Navigator.push(
                           context,

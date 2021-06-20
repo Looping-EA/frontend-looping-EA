@@ -29,6 +29,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _remeberMe = false;
 
+  UserService userService = new UserService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -285,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
       // http?
       try {
         print("preparing _user $_user");
-        await loginUser(_user).then((value) async {
+        await userService.loginUser(_user).then((value) async {
           print(value);
           if (value.uname != "") {
             print("seting ${value.uname} to shared preferences.");
@@ -313,7 +315,7 @@ class _LoginPageState extends State<LoginPage> {
       User user = new User(userGoogle.displayName.toString(), "",
           userGoogle.displayName.toString(), userGoogle.email, "", "");
       try {
-        await loginUser(user).then((value) async {
+        await userService.loginUser(user).then((value) async {
           if (value.uname != "") {
             await setUsernameToSharedPref(value.uname);
             Navigator.push(

@@ -28,6 +28,8 @@ class _FeedProyectosState extends State<FeedProyectos> {
   Icon _searchIcon = new Icon(Icons.search);
   Widget _appBarTitle = new Text('Projects proposed by the community');
 
+  ProjectService projectService = new ProjectService();
+
   _FeedProyectosState(this.user) {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
@@ -46,7 +48,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
   void initState() {
     super.initState();
     // try {
-    getProjectsAndOwners().then((result) {
+    projectService.getProjectsAndOwners().then((result) {
       setState(() {
         projectNames = result;
         filteredNames = projectNames;
