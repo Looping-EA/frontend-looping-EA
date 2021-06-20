@@ -232,7 +232,6 @@ class MapState extends State<MapScreen>{
         builder: (ctx) => Icon(Icons.pin_drop, size: 40.0, color: Colors.black),
       );
       markers.add(mark);
-      markers.add(mark);
       setState((){
         markers = List.from(markers);
         state++;
