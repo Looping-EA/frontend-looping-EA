@@ -63,7 +63,7 @@ class _SideMenuState extends State<SideMenu> {
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.account_box),
           onTap: () async {
-            await getUser(user.uname).then((value) async {
+            await userService.getUser(user.uname).then((value) async {
               Navigator.push(
                   context,
                   new MaterialPageRoute(

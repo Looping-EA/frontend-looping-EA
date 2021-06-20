@@ -6,7 +6,7 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/environment.dart';
 
-class UserService{
+class UserService {
   Future<User> getUser(uname) async {
     String? token;
     Environment _environment = Environment();
@@ -25,13 +25,21 @@ class UserService{
     });
     if (response.statusCode == 200) {
       print(response.body);
-      User u = User.fromJSONnoPass(json.decode(response.body));
+      User u = User.grabUnameFromJSON(json.decode(response.body));
       return u;
     } else
-          return new User("", "", "", "", "", "", [], [], "");
+      return new User("", "", "", "", "", "", [], [], "");
   }
-Future<int> getUsers() async {
- 
+
+  Future<int> getUsers() async {
+    String? token;
+    Environment _environment = Environment();
+
+    try {
+      await getTokenFromSharedPrefs().then((value) => token = value);
+    } catch (err) {
+      print(err);
+    }
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
     } catch (err) {
@@ -46,10 +54,10 @@ Future<int> getUsers() async {
     if (response.statusCode == 201) {
       print(response.body);
       var users = json.decode(response.body);
-       int cont = 0;
+      int cont = 0;
       try {
         for (var userJson in users) {
-         cont++;
+          cont++;
         }
       } catch (e) {
         print(e);
@@ -92,7 +100,7 @@ Future<int> getUsers() async {
   Future<int> updateAboutMe(String uname, String aboutMe) async {
     String? token;
     Environment _environment = Environment();
-    
+
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
     } catch (err) {
@@ -117,9 +125,9 @@ Future<int> getUsers() async {
       return 1;
   }
 
-    Future<int> deleteNotif(String user, String notification) async {
+  Future<int> deleteNotif(String user, String notification) async {
     String? token;
-      Environment _environment = Environment();
+    Environment _environment = Environment();
 
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
@@ -142,7 +150,7 @@ Future<int> getUsers() async {
     } else
       return 1;
   }
-  
+
   Future<int> updatePhoto(String user, String url) async {
     String? token;
     Environment _environment = Environment();
@@ -167,11 +175,11 @@ Future<int> getUsers() async {
     } else
       return 1;
   }
-  
+
   Future<int> updateSkills(String uname, String skills) async {
     String? token;
     Environment _environment = Environment();
-    
+
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
     } catch (err) {
@@ -211,16 +219,16 @@ Future<int> getUsers() async {
     final bodyParsed = json.encode(body);
     final response = await http.post(
         Uri.parse(_environment.url() + 'users/updateProjects'),
-            headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token'
-            },
-            body: bodyParsed);
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: bodyParsed);
     if (response.statusCode == 201) {
       return 0;
     } else
       return 1;
-    }
+  }
 
   Future<User> registerUser(User user) async {
     // create JSON object
@@ -235,48 +243,49 @@ Future<int> getUsers() async {
 
     // finally the POST HTTP operation
     return await http
-      .post(Uri.parse(_environment.url() + "users/register"),
-          headers: <String, String>{'Content-Type': 'application/json'},
-          body: bodyParsed)
-      .then((http.Response response) async {
-        if (response.statusCode == 201) {
+        .post(Uri.parse(_environment.url() + "users/register"),
+            headers: <String, String>{'Content-Type': 'application/json'},
+            body: bodyParsed)
+        .then((http.Response response) async {
+      if (response.statusCode == 201) {
+        var token = json.decode(response.body);
+        await setTokenToSharedPref(token["accessToken"].toString());
+        Map<String, dynamic> payload =
+            Jwt.parseJwt(token["accessToken"].toString());
+        User u = User.fromJson(payload);
+        return u;
+      } else {
+        return new User("", "", "", "", "", "", [], [], "");
+      }
+    });
+  }
+
+  Future<User> loginUser(User user) async {
+    Environment _environment = Environment();
+    // create JSON object
+    final body = {
+      "uname": user.uname,
+      "pswd": user.pswrd,
+    };
+    final bodyParsed = json.encode(body);
+    print(bodyParsed);
+
+    // finally the POST HTTP operation
+    final response = await http.post(
+        Uri.parse(_environment.url() + "users/login"),
+        headers: <String, String>{'Content-Type': 'application/json'},
+        body: bodyParsed);
+    if (response.statusCode == 201) {
       var token = json.decode(response.body);
+      print(token["accessToken"].toString());
       await setTokenToSharedPref(token["accessToken"].toString());
       Map<String, dynamic> payload =
           Jwt.parseJwt(token["accessToken"].toString());
-      User u = User.fromJson(payload);
+      print(payload);
+      User u = User.grabUnameFromJSON(payload);
       return u;
     } else {
       return new User("", "", "", "", "", "", [], [], "");
     }
-  });
-}
-
-Future<User> loginUser(User user) async {
-  Environment _environment = Environment();
-  // create JSON object
-  final body = {
-    "uname": user.uname,
-    "pswd": user.pswrd,
-  };
-  final bodyParsed = json.encode(body);
-  print(bodyParsed);
-
-  // finally the POST HTTP operation
-  final response = await http.post(
-      Uri.parse(_environment.url() + "users/login"),
-      headers: <String, String>{'Content-Type': 'application/json'},
-      body: bodyParsed);
-  if (response.statusCode == 201) {
-    var token = json.decode(response.body);
-    print(token["accessToken"].toString());
-    await setTokenToSharedPref(token["accessToken"].toString());
-    Map<String, dynamic> payload =
-        Jwt.parseJwt(token["accessToken"].toString());
-    print(payload);
-    User u = User.grabUnameFromJSON(payload);
-    return u;
-  } else {
-    return new User("", "", "", "", "", "", [], [], "");
   }
 }

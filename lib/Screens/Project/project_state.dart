@@ -12,6 +12,7 @@ class ProjectState extends State<ProjectScreen> {
   final Project project;
   final User user;
   Widget _appBarTitle = new Text('Project');
+  ProjectService projectService = new ProjectService();
 
   ProjectState(this.project, this.user);
   @override
@@ -122,7 +123,9 @@ class ProjectState extends State<ProjectScreen> {
   void _onPressButton() async {
     if ((project.owner.uname != user.uname) &&
         (!project.collaboration!.contains(user))) {
-      await applyToProject(project, user, project.owner).then((value) async {
+      await projectService
+          .applyToProject(project, user, project.owner)
+          .then((value) async {
         print(value);
         if (value == 0) {
           ScaffoldMessenger.of(context).showSnackBar(

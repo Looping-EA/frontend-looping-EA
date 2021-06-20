@@ -283,7 +283,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void onPressOK(String user, String url) async {
-    await updatePhoto(user, url).then((value) async {
+    await userService.updatePhoto(user, url).then((value) async {
       if (value == 0) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Photo updated')));
@@ -302,6 +302,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         try {
           return CircleAvatar(backgroundImage: NetworkImage(user.photo!));
         } catch (e) {
+          print(e);
           return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
         }
       }

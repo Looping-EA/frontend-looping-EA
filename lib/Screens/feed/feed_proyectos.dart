@@ -31,6 +31,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
   List<Project> filteredNames = [];
   Icon _searchIcon = new Icon(Icons.search);
   Widget _appBarTitle = new Text('Projects proposed by the community');
+  UserService userService = new UserService();
 
   ProjectService projectService = new ProjectService();
 
@@ -238,7 +239,9 @@ class _FeedProyectosState extends State<FeedProyectos> {
           MaterialPageRoute(
               builder: (context) => NotificationsScreen(user, notif)));
     } else {
-      await deleteNotif(user.uname, notif.message).then((value) async {
+      await userService
+          .deleteNotif(user.uname, notif.message)
+          .then((value) async {
         if (value == 0) {
           int i = 0;
           for (i; i < user.notifications.length; i++) {

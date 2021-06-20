@@ -1,25 +1,26 @@
-class Environment{
-	late String _mode;
-	final String _urlProd='http://147.83.7.159:9090/api/';
-	final String _urlDev='http://localhost:8080/api/';
-	
-	static final Environment _instance = Environment._internal();
+class Environment {
+  late String _mode;
+  final String _urlProd = 'http://147.83.7.159:9090/api/';
+  final String _urlDev = 'http://localhost:8080/api/';
+  final String _urlMobile = 'http://10.0.2.2:8080/api';
 
-	factory Environment()=> _instance;
+  static final Environment _instance = Environment._internal();
 
-	set mode(String mod) => _mode = mod;
+  factory Environment() => _instance;
 
-	String get mode => _mode;
+  set mode(String mod) => _mode = mod;
 
-	String url(){
-		if(_mode=="DEV"){
-			return _urlDev;
-		} else {
-			return _urlProd;
-		}
-	}
+  String get mode => _mode;
 
-	Environment._internal(){
-		_mode="";	
-	}
+  String url() {
+    if (_mode == "DEV") {
+      return _urlDev;
+    } else {
+      return _urlProd;
+    }
+  }
+
+  Environment._internal() {
+    _mode = "";
+  }
 }

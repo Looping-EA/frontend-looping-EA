@@ -25,6 +25,8 @@ class NotificationsState extends State<NotificationsScreen> {
   final User user;
   final Notifictn notif;
   Widget _appBarTitle = new Text('Notifications');
+  UserService userService = new UserService();
+  ProjectService projectService = new ProjectService();
 
   NotificationsState(this.user, this.notif);
   @override
@@ -113,7 +115,8 @@ class NotificationsState extends State<NotificationsScreen> {
   }
 
   void _onPressButton() async {
-    await acceptRequest(notif.project, notif.user, user.uname)
+    await projectService
+        .acceptRequest(notif.project, notif.user, user.uname)
         .then((value) async {
       print(value);
       if (value == 0) {
@@ -130,7 +133,7 @@ class NotificationsState extends State<NotificationsScreen> {
             SnackBar(content: Text('Error sending the application')));
       }
     });
-    await getUser(user.uname).then((value) async {
+    await userService.getUser(user.uname).then((value) async {
       Navigator.push(
           context,
           new MaterialPageRoute(
@@ -139,7 +142,8 @@ class NotificationsState extends State<NotificationsScreen> {
   }
 
   void _onPressReject() async {
-    await rejectRequest(notif.project, notif.user, user.uname)
+    await projectService
+        .rejectRequest(notif.project, notif.user, user.uname)
         .then((value) async {
       print(value);
       if (value == 0) {
