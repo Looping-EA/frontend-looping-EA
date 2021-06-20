@@ -23,6 +23,8 @@ class _FaqsScreenState extends State<FaqsScreen> {
   String _searchText = "";
   Widget _appBarTitle = new Text('FAQS');
 
+  FaqService faqsService = new FaqService();
+
   _FaqsScreenState() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
@@ -40,7 +42,7 @@ class _FaqsScreenState extends State<FaqsScreen> {
   void initState() {
     super.initState();
     // try {
-    getFaqs().then((result) {
+    faqsService.getFaqs().then((result) {
       setState(() {
         faqslist = result;
       });

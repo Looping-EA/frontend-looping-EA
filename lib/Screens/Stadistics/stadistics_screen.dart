@@ -24,11 +24,15 @@ class _StadisticsScreenState extends State<StadisticsScreen> {
   String numberUsers = "";
   String numberProjectOwners = "";
   Widget _appBarTitle = new Text('Statistics');
+
+  ProjectService projectService = new ProjectService();
+  UserService userService = new UserService();
+
   @override
   void initState() {
     super.initState();
     // try {
-    getProjectsAndOwners().then((result) {
+    projectService.getProjectsAndOwners().then((result) {
       setState(() {
         int numberPrjcts = 0;
         for (int i = 0; i < result.length; i++) {
@@ -37,7 +41,7 @@ class _StadisticsScreenState extends State<StadisticsScreen> {
         numberProjects = numberPrjcts.toString();
       });
     });
-    getUsers().then((result) {
+    userService.getUsers().then((result) {
       setState(() {
         int numberUsuarios = result;
         numberUsers = numberUsuarios.toString();

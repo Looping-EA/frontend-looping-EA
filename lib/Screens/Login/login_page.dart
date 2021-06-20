@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:async';
-import '../../Models/Project.dart';
+import '../../Models/project.dart';
 import '../../Shared/google_signin_api.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
@@ -29,6 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   final _user = User("", "", "", "", "", "", [], [], "");
 
   bool _remeberMe = false;
+
+  UserService userService = new UserService();
 
   @override
   Widget build(BuildContext context) {
@@ -286,7 +288,7 @@ class _LoginPageState extends State<LoginPage> {
       // http?
       try {
         print("preparing _user $_user");
-        await loginUser(_user).then((value) async {
+        await userService.loginUser(_user).then((value) async {
           print(value);
           if (value.uname != "") {
             print("seting ${value.uname} to shared preferences.");
@@ -322,7 +324,7 @@ class _LoginPageState extends State<LoginPage> {
           [],
           "");
       try {
-        await loginUser(user).then((value) async {
+        await userService.loginUser(user).then((value) async {
           if (value.uname != "") {
             await setUsernameToSharedPref(value.uname);
             Navigator.push(

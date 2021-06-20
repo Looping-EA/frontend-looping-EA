@@ -8,6 +8,7 @@ import 'package:frontend_looping_ea/Screens/Map/map_screen.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
+import 'package:frontend_looping_ea/Screens/Configuration/configuration_screen.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
@@ -25,6 +26,7 @@ class SideMenu extends StatefulWidget {
 
 class _SideMenuState extends State<SideMenu> {
   final User user;
+  UserService userService = new UserService();
 
   _SideMenuState(this.user);
 
@@ -126,6 +128,18 @@ class _SideMenuState extends State<SideMenu> {
           },
         ),
         ListTile(
+          title: Text("ACCOUNT CONFIGURATION",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.settings),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ConfigurationScreen(user: this.user)));
+          },
+        ),
+        ListTile(
           title: Text("DELETE ACCOUNT",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.delete_forever_sharp),
@@ -162,7 +176,7 @@ class _SideMenuState extends State<SideMenu> {
                 elevation: 5.0,
                 child: Text('Send'),
                 onPressed: () {
-                  deleteUser(uname).then((value) {
+                  userService.deleteUser(uname).then((value) {
                     if (value == "deleted") {
                       Navigator.push(
                           context,

@@ -9,14 +9,13 @@ import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.d
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../Models/project.dart';
-import 'package:intl/intl.dart';
-
+import 'package:frontend_looping_ea/Services/project_service.dart';
 import '../../Shared/shared_preferences.dart';
 
 class CreateProjectState extends State<CreateProjectScreen> {
   final User user;
   CreateProjectState(this.user);
-
+  ProjectService projectService = new ProjectService();
   final _formKey = GlobalKey<FormBuilderState>();
   late final _project = Project("", [], "", [], [], "", [], user);
 
@@ -136,9 +135,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
 
       // http?
       try {
-        var project = new Project("", [], "", [], [], "", [], user);
-        _createProject().then((value) {
-          //project = value;
+        projectService.createProject(_project, user.uname).then((value) {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -148,50 +145,5 @@ class CreateProjectState extends State<CreateProjectScreen> {
         print(err);
       }
     } else {}
-  }
-
-  Future<int> _createProject() async {
-    Project project = new Project("", [], "", [], [], "", [], user);
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
-    String? token;
-    try {
-      await getTokenFromSharedPrefs().then((value) => token = value);
-      print(token);
-      print("token printed above");
-    } catch (err) {
-      print(err);
-    }
-
-    // create JSON object
-    final body = {
-      "name": _project.name,
-      "chats": [],
-      "creationDate": formattedDate,
-      "teams": [],
-      "tasks": [],
-      "description": _project.description,
-      "collaboration": [],
-      "owner": user.uname
-    };
-    final bodyParsed = json.encode(body);
-    print(bodyParsed);
-    // finally the POST HTTP operation
-    return await http
-        .post(Uri.parse("http://localhost:8080/api/projects/add"),
-            headers: {
-              'Authorization': 'Bearer $token',
-              'Content-Type': 'application/json'
-            },
-            body: bodyParsed)
-        .then((http.Response response) {
-      if (response.statusCode == 201) {
-        //return Project.fromJson(json.decode(response.body));
-        return 0;
-      } else {
-        //return new Project("", [], "", [], [], "", [], user);
-        return 1;
-      }
-    });
   }
 }
