@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:frontend_looping_ea/Models/photo.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
@@ -25,7 +26,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormBuilderState>();
-  final _user = User("", "", "", "", "", "", [], []);
+  final _user = User("", "", "", "", "", "", [], [], "");
 
   bool _remeberMe = false;
 
@@ -310,8 +311,16 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Sign in Failed')));
     } else {
-      User user = new User(userGoogle.displayName.toString(), "",
-          userGoogle.displayName.toString(), userGoogle.email, "", "", [], []);
+      User user = new User(
+          userGoogle.displayName.toString(),
+          "",
+          userGoogle.displayName.toString(),
+          userGoogle.email,
+          "",
+          "",
+          [],
+          [],
+          "");
       try {
         await loginUser(user).then((value) async {
           if (value.uname != "") {

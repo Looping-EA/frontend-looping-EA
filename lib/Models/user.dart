@@ -1,5 +1,6 @@
 import '../Models/project.dart';
 import '../Models/notification.dart';
+import '../Models/photo.dart';
 
 class User {
   String uname;
@@ -10,8 +11,10 @@ class User {
   String? skills;
   List<Notifictn> notifications;
   List<Project> projectsOwned;
+  String? photo;
+
   User(this.uname, this.pswrd, this.fullname, this.email, this.aboutMe,
-      this.skills, this.notifications, this.projectsOwned);
+      this.skills, this.notifications, this.projectsOwned, this.photo);
 
   factory User.fromJson(dynamic json) {
     var notifications = json['notifications'] as List;
@@ -29,17 +32,22 @@ class User {
         json['aboutMe'] as String?,
         json['skills'] as String?,
         _notifications,
-        _projectsOwned);
+        _projectsOwned,
+        json['photo'] as String?);
   }
 
   factory User.fromJSONnoPass(dynamic json) {
+    Photo p = new Photo("");
     return User(
         json['uname'] as String,
         "",
         json['fullname'] as String,
         json['email'] as String,
         json['aboutMe'] as String?,
-        json['skills'] as String?, [], []);
+        json['skills'] as String?,
+        [],
+        [],
+        "");
   }
 
   factory User.grabUnameFromJSON(dynamic json) {
@@ -58,6 +66,7 @@ class User {
         json['aboutMe'] as String?,
         json['skills'] as String?,
         _notifications,
-        _projectsOwned);
+        _projectsOwned,
+        json['photo'] as String?);
   }
 }

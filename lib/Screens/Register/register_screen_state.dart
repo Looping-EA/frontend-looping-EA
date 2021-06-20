@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:frontend_looping_ea/Models/photo.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
@@ -19,7 +20,7 @@ import 'package:frontend_looping_ea/styles.dart';
 
 class RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
-  final _user = User("", "", "", "", "", "", [], []);
+  final _user = User("", "", "", "", "", "", [], [], "");
 
   @override
   Widget build(BuildContext context) {
@@ -271,8 +272,17 @@ class RegisterScreenState extends State<RegisterScreen> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Sign in Failed')));
     } else {
-      User user = new User(userGoogle.displayName.toString(), "",
-          userGoogle.displayName.toString(), userGoogle.email, "", "", [], []);
+      Photo p = new Photo("");
+      User user = new User(
+          userGoogle.displayName.toString(),
+          "",
+          userGoogle.displayName.toString(),
+          userGoogle.email,
+          "",
+          "",
+          [],
+          [],
+          "");
       try {
         await registerUser(user).then((value) async {
           if (value.uname != "") {

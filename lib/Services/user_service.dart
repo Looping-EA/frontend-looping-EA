@@ -1,3 +1,4 @@
+import 'package:frontend_looping_ea/Models/photo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Models/user.dart';
@@ -23,8 +24,9 @@ Future<User> getUser(uname) async {
     print(response.body);
     User u = User.grabUnameFromJSON(json.decode(response.body));
     return u;
-  } else
-    return new User("", "", "", "", "", "", [], []);
+  } else {
+    return new User("", "", "", "", "", "", [], [], "");
+  }
 }
 
 Future<int> deleteNotif(String user, String notification) async {
@@ -164,6 +166,30 @@ Future<int> updateSkills(String uname, String skills) async {
     return 1;
 }
 
+Future<int> updatePhoto(String user, String url) async {
+  String? token;
+  try {
+    await getTokenFromSharedPrefs().then((value) => token = value);
+    print(token);
+  } catch (err) {
+    print(err);
+  }
+  final body = {"user": user, "imagePath": url};
+  final bodyParsed = json.encode(body);
+  print(bodyParsed);
+  final response = await http.post(
+      Uri.parse('http://localhost:8080/api/photo/create'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+      body: bodyParsed);
+  if (response.statusCode == 201) {
+    return 0;
+  } else
+    return 1;
+}
+
 Future<int> updateProjects(String uname, String projects) async {
   String? token;
   try {
@@ -197,7 +223,7 @@ Future<User> registerUser(User user) async {
     "uname": user.uname,
     "pswd": user.pswrd,
     "email": user.email,
-    "fullname": user.fullname
+    "fullname": user.fullname,
   };
   final bodyParsed = json.encode(body);
 
@@ -217,7 +243,7 @@ Future<User> registerUser(User user) async {
       User u = User.fromJson(payload);
       return u;
     } else {
-      return new User("", "", "", "", "", "", [], []);
+      return new User("", "", "", "", "", "", [], [], "");
     }
   });
 }
@@ -246,6 +272,6 @@ Future<User> loginUser(User user) async {
     User u = User.grabUnameFromJSON(payload);
     return u;
   } else {
-    return new User("", "", "", "", "", "", [], []);
+    return new User("", "", "", "", "", "", [], [], "");
   }
 }

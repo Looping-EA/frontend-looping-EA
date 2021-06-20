@@ -18,12 +18,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _ProfileScreenState(this.user) : super();
   bool _isEditingAboutMe = false;
   bool _isEditingSkills = false;
+  bool _isEditingPhoto = false;
   bool _isEditingProjects = false;
   late TextEditingController _editingAboutMe;
   late TextEditingController _editingSkills;
+  TextEditingController _textFieldController = TextEditingController();
   late String? initialAboutMe = user.aboutMe;
   late String? initialSkills = user.skills;
   String proyectosMios = "No projects until now";
+  String? valueText = "";
 
   @override
   void initState() {
@@ -49,6 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void dispose() {
     _editingAboutMe.dispose();
     _editingSkills.dispose();
+    _textFieldController.dispose();
     super.dispose();
   }
 
@@ -86,13 +90,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //ImageBanner(),
-                    Container(
-                        alignment: Alignment.bottomLeft,
-                        padding: const EdgeInsets.only(bottom: 8),
-                        width: 50.0,
-                        margin: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
-                        //padding: const EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
-                        child: Text('image')),
+                    InkWell(
+                        onTap: () {
+                          _displayTextInputDialog(context);
+                        },
+                        child: Container(
+                            alignment: Alignment.bottomLeft,
+                            padding: const EdgeInsets.only(bottom: 8),
+                            width: 50.0,
+                            margin:
+                                const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
+                            //padding: const EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
+                            child: buildPhoto(user))),
                     Container(
                         alignment: Alignment.bottomLeft,
                         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 4.0, 0.0),
@@ -177,6 +186,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  void _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Introduce an URL'),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration: InputDecoration(hintText: "URL"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.blue,
+                textColor: Colors.white,
+                child: Text('CANCEL'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              FlatButton(
+                color: Colors.blue,
+                textColor: Colors.white,
+                child: Text('OK'),
+                onPressed: () {
+                  setState(() async {
+                    onPressOK(user.uname, _textFieldController.text);
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   Widget _editAboutMeTextField() {
     if (_isEditingAboutMe)
       return Center(
@@ -227,6 +278,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
         child: Text(initialSkills.toString(),
             style: TextStyle(color: Colors.black, fontSize: 16.0)));
+  }
+
+  void onPressOK(String user, String url) async {
+    await updatePhoto(user, url).then((value) async {
+      if (value == 0) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Photo updated')));
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error')));
+      }
+    });
+  }
+
+  CircleAvatar buildPhoto(User user) {
+    try {
+      if ((user.photo == null) || (user.photo == "")) {
+        return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
+      } else {
+        try {
+          return CircleAvatar(backgroundImage: NetworkImage(user.photo!));
+        } catch (e) {
+          return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
+        }
+      }
+    } catch (e) {
+      print(e);
+      return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
+    }
   }
 
   String buildProjectsOwned(List<Project> projectsOwned) {
