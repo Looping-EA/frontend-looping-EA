@@ -31,6 +31,7 @@ class UserService{
           return new User("", "", "", "", "", "", [], [], "");
   }
 Future<int> getUsers() async {
+ 
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
     } catch (err) {
@@ -45,24 +46,17 @@ Future<int> getUsers() async {
     if (response.statusCode == 201) {
       print(response.body);
       var users = json.decode(response.body);
-      List<User> usuarios = [];
+       int cont = 0;
       try {
         for (var userJson in users) {
-          User u = new User(
-              userJson["uname"],
-              userJson["pswd"],
-              userJson["fullname"],
-              userJson["email"],
-              userJson["aboutMe"],
-              userJson["skills"]);
-          usuarios.add(u);
+         cont++;
         }
       } catch (e) {
         print(e);
       }
-      return usuarios;
+      return cont;
     } else
-      return new List<User>.empty();
+      return 0;
   }
 
   Future<String> deleteUser(uname) async {
