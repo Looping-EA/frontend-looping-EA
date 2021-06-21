@@ -79,8 +79,9 @@ class _StadisticsScreenState extends State<StadisticsScreen> {
 
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
-      centerTitle: true,
+      //centerTitle: true,
       title: _appBarTitle,
+      backgroundColor: Colors.blueGrey,
     );
   }
 }

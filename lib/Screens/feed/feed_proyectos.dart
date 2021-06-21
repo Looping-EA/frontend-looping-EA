@@ -83,12 +83,14 @@ class _FeedProyectosState extends State<FeedProyectos> {
                 FloatingActionButton(
                     heroTag: "add",
                     child: Icon(Icons.add),
+                    backgroundColor: Colors.blueGrey,
                     onPressed: () {
                       _navigationToCreateProject(context);
                     }),
                 FloatingActionButton(
                     heroTag: "search",
                     child: Icon(Icons.search),
+                    backgroundColor: Colors.blueGrey,
                     onPressed: () {
                       _searchPressed();
                     }),
@@ -97,7 +99,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
   }
 
   PreferredSizeWidget _buildBar(BuildContext context) {
-    return AppBar(centerTitle: true, title: _appBarTitle, actions: <Widget>[
+    return AppBar(centerTitle: true, backgroundColor: Colors.blueGrey, title: _appBarTitle, actions: <Widget>[
       new Stack(children: <Widget>[
         new IconButton(
           icon: Icon(Icons.notifications),
@@ -134,14 +136,15 @@ class _FeedProyectosState extends State<FeedProyectos> {
   void _searchPressed() {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
-        this._searchIcon = new Icon(Icons.close);
+        this._searchIcon = new Icon(Icons.close, color: Colors.white);
         this._appBarTitle = new TextField(
             controller: _filter,
+            style: TextStyle(color: Colors.white),
             decoration: new InputDecoration(
-                prefixIcon: new Icon(Icons.search),
+                prefixIcon: new Icon(Icons.search, color: Colors.white),
                 hintText: 'Search projects...'));
       } else {
-        this._searchIcon = new Icon(Icons.search);
+        this._searchIcon = new Icon(Icons.search, color: Colors.white);
         this._appBarTitle = new Text('Projects proposed by the community');
         filteredNames = projectNames;
         _filter.clear();

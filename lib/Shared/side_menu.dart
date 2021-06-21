@@ -73,7 +73,7 @@ class _SideMenuState extends State<SideMenu> {
         ListTile(
           title: Text("FAQS",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.account_box),
+          leading: const Icon(Icons.help),
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => FaqsScreen()));
@@ -82,7 +82,7 @@ class _SideMenuState extends State<SideMenu> {
         ListTile(
           title: Text("CREATE PROJECT",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.chat),
+          leading: const Icon(Icons.add),
           onTap: () {
             Navigator.push(
                 context,
@@ -94,7 +94,7 @@ class _SideMenuState extends State<SideMenu> {
         ListTile(
           title: Text("CONTACT",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.chat),
+          leading: const Icon(Icons.contact_page),
           onTap: () {
             Navigator.push(
                 context,
@@ -118,7 +118,7 @@ class _SideMenuState extends State<SideMenu> {
         ListTile(
           title: Text("MAP",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.chat),
+          leading: const Icon(Icons.map),
           onTap: () {
             Navigator.push(
                 context,
