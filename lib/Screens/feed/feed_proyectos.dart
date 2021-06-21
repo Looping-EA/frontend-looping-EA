@@ -68,6 +68,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
   @override
   Widget build(BuildContext context) {
     print(this.user.uname);
+
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Feed Proyectos',
@@ -82,12 +83,14 @@ class _FeedProyectosState extends State<FeedProyectos> {
               children: [
                 FloatingActionButton(
                     heroTag: "add",
+                    //backgroundColor: Colors.blueGrey,
                     child: Icon(Icons.add),
                     onPressed: () {
                       _navigationToCreateProject(context);
                     }),
                 FloatingActionButton(
                     heroTag: "search",
+                    //backgroundColor: Colors.blueGrey,
                     child: Icon(Icons.search),
                     onPressed: () {
                       _searchPressed();

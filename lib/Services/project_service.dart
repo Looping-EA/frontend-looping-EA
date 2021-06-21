@@ -37,7 +37,8 @@ class ProjectService {
               [],
               projectJson["description"],
               [],
-              owner));
+              owner,
+              []));
         }
       } catch (e) {
         print(e);

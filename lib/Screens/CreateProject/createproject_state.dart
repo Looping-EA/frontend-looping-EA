@@ -17,7 +17,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
   CreateProjectState(this.user);
   ProjectService projectService = new ProjectService();
   final _formKey = GlobalKey<FormBuilderState>();
-  late final _project = Project("", [], "", [], [], "", [], user);
+  late final _project = Project("", [], "", [], [], "", [], user, []);
 
   @override
   Widget build(BuildContext context) {

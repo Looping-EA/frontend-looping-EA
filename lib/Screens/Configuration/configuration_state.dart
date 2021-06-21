@@ -25,11 +25,11 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
   void initState() {
     super.initState();
     if (mynotificaciones == "si") {
-      //notificationChecked = true;
+      /*notificationChecked = true;
       bool val = true;
       setState(() {
         notificationChecked = val;
-      });
+      });*/
     } else if (myseguridad == "si") {
       securityChecked = true;
     } else if (myprivacidad == "si") {
