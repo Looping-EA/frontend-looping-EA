@@ -32,7 +32,6 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   Widget build(BuildContext context) {
-    print(this.user.uname);
     return new Drawer(
         child: ListView(
       children: <Widget>[
