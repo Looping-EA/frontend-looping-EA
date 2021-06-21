@@ -17,28 +17,28 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
   bool? securityChecked = false;
   bool? privacityChecked = false;
 
-  String mynotificaciones = "no";
-  String myseguridad = "no";
-  String myprivacidad = "no";
+  String mynotificaciones = "";
+  String myseguridad = "";
+  String myprivacidad = "";
+
+  List<Configuration> conf = [];
 
   @override
   void initState() {
     super.initState();
-    if (mynotificaciones == "si") {
-      //notificationChecked = true;
-      bool val = true;
+
+    getConfiguracions().then((result) {
       setState(() {
-        notificationChecked = val;
+        conf=result;
+        _initialisevalues();
+
       });
-    } else if (myseguridad == "si") {
-      securityChecked = true;
-    } else if (myprivacidad == "si") {
-      privacityChecked = true;
-    }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    //_initialisevalues();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
@@ -91,27 +91,86 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
 
   void _buscar() {
     print(mynotificaciones);
+
     if (notificationChecked == true) {
       mynotificaciones = "si";
-      _add();
+      addorupdate();
       print(mynotificaciones);
-    } else if (securityChecked == true) {
+    } 
+    if (securityChecked == true) {
       myseguridad = "si";
-      _add();
-    } else if (privacityChecked == true) {
+      addorupdate();
+    }
+    if (privacityChecked == true) {
       myprivacidad = "si";
-      _add();
-    } else if (notificationChecked == false) {
+      addorupdate();
+    }
+    if (notificationChecked == false) {
       mynotificaciones = "no";
-      _add();
-    } else if (securityChecked == false) {
+      addorupdate();
+    }
+    if (securityChecked == false) {
       myseguridad = "no";
-      _add();
-    } else if (privacityChecked == false) {
+      addorupdate();
+    }
+    if (privacityChecked == false) {
       myprivacidad = "no";
+      addorupdate();
+    }
+  }
+
+  void _initialisevalues(){
+    var aux = 0;
+    for(int i=0; i<conf.length; i++){
+      if(user.uname == conf[i].uname){
+        mynotificaciones = conf[i].notificaciones;
+        if(mynotificaciones == "si"){
+          notificationChecked = true;
+        }else{
+          notificationChecked = false;
+        }
+        myprivacidad = conf[i].privacidad;
+        if(myprivacidad == "si"){
+          privacityChecked = true;
+        }else{
+          privacityChecked = false;
+        }
+        myseguridad = conf[i].seguridad;
+        if(myseguridad == "si"){
+          securityChecked = true;
+        }else{
+          securityChecked = false;
+        }
+        aux = 1;
+      }
+    }
+    if(aux == 0){
+      mynotificaciones = "no";
+      myprivacidad = "no";
+      myseguridad = "no";
+      notificationChecked = false;
+      securityChecked = false;
+      privacityChecked = false;
+    }
+    /*setState(() {
+      
+    });*/
+  }
+
+  void addorupdate(){
+    var aux = 0;
+    for(int i=0; i<conf.length; i++){
+      if(user.uname == conf[i].uname){
+        _updateConfiguracion();
+        aux = 1;
+      }
+    }
+    if(aux == 0){
       _add();
     }
   }
+
+  //Add Service
 
   Future<Configuration> _add() async {
     Configuration configuration = new Configuration("", "", "", "");
@@ -149,6 +208,8 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
     });
   }
 
+  //Get Service
+
   Future<List<Configuration>> getConfiguracions() async {
     List<Configuration> configurations = [];
     String? token;
@@ -180,6 +241,7 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
     return configurations;
   }
 
+  //Update Service
   Future<Configuration> _updateConfiguracion() async {
     Configuration configuration = new Configuration("", "", "", "");
 
