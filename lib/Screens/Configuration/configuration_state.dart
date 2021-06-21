@@ -93,34 +93,32 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
     print(mynotificaciones);
     if (notificationChecked == true) {
       mynotificaciones = "si";
-      _update();
+      _add();
       print(mynotificaciones);
     } else if (securityChecked == true) {
       myseguridad = "si";
-      _update();
+      _add();
     } else if (privacityChecked == true) {
       myprivacidad = "si";
-      _update();
+      _add();
     } else if (notificationChecked == false) {
       mynotificaciones = "no";
-      _update();
+      _add();
     } else if (securityChecked == false) {
       myseguridad = "no";
-      _update();
+      _add();
     } else if (privacityChecked == false) {
       myprivacidad = "no";
-      _update();
+      _add();
     }
   }
 
-  Future<Configuration> _update() async {
+  Future<Configuration> _add() async {
     Configuration configuration = new Configuration("", "", "", "");
 
     String? token;
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
-      //print(token);
-      //print("token printed above");
     } catch (err) {
       print(err);
     }
@@ -136,7 +134,74 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
 
     // finally the PUT HTTP operation
     return await http
-        .put(Uri.parse("http://localhost:8080/api/configuracions/add"),
+        .post(Uri.parse("http://localhost:8080/api/configuracion/add"),
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json'
+            },
+            body: bodyParsed)
+        .then((http.Response response) {
+      if (response.statusCode == 201) {
+        return Configuration.fromJson(json.decode(response.body));
+      } else {
+        return new Configuration("", "", "", "");
+      }
+    });
+  }
+
+  Future<List<Configuration>> getConfiguracions() async {
+    List<Configuration> configurations = [];
+    String? token;
+    try {
+      await getTokenFromSharedPrefs().then((value) => token = value);
+    } catch (err) {
+      print(err);
+    }
+
+    final response = await http
+        .get(Uri.parse('http://localhost:8080/api/configuracion/'), headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    });
+    if (response.statusCode == 201) {
+      var locationsJson = json.decode(response.body);
+      try {
+        for (var locationJson in locationsJson) {
+          configurations.add(Configuration(
+              locationJson["uname"],
+              locationJson["notificaciones"],
+              locationJson["seguridad"],
+              locationJson["privacidad"]));
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return configurations;
+  }
+
+  Future<Configuration> _updateConfiguracion() async {
+    Configuration configuration = new Configuration("", "", "", "");
+
+    String? token;
+    try {
+      await getTokenFromSharedPrefs().then((value) => token = value);
+    } catch (err) {
+      print(err);
+    }
+
+    // create JSON object
+    final body = {
+      "uname": user.uname,
+      "notificaciones": mynotificaciones,
+      "seguridad": myseguridad,
+      "privacidad": myprivacidad
+    };
+    final bodyParsed = json.encode(body);
+
+    // finally the PUT HTTP operation
+    return await http
+        .put(Uri.parse("http://localhost:8080/api/configuracion/update"),
             headers: {
               'Authorization': 'Bearer $token',
               'Content-Type': 'application/json'
