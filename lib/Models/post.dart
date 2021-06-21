@@ -1,12 +1,12 @@
 class Post {
   String uname;
-  String mensaje;
+  String msg;
   String date;
 
-  Post(this.uname, this.mensaje, this.date);
+  Post(this.uname, this.msg, this.date);
 
   factory Post.fromJson(dynamic json) {
-    return Post(json['uname'] as String, json['mensaje'] as String,
-        json['date'] as String);
+    return Post(
+        json['uname'] as String, json['msg'] as String, json['date'] as String);
   }
 }
