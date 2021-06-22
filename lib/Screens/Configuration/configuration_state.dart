@@ -26,7 +26,6 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
   @override
   void initState() {
     super.initState();
-
     getConfiguracions().then((result) {
       setState(() {
         conf=result;

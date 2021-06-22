@@ -1,20 +1,34 @@
-import 'package:frontend_looping_ea/Models/user.dart';
-import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
-import 'package:frontend_looping_ea/Shared/side_menu.dart';
-import 'package:frontend_looping_ea/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:frontend_looping_ea/Models/project.dart';
-import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
-import '../../Models/project.dart';
-import 'package:frontend_looping_ea/Services/project_service.dart';
+import 'package:frontend_looping_ea/Models/post.dart';
+import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
+import 'package:frontend_looping_ea/Shared/side_menu.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import '../../styles.dart';
+import 'package:frontend_looping_ea/styles.dart';
+import 'package:intl/intl.dart';
+import '../../Shared/shared_preferences.dart';
 
-class CreateProjectState extends State<CreateProjectScreen> {
+
+class AddPostScreen extends StatefulWidget {
   final User user;
-  CreateProjectState(this.user);
-  ProjectService projectService = new ProjectService();
+  AddPostScreen({key, required this.user}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return AddPostState(this.user);
+  }
+}
+
+class AddPostState extends State<AddPostScreen> {
+  final User user;
+  AddPostState(this.user);
+
   final _formKey = GlobalKey<FormBuilderState>();
-  late final _project = Project("", [], "", "", [], user, []);
+  final _post = Post("","","");
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +37,12 @@ class CreateProjectState extends State<CreateProjectScreen> {
         //An App Bar is created with the name of the current page
         appBar: AppBar(
           backgroundColor: Colors.blueGrey,
-          title: Text('Profile'),
+          title: Text('Add Post'),
         ),
 
         //The drawer opens a side menu
         drawer: SideMenu(user: this.user),
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Styles.colorBackground,
         body: Center(
             child: Container(
                 width: 700,
@@ -50,7 +64,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Create a new project ',
+                          'Write your post!',
                           style: Styles.title,
                         )
                       ],
@@ -62,28 +76,14 @@ class CreateProjectState extends State<CreateProjectScreen> {
                             child: Column(
                               children: [
                                 FormBuilderTextField(
-                                  name: 'name',
-                                  validator: FormBuilderValidators.compose([
-                                    FormBuilderValidators.required(context),
-                                    FormBuilderValidators.minLength(context, 1),
-                                  ]),
-                                  decoration: InputDecoration(
-                                      hintText: 'Enter the name of the project',
-                                      labelText: "Name",
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0)))),
-                                ),
-                                SizedBox(height: 20),
-                                FormBuilderTextField(
                                   maxLines: 7,
-                                  name: 'description',
+                                  name: 'message',
                                   validator: FormBuilderValidators.compose([
                                     FormBuilderValidators.required(context)
                                   ]),
                                   decoration: InputDecoration(
-                                      hintText: 'Enter the description',
-                                      labelText: "Description",
+                                      hintText: 'Enter your message',
+                                      labelText: "Message",
                                       border: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10.0)))),
@@ -108,10 +108,10 @@ class CreateProjectState extends State<CreateProjectScreen> {
                             child: ElevatedButton(
                                 onPressed: _onPressButton,
                                 style: ElevatedButton.styleFrom(
-                                  primary: Styles.colorBackground2,
+                                  primary: Styles.colorBackground,
                                 ),
                                 child: Text(
-                                  'Create',
+                                  'Post!',
                                   style: Styles.button_big,
                                 ))))
                   ],
@@ -126,21 +126,60 @@ class CreateProjectState extends State<CreateProjectScreen> {
       _formKey.currentState!.save();
 
       // GRAB THE FIELDS
-      _project.name = _formKey.currentState!.fields['name']!.value;
-      _project.description =
-          _formKey.currentState!.fields['description']!.value;
+      _post.msg = _formKey.currentState!.fields['message']!.value;
 
       // http?
       try {
-        projectService.createProject(_project, user.uname).then((value) {
+        var post = new Post("", "", "");
+        _createPost().then((value) {
+          post = value;
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => FeedProyectos(user: this.user)));
+                  builder: (context) => AddPostScreen(user: this.user)));
         });
       } catch (err) {
         print(err);
       }
     } else {}
+  }
+
+  Future<Post> _createPost() async {
+    Post post = new Post("", "", "");
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    String? token;
+    try {
+      await getTokenFromSharedPrefs().then((value) => token = value);
+      print(token);
+      print("token printed above");
+    } catch (err) {
+      print(err);
+    }
+
+    // create JSON object
+    final body = {
+      "uname": user.uname,
+      "msg" : _post.msg,
+      "date": formattedDate,
+    };
+    final bodyParsed = json.encode(body);
+
+
+    // finally the POST HTTP operation
+    return await http
+        .post(Uri.parse("http://localhost:8080/api/post/add"),
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json'
+            },
+            body: bodyParsed)
+        .then((http.Response response) {
+      if (response.statusCode == 201) {
+        return Post.fromJson(json.decode(response.body));
+      } else {
+        return new Post("", "", "");
+      }
+    });
   }
 }
