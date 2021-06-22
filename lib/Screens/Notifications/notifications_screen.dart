@@ -145,11 +145,6 @@ class NotificationsState extends State<NotificationsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('You already handled this request')));
       }
-      if (value == 3) {
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error sending the application')));
-      }
     });
     await userService.getUser(user.uname).then((value) async {
       Navigator.push(
@@ -172,11 +167,12 @@ class NotificationsState extends State<NotificationsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('You already handled this request')));
       }
-      if (value == 3) {
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error sending the application')));
-      }
+    });
+    await userService.getUser(user.uname).then((value) async {
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => new FeedProyectos(user: value)));
     });
   }
 }
