@@ -33,8 +33,6 @@ class ProjectService {
               projectJson["name"],
               [],
               projectJson["creationDate"],
-              [],
-              [],
               projectJson["description"],
               [],
               owner,
@@ -66,11 +64,10 @@ class ProjectService {
       "name": project.name,
       "chats": [],
       "creationDate": formattedDate,
-      "teams": [],
-      "tasks": [],
       "description": project.description,
       "collaboration": [],
-      "owner": uname
+      "owner": uname,
+      "entry": []
     };
     final bodyParsed = json.encode(body);
     print(bodyParsed);

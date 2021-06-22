@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
@@ -28,7 +28,7 @@ class _ForumState extends State<ForumScreen> {
   String _searchText = "";
   List<Entry> filteredNames = [];
   Icon _searchIcon = new Icon(Icons.search);
-  Widget _appBarTitle = new Text('Projects proposed by the community');
+  Widget _appBarTitle = new Text('Forum about your projects');
   UserService userService = new UserService();
 
   ProjectService projectService = new ProjectService();
@@ -69,7 +69,7 @@ class _ForumState extends State<ForumScreen> {
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Feed Proyectos',
+        title: 'Forums',
         home: Scaffold(
             appBar: _buildBar(context),
             drawer: SideMenu(user: this.user),
@@ -80,15 +80,8 @@ class _ForumState extends State<ForumScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FloatingActionButton(
-                    heroTag: "add",
-                    //backgroundColor: Colors.blueGrey,
-                    child: Icon(Icons.add),
-                    onPressed: () {
-                      _navigationToCreateProject(context);
-                    }),
-                FloatingActionButton(
                     heroTag: "search",
-                    //backgroundColor: Colors.blueGrey,
+                    backgroundColor: Colors.blueGrey,
                     child: Icon(Icons.search),
                     onPressed: () {
                       _searchPressed();
@@ -140,10 +133,10 @@ class _ForumState extends State<ForumScreen> {
             controller: _filter,
             decoration: new InputDecoration(
                 prefixIcon: new Icon(Icons.search),
-                hintText: 'Search projects...'));
+                hintText: 'Search forums...'));
       } else {
         this._searchIcon = new Icon(Icons.search);
-        this._appBarTitle = new Text('Projects proposed by the community');
+        this._appBarTitle = new Text('Forums about your projects');
         filteredNames = entryName;
         _filter.clear();
       }
@@ -262,4 +255,4 @@ class _ForumState extends State<ForumScreen> {
 
   void _navigationToCreateProject(BuildContext context) {
   }
-}
+}*/
