@@ -121,21 +121,25 @@ class MapState extends State<MapScreen>{
             onPressed: _zoomin,
             tooltip: 'Zoom In',
             child: Icon(Icons.add_circle_outline_rounded),
+            backgroundColor: Colors.blueGrey
           ),
           FloatingActionButton(
             onPressed: _zoomout,
             tooltip: 'Zoom Out',
             child: Icon(Icons.remove_circle_outline_rounded),
+            backgroundColor: Colors.blueGrey
           ),
           FloatingActionButton(
             onPressed: _updatepoint,
             tooltip: 'Update Location',
             child: Icon(Icons.upgrade_rounded),
+            backgroundColor: Colors.blueGrey
           ),
           FloatingActionButton(
             onPressed: _deletepoint,
             tooltip: 'Delete Location',
             child: Icon(Icons.highlight_remove_rounded),
+            backgroundColor: Colors.blueGrey
           ),
         ],
       ),

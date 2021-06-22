@@ -99,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Container(
                             alignment: Alignment.bottomLeft,
                             padding: const EdgeInsets.only(bottom: 8),
-                            width: 50.0,
+                            width: 200.0,
                             margin:
                                 const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
                             //padding: const EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
@@ -109,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 4.0, 0.0),
                         child: Text(user.fullname,
                             style: TextStyle(
-                                fontSize: 30.0, color: Colors.white))),
+                                fontSize: 40.0, color: Colors.white))),
                   ],
                 )),
                 Icon(Icons.chat, color: Colors.white)
@@ -297,18 +297,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   CircleAvatar buildPhoto(User user) {
     try {
       if ((user.photo == null) || (user.photo == "")) {
-        return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
+        return CircleAvatar(child: FlutterLogo(size: 100.00), radius: 100);
       } else {
         try {
-          return CircleAvatar(backgroundImage: NetworkImage(user.photo!));
+          return CircleAvatar(
+              backgroundImage: NetworkImage(user.photo!), radius: 100);
         } catch (e) {
           print(e);
-          return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
+          return CircleAvatar(child: FlutterLogo(size: 100.00), radius: 100);
         }
       }
     } catch (e) {
       print(e);
-      return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
+      return CircleAvatar(child: FlutterLogo(size: 100.00), radius: 100);
     }
   }
 

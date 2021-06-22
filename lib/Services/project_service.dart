@@ -13,8 +13,6 @@ class ProjectService {
     Environment _environment = Environment();
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
-      print(token);
-      print("token printed above");
     } catch (err) {
       print(err);
     }
@@ -33,6 +31,7 @@ class ProjectService {
               .map((collabJson) => User.fromJSONnoPass(collabJson))
               .toList();
           print(projectJson["name"]);
+
           projects.add(Project(
               projectJson["name"],
               [],
@@ -76,7 +75,6 @@ class ProjectService {
       "owner": uname
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     // finally the POST HTTP operation
     return await http
         .post(Uri.parse(_environment.url() + "projects/add"),
@@ -100,8 +98,6 @@ class ProjectService {
 
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
-      print(token);
-      print("token printed above");
     } catch (err) {
       print(err);
     }
@@ -111,7 +107,6 @@ class ProjectService {
       "projectName": p.name,
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     final response = await http.post(
         Uri.parse(_environment.url() + 'projects/apply'),
         headers: {
@@ -138,8 +133,6 @@ class ProjectService {
 
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
-      print(token);
-      print("token printed above");
     } catch (err) {
       print(err);
     }
@@ -149,7 +142,6 @@ class ProjectService {
       "uname": uname,
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     final response = await http.post(
         Uri.parse(_environment.url() + 'projects/acceptMember'),
         headers: {
@@ -176,8 +168,6 @@ class ProjectService {
 
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
-      print(token);
-      print("token printed above");
     } catch (err) {
       print(err);
     }
@@ -187,7 +177,6 @@ class ProjectService {
       "uname": uname,
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     final response = await http.post(
         Uri.parse(_environment.url() + 'projects/rejectMember'),
         headers: {

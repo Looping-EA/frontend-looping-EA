@@ -184,26 +184,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: () => print('Login with Facebook'),
-                            child: Container(
-                              height: 40.0,
-                              width: 40.0,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      offset: Offset(0, 2),
-                                      blurRadius: 6.0,
-                                    )
-                                  ],
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage('images/facebook.png'))),
-                            ),
-                          ),
                           InkWell(
                             onTap: () => signInGoogle(),
                             child: Container(
@@ -213,17 +193,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                       image: AssetImage('images/google.png'))),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => print('Login with Apple'),
-                            child: Container(
-                              height: 40.0,
-                              width: 40.0,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: AssetImage('images/apple.png'))),
                             ),
                           ),
                         ],
