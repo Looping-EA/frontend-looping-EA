@@ -71,15 +71,6 @@ class _SideMenuState extends State<SideMenu> {
           },
         ),
         ListTile(
-          title: Text("FAQS",
-              style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.help),
-          onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => FaqsScreen()));
-          },
-        ),
-        ListTile(
           title: Text("CREATE PROJECT",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.add),
@@ -92,29 +83,10 @@ class _SideMenuState extends State<SideMenu> {
           },
         ),
         ListTile(
-          title: Text("CONTACT",
-              style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.contact_page),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ContactoScreen(user: this.user)));
-          },
-        ),
-        ListTile(
           title: Text("FORUMS",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.forum),
         ),
-        ListTile(
-            title: Text("LOG OUT",
-                style: TextStyle(fontSize: 18.0, color: Colors.black)),
-            leading: const Icon(Icons.exit_to_app),
-            onTap: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => LoginPage()));
-            }),
         ListTile(
           title: Text("MAP",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
@@ -124,6 +96,17 @@ class _SideMenuState extends State<SideMenu> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => MapScreen(user: this.user)));
+          },
+        ),
+        ListTile(
+          title: Text("CONTACT",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.contact_page),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ContactoScreen(user: this.user)));
           },
         ),
         ListTile(
@@ -139,6 +122,14 @@ class _SideMenuState extends State<SideMenu> {
           },
         ),
         ListTile(
+            title: Text("LOG OUT",
+                style: TextStyle(fontSize: 18.0, color: Colors.black)),
+            leading: const Icon(Icons.exit_to_app),
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => LoginPage()));
+            }),
+        ListTile(
           title: Text("DELETE ACCOUNT",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.delete_forever_sharp),
@@ -153,7 +144,16 @@ class _SideMenuState extends State<SideMenu> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => StadisticsScreen(user: this.user)));
-            })
+            }),
+        ListTile(
+          title: Text("FAQS",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.help),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => FaqsScreen()));
+          },
+        )
       ],
     ));
   }

@@ -22,8 +22,8 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   TextEditingController unameEditingController = TextEditingController();
   TextEditingController passwordEditingController = TextEditingController();
-  TextEditingController emailEditingController= TextEditingController();
-  TextEditingController fullNameEditingController= TextEditingController();
+  TextEditingController emailEditingController = TextEditingController();
+  TextEditingController fullNameEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,27 +60,27 @@ class RegisterScreenState extends State<RegisterScreen> {
                             ))
                       ],
                     ),
-		    Form(
-			key:_formKey,			    
+                    Form(
+                        key: _formKey,
                         child: SizedBox(
                             width: 600,
                             child: Column(
                               children: [
                                 TextFormField(
-                                controller: unameEditingController,  
-				validator: (value) {
-                                      if (value!.contains(" ")) {
-                                        return 'may not contain spaces';
-                                      } 
-				      if (value.length < 5) {
-				      	return 'your username must be 5 characters long';
-				      }
-				      if(value.isEmpty){
-				      	return 'value cannot be null';
-				      }
-				      return null;
-                                },
-                                decoration: InputDecoration(
+                                  controller: unameEditingController,
+                                  validator: (value) {
+                                    if (value!.contains(" ")) {
+                                      return 'may not contain spaces';
+                                    }
+                                    if (value.length < 5) {
+                                      return 'your username must be 5 characters long';
+                                    }
+                                    if (value.isEmpty) {
+                                      return 'value cannot be null';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
                                       hintText: 'Enter your Username',
                                       labelText: "Username",
                                       border: OutlineInputBorder(
@@ -89,12 +89,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 SizedBox(height: 20),
                                 TextFormField(
-                                controller: emailEditingController,  
-				validator:(value) {
-					if(value!.isEmpty){
-						return "field must not be empty";
-					}	
-				},
+                                  controller: emailEditingController,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "field must not be empty";
+                                    }
+                                  },
                                   decoration: InputDecoration(
                                       hintText: 'Enter your Email',
                                       labelText: "Email",
@@ -104,13 +104,13 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 SizedBox(height: 20),
                                 TextFormField(
-                                controller: fullNameEditingController,  
-				validator:(value) {
-					if(value!.isEmpty){
-						return "field must not be empty";
-					}	
-					return null;
-				  },
+                                  controller: fullNameEditingController,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "field must not be empty";
+                                    }
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                       hintText: 'Enter your Full Name',
                                       labelText: "Full Name",
@@ -120,15 +120,19 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 SizedBox(height: 20),
                                 TextFormField(
-                                controller: passwordEditingController,  
-				validator:(value) {
-					if(value!.contains(" ")){return "field must not contain whitespaces";}
-					if(value.length < 5) {return "Minimum length requirement must be 5 characters long.";}
-					if(value.isEmpty){
-						return "field must not be empty";
-					}
-					return null;	
-				  },
+                                    controller: passwordEditingController,
+                                    validator: (value) {
+                                      if (value!.contains(" ")) {
+                                        return "field must not contain whitespaces";
+                                      }
+                                      if (value.length < 5) {
+                                        return "Minimum length requirement must be 5 characters long.";
+                                      }
+                                      if (value.isEmpty) {
+                                        return "field must not be empty";
+                                      }
+                                      return null;
+                                    },
                                     decoration: InputDecoration(
                                         hintText: 'Enter your Password',
                                         labelText: "Password",
@@ -180,26 +184,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: () => print('Login with Facebook'),
-                            child: Container(
-                              height: 40.0,
-                              width: 40.0,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      offset: Offset(0, 2),
-                                      blurRadius: 6.0,
-                                    )
-                                  ],
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage('images/facebook.png'))),
-                            ),
-                          ),
                           InkWell(
                             onTap: () => signInGoogle(),
                             child: Container(
@@ -209,17 +193,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                       image: AssetImage('images/google.png'))),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () => print('Login with Apple'),
-                            child: Container(
-                              height: 40.0,
-                              width: 40.0,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: AssetImage('images/apple.png'))),
                             ),
                           ),
                         ],
@@ -257,7 +230,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       // http?
       try {
         await userService.registerUser(_user).then((value) async {
-          if(value.uname != ""){
+          if (value.uname != "") {
             await setUsernameToSharedPref(value.uname);
             Navigator.push(
                 context,
