@@ -26,7 +26,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormBuilderState>();
-  final _user = User("", "", "", "", "", "", [], [], "");
+  final _user = User("", "", "", "", "", "", [], [], [], "");
 
   bool _remeberMe = false;
 
@@ -290,6 +290,7 @@ class _LoginPageState extends State<LoginPage> {
           userGoogle.email,
           "",
           "",
+          [],
           [],
           [],
           "");

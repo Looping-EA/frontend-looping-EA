@@ -14,7 +14,7 @@ import '../../Shared/google_signin_api.dart';
 import 'package:frontend_looping_ea/styles.dart';
 
 class RegisterScreenState extends State<RegisterScreen> {
-  final _user = User("", "", "", "", "", "", [], [], "");
+  final _user = User("", "", "", "", "", "", [], [], [], "");
 
   final _formKey = GlobalKey<FormState>();
 
@@ -261,6 +261,7 @@ class RegisterScreenState extends State<RegisterScreen> {
           userGoogle.email,
           "",
           "",
+          [],
           [],
           [],
           "");

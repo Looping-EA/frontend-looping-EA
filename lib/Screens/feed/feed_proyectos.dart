@@ -87,13 +87,16 @@ class _FeedProyectosState extends State<FeedProyectos> {
                     onPressed: () {
                       _navigationToCreateProject(context);
                     }),
-                FloatingActionButton(
-                    heroTag: "search",
-                    child: Icon(Icons.search),
-                    backgroundColor: Colors.blueGrey,
-                    onPressed: () {
-                      _searchPressed();
-                    }),
+                Padding(
+                  padding: EdgeInsets.only(top: 5),
+                  child: FloatingActionButton(
+                      heroTag: "search",
+                      child: Icon(Icons.search),
+                      onPressed: () {
+                        _searchPressed();
+                      }),
+                ),
+
               ],
             )));
   }
