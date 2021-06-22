@@ -27,7 +27,7 @@ class UserService {
       User u = User.grabUnameFromJSON(json.decode(response.body));
       return u;
     } else
-      return new User("", "", "", "", "", "", [], [], [], "");
+      return new User("", "", "", "", "", "", [], [], "");
   }
 
   Future<int> getUsers() async {
@@ -110,30 +110,6 @@ class UserService {
     final bodyParsed = json.encode(body);
     final response = await http.post(
         Uri.parse(_environment.url() + 'users/updateAboutMe'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
-        },
-        body: bodyParsed);
-    if (response.statusCode == 201) {
-      return 0;
-    } else
-      return 1;
-  }
-
-  Future<int> recommendUser(String uname, String userRecommended) async {
-    String? token;
-    Environment _environment = Environment();
-    try {
-      await getTokenFromSharedPrefs().then((value) => token = value);
-    } catch (err) {
-      print(err);
-    }
-    final body = {"user": uname, "userRecommended": userRecommended};
-    final bodyParsed = json.encode(body);
-    print(bodyParsed);
-    final response = await http.post(
-        Uri.parse(_environment.url() + 'users/recommend'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token'
@@ -271,7 +247,7 @@ class UserService {
         User u = User.fromJson(payload);
         return u;
       } else {
-        return new User("", "", "", "", "", "", [], [], [], "");
+        return new User("", "", "", "", "", "", [], [], "");
       }
     });
   }
@@ -298,7 +274,7 @@ class UserService {
       User u = User.grabUnameFromJSON(payload);
       return u;
     } else {
-      return new User("", "", "", "", "", "", [], [], [], "");
+      return new User("", "", "", "", "", "", [], [], "");
     }
   }
 }
