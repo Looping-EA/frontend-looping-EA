@@ -18,13 +18,15 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   final User user;
   final String userVisited;
-  User visited = new User("", "", "", "", "", "", [], [], "");
+  User visited = new User("", "", "", "", "", "", [], [], [], "");
   _ProfileViewState(this.user, this.userVisited);
   String? initialAboutMe = "";
   String? initialSkills = "";
   String? candidate = "";
+  Color _iconColor = Colors.white;
   UserService userService = new UserService();
   String proyectosMios = "No projects until now";
+  String recommendations = "0";
   String? valueText = "";
 
   @override
@@ -45,6 +47,15 @@ class _ProfileViewState extends State<ProfileView> {
           initialSkills = "Write here your skills!";
         } else {
           initialSkills = visited.skills;
+        }
+        if (visited.recomendations.length != 0) {
+          recommendations = visited.recomendations.length.toString();
+          int i = 0;
+          for (i; i < visited.recomendations.length; i++) {
+            if (visited.recomendations[i].uname == user.uname) {
+              _iconColor = Colors.yellow;
+            }
+          }
         }
       });
     });
@@ -101,6 +112,11 @@ class _ProfileViewState extends State<ProfileView> {
                                 fontSize: 30.0, color: Colors.white))),
                   ],
                 )),
+                IconButton(
+                    icon: Icon(Icons.star, color: _iconColor),
+                    onPressed: () {
+                      recommend(user.uname, userVisited);
+                    }),
                 Icon(Icons.chat, color: Colors.white)
               ],
             ),
@@ -171,6 +187,8 @@ class _ProfileViewState extends State<ProfileView> {
               ],
             ),
           ),
+          Container(
+              child: Text("Recommended by " + recommendations + " loopers!")),
         ],
       ),
     );
@@ -194,12 +212,18 @@ class _ProfileViewState extends State<ProfileView> {
     }
   }
 
-  void findCandidate(User userVisited) async {
-    String candidate = "";
-    await getCandidateUsernameFromSharedPref().then((value) async {
-      await userService.getUser(value).then((value) async {
-        userVisited = value;
-      });
+  void recommend(String user, String userRecommended) async {
+    await userService.recommendUser(user, userRecommended).then((value) async {
+      if (value == 0) {
+        setState(() {
+          _iconColor = Colors.yellow;
+        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Successfully recommended')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('You can not recommend again')));
+      }
     });
   }
 
