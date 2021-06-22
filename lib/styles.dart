@@ -7,7 +7,6 @@ class Styles {
   static final Color _textColorRegister = _hexToColor('000000');
   static final Color _textColorShadowed = _hexToColor('005b96');
   static final Color colorBackground = _hexToColor('03396c');
-  static final Color colorBackground2 = Colors.blueGrey;
   static final Color colorRelleno = _hexToColor('e5e5e5');
   static final linkedText =
       TextStyle(color: Colors.blue, decoration: TextDecoration.underline);

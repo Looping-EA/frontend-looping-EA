@@ -15,7 +15,7 @@ class Project {
       this.description, this.collaboration, this.owner, this.entry);
 
   factory Project.fromJsonHereditary(dynamic json) {
-    User u = new User("", "", "", "", "", "", [], [], [], "");
+    User u = new User("", "", "", "", "", "", [], [], "");
     return Project(json['name'] as String, [], json['creationDate'] as String,
          json['description'] as String, [] ,u, []);
   }

@@ -32,7 +32,7 @@ class ContactoState extends State<ContactoScreen> {
 
         //The drawer opens a side menu
         drawer: SideMenu(user: this.user),
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Styles.colorBackground,
         body: Center(
             child: Container(
                 width: 700,
@@ -98,7 +98,7 @@ class ContactoState extends State<ContactoScreen> {
                             child: ElevatedButton(
                                 onPressed: _onPressButton,
                                 style: ElevatedButton.styleFrom(
-                                  primary: Styles.colorBackground2,
+                                  primary: Styles.colorBackground,
                                 ),
                                 child: Text(
                                   'Send!',
@@ -126,7 +126,7 @@ class ContactoState extends State<ContactoScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => FeedProyectos(user: this.user)));
+                  builder: (context) => ContactoScreen(user: this.user)));
         });
       } catch (err) {
         print(err);

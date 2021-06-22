@@ -14,6 +14,7 @@ class FaqService{
       var faqsJson = json.decode(response.body);
       try {
         for (var faqJson in faqsJson) {
+          print(faqJson["quest"]);
           faqs.add(Faq(faqJson["quest"], faqJson["resp"]));
         }
       } catch (e) {

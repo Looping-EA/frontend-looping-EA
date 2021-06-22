@@ -17,27 +17,28 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
   bool? securityChecked = false;
   bool? privacityChecked = false;
 
-  String mynotificaciones = "";
-  String myseguridad = "";
-  String myprivacidad = "";
-
-  List<Configuration> conf = [];
+  String mynotificaciones = "no";
+  String myseguridad = "no";
+  String myprivacidad = "no";
 
   @override
   void initState() {
     super.initState();
-    getConfiguracions().then((result) {
+    if (mynotificaciones == "si") {
+      /*notificationChecked = true;
+      bool val = true;
       setState(() {
-        conf=result;
-        _initialisevalues();
-
-      });
-    });
+        notificationChecked = val;
+      });*/
+    } else if (myseguridad == "si") {
+      securityChecked = true;
+    } else if (myprivacidad == "si") {
+      privacityChecked = true;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    //_initialisevalues();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
@@ -90,93 +91,36 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
 
   void _buscar() {
     print(mynotificaciones);
-
     if (notificationChecked == true) {
       mynotificaciones = "si";
-      addorupdate();
+      _update();
       print(mynotificaciones);
-    } 
-    if (securityChecked == true) {
+    } else if (securityChecked == true) {
       myseguridad = "si";
-      addorupdate();
-    }
-    if (privacityChecked == true) {
+      _update();
+    } else if (privacityChecked == true) {
       myprivacidad = "si";
-      addorupdate();
-    }
-    if (notificationChecked == false) {
+      _update();
+    } else if (notificationChecked == false) {
       mynotificaciones = "no";
-      addorupdate();
-    }
-    if (securityChecked == false) {
+      _update();
+    } else if (securityChecked == false) {
       myseguridad = "no";
-      addorupdate();
-    }
-    if (privacityChecked == false) {
+      _update();
+    } else if (privacityChecked == false) {
       myprivacidad = "no";
-      addorupdate();
+      _update();
     }
   }
 
-  void _initialisevalues(){
-    var aux = 0;
-    for(int i=0; i<conf.length; i++){
-      if(user.uname == conf[i].uname){
-        mynotificaciones = conf[i].notificaciones;
-        if(mynotificaciones == "si"){
-          notificationChecked = true;
-        }else{
-          notificationChecked = false;
-        }
-        myprivacidad = conf[i].privacidad;
-        if(myprivacidad == "si"){
-          privacityChecked = true;
-        }else{
-          privacityChecked = false;
-        }
-        myseguridad = conf[i].seguridad;
-        if(myseguridad == "si"){
-          securityChecked = true;
-        }else{
-          securityChecked = false;
-        }
-        aux = 1;
-      }
-    }
-    if(aux == 0){
-      mynotificaciones = "no";
-      myprivacidad = "no";
-      myseguridad = "no";
-      notificationChecked = false;
-      securityChecked = false;
-      privacityChecked = false;
-    }
-    /*setState(() {
-      
-    });*/
-  }
-
-  void addorupdate(){
-    var aux = 0;
-    for(int i=0; i<conf.length; i++){
-      if(user.uname == conf[i].uname){
-        _updateConfiguracion();
-        aux = 1;
-      }
-    }
-    if(aux == 0){
-      _add();
-    }
-  }
-
-  //Add Service
-
-  Future<Configuration> _add() async {
+  Future<Configuration> _update() async {
     Configuration configuration = new Configuration("", "", "", "");
 
     String? token;
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
+      //print(token);
+      //print("token printed above");
     } catch (err) {
       print(err);
     }
@@ -192,77 +136,7 @@ class ConfigurationScreenState extends State<ConfigurationScreen> {
 
     // finally the PUT HTTP operation
     return await http
-        .post(Uri.parse("http://localhost:8080/api/configuracion/add"),
-            headers: {
-              'Authorization': 'Bearer $token',
-              'Content-Type': 'application/json'
-            },
-            body: bodyParsed)
-        .then((http.Response response) {
-      if (response.statusCode == 201) {
-        return Configuration.fromJson(json.decode(response.body));
-      } else {
-        return new Configuration("", "", "", "");
-      }
-    });
-  }
-
-  //Get Service
-
-  Future<List<Configuration>> getConfiguracions() async {
-    List<Configuration> configurations = [];
-    String? token;
-    try {
-      await getTokenFromSharedPrefs().then((value) => token = value);
-    } catch (err) {
-      print(err);
-    }
-
-    final response = await http
-        .get(Uri.parse('http://localhost:8080/api/configuracion/'), headers: {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json'
-    });
-    if (response.statusCode == 201) {
-      var locationsJson = json.decode(response.body);
-      try {
-        for (var locationJson in locationsJson) {
-          configurations.add(Configuration(
-              locationJson["uname"],
-              locationJson["notificaciones"],
-              locationJson["seguridad"],
-              locationJson["privacidad"]));
-        }
-      } catch (e) {
-        print(e);
-      }
-    }
-    return configurations;
-  }
-
-  //Update Service
-  Future<Configuration> _updateConfiguracion() async {
-    Configuration configuration = new Configuration("", "", "", "");
-
-    String? token;
-    try {
-      await getTokenFromSharedPrefs().then((value) => token = value);
-    } catch (err) {
-      print(err);
-    }
-
-    // create JSON object
-    final body = {
-      "uname": user.uname,
-      "notificaciones": mynotificaciones,
-      "seguridad": myseguridad,
-      "privacidad": myprivacidad
-    };
-    final bodyParsed = json.encode(body);
-
-    // finally the PUT HTTP operation
-    return await http
-        .put(Uri.parse("http://localhost:8080/api/configuracion/update"),
+        .put(Uri.parse("http://localhost:8080/api/configuracions/add"),
             headers: {
               'Authorization': 'Bearer $token',
               'Content-Type': 'application/json'
