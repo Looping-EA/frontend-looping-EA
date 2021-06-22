@@ -1,10 +1,10 @@
-import 'package:frontend_looping_ea/Models/photo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Models/user.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/environment.dart';
+import 'package:frontend_looping_ea/Models/project.dart';
 
 class UserService {
   Future<User> getUser(uname) async {
@@ -286,6 +286,34 @@ class UserService {
       return u;
     } else {
       return new User("", "", "", "", "", "", [], [], "");
+    }
+  }
+
+  Future <List<Project>> getUserProject(String uname) async {
+    String? token;
+    Environment _environment = Environment();
+    List<Project> _projects = [];
+    try {
+      await getTokenFromSharedPrefs().then((value) => token = value);
+    } catch (err) {
+      print(err);
+    }
+    final response = await http.get(
+        Uri.parse(_environment.url() + "users/$uname/getProjects"),
+        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'},
+        );
+    if(response.statusCode == 200){
+      var projectsJson = json.decode(response.body);
+      try{
+        for (var projectJson in projectsJson){
+         Project project = Project.fromJson(projectJson);
+         _projects.add(project);
+        }
+      } catch (e) {
+        print(e);
+        return [];
+      }
+      return _projects;
     }
   }
 }
