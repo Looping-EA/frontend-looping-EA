@@ -1,61 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/project.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
-import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
+import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
+import 'package:frontend_looping_ea/Shared/side_menu.dart';
 
 // ignore: must_be_immutable
-class ProfileScreen extends StatefulWidget {
+class ProfileView extends StatefulWidget {
   final User user;
-  ProfileScreen({Key? key, required this.user}) : super(key: key);
+  final String userVisited;
+  ProfileView(this.user, this.userVisited);
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState(this.user);
+  _ProfileViewState createState() => _ProfileViewState(user, userVisited);
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileViewState extends State<ProfileView> {
   final User user;
-  _ProfileScreenState(this.user) : super();
-  bool _isEditingAboutMe = false;
-  bool _isEditingSkills = false;
-  bool _isEditingPhoto = false;
-  bool _isEditingProjects = false;
-  late TextEditingController _editingAboutMe;
-  late TextEditingController _editingSkills;
-  TextEditingController _textFieldController = TextEditingController();
-  late String? initialAboutMe = user.aboutMe;
-  late String? initialSkills = user.skills;
-  String proyectosMios = "No projects until now";
-  String? valueText = "";
-
+  final String userVisited;
+  User visited = new User("", "", "", "", "", "", [], [], [], "");
+  _ProfileViewState(this.user, this.userVisited);
+  String? initialAboutMe = "";
+  String? initialSkills = "";
+  String? candidate = "";
+  Color _iconColor = Colors.white;
   UserService userService = new UserService();
+  String proyectosMios = "No projects until now";
+  String recommendations = "0";
+  String? valueText = "";
 
   @override
   void initState() {
     super.initState();
-    _editingAboutMe = TextEditingController(text: initialAboutMe);
-    _editingSkills = TextEditingController(text: initialSkills);
-    if (user.projectsOwned.length != 0) {
-      proyectosMios = buildProjectsOwned(user.projectsOwned);
-    }
-    if (user.aboutMe == null) {
-      initialAboutMe = "Hello!";
-    } else {
-      initialAboutMe = user.aboutMe;
-    }
-    if (user.skills == null) {
-      initialSkills = "Write here your skills!";
-    } else {
-      initialSkills = user.skills;
-    }
-  }
-
-  @override
-  void dispose() {
-    _editingAboutMe.dispose();
-    _editingSkills.dispose();
-    _textFieldController.dispose();
-    super.dispose();
+    userService.getUser(userVisited).then((value) {
+      setState(() {
+        visited = value;
+        if (visited.projectsOwned.length != 0) {
+          proyectosMios = buildProjectsOwned(visited.projectsOwned);
+        }
+        if (visited.aboutMe == null) {
+          initialAboutMe = "Hello!";
+        } else {
+          initialAboutMe = visited.aboutMe;
+        }
+        if (visited.skills == null) {
+          initialSkills = "Write here your skills!";
+        } else {
+          initialSkills = visited.skills;
+        }
+        if (visited.recomendations.length != 0) {
+          recommendations = visited.recomendations.length.toString();
+          int i = 0;
+          for (i; i < visited.recomendations.length; i++) {
+            if (visited.recomendations[i].uname == user.uname) {
+              _iconColor = Colors.yellow;
+            }
+          }
+        }
+      });
+    });
   }
 
   @override
@@ -93,25 +96,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     //ImageBanner(),
                     InkWell(
-                        onTap: () {
-                          _displayTextInputDialog(context);
-                        },
                         child: Container(
                             alignment: Alignment.bottomLeft,
                             padding: const EdgeInsets.only(bottom: 8),
-                            width: 200.0,
+                            width: 50.0,
                             margin:
                                 const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
                             //padding: const EdgeInsets.fromLTRB(4.0, 4.0, 4.0, 4.0),
-                            child: buildPhoto(user))),
+                            child: buildPhoto(visited))),
                     Container(
                         alignment: Alignment.bottomLeft,
                         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 4.0, 0.0),
-                        child: Text(user.fullname,
+                        child: Text(visited.fullname,
                             style: TextStyle(
-                                fontSize: 40.0, color: Colors.white))),
+                                fontSize: 30.0, color: Colors.white))),
                   ],
                 )),
+                IconButton(
+                    icon: Icon(Icons.star, color: _iconColor),
+                    onPressed: () {
+                      recommend(user.uname, userVisited);
+                    }),
                 Icon(Icons.chat, color: Colors.white)
               ],
             ),
@@ -133,9 +138,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black,
                               fontWeight: FontWeight.bold))),
                   Container(
-                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                    child: _editAboutMeTextField(),
-                  )
+                      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                      child: Text(initialAboutMe!))
                 ]),
           ),
 
@@ -156,7 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontWeight: FontWeight.bold))),
                   Container(
                     padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                    child: _editSkillsTextField(),
+                    child: Text(initialSkills!),
                   )
                 ]),
           ),
@@ -183,134 +187,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
+          Container(
+              child: Text("Recommended by " + recommendations + " loopers!")),
         ],
       ),
     );
   }
 
-  void _displayTextInputDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Introduce an URL'),
-            content: TextField(
-              onChanged: (value) {
-                setState(() {
-                  valueText = value;
-                });
-              },
-              controller: _textFieldController,
-              decoration: InputDecoration(hintText: "URL"),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                color: Colors.blue,
-                textColor: Colors.white,
-                child: Text('CANCEL'),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-              FlatButton(
-                color: Colors.blue,
-                textColor: Colors.white,
-                child: Text('OK'),
-                onPressed: () {
-                  setState(() async {
-                    onPressOK(user.uname, _textFieldController.text);
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-            ],
-          );
-        });
-  }
-
-  Widget _editAboutMeTextField() {
-    if (_isEditingAboutMe)
-      return Center(
-        child: TextField(
-          onSubmitted: (newValue) {
-            setState(() {
-              initialAboutMe = newValue;
-              _isEditingAboutMe = false;
-              userService.updateAboutMe(user.uname, newValue);
-              user.aboutMe = newValue;
-            });
-          },
-          autofocus: true,
-          controller: _editingAboutMe,
-        ),
-      );
-    return InkWell(
-        onTap: () {
-          setState(() {
-            _isEditingAboutMe = true;
-          });
-        },
-        child: Text(initialAboutMe.toString(),
-            style: TextStyle(color: Colors.black, fontSize: 16.0)));
-  }
-
-  Widget _editSkillsTextField() {
-    if (_isEditingSkills)
-      return Center(
-        child: TextField(
-          onSubmitted: (newValue) {
-            setState(() {
-              initialSkills = newValue;
-              _isEditingSkills = false;
-              userService.updateSkills(user.uname, newValue);
-              user.skills = newValue;
-            });
-          },
-          autofocus: true,
-          controller: _editingSkills,
-        ),
-      );
-    return InkWell(
-        onTap: () {
-          setState(() {
-            _isEditingSkills = true;
-          });
-        },
-        child: Text(initialSkills.toString(),
-            style: TextStyle(color: Colors.black, fontSize: 16.0)));
-  }
-
-  void onPressOK(String user, String url) async {
-    await userService.updatePhoto(user, url).then((value) async {
-      if (value == 0) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Photo updated')));
-      } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error')));
-      }
-    });
-  }
-
   CircleAvatar buildPhoto(User user) {
     try {
       if ((user.photo == null) || (user.photo == "")) {
-        return CircleAvatar(child: FlutterLogo(size: 100.00), radius: 100);
+        return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
       } else {
         try {
-          return CircleAvatar(
-              backgroundImage: NetworkImage(user.photo!), radius: 100);
+          return CircleAvatar(backgroundImage: NetworkImage(user.photo!));
         } catch (e) {
           print(e);
-          return CircleAvatar(child: FlutterLogo(size: 100.00), radius: 100);
+          return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
         }
       }
     } catch (e) {
       print(e);
-      return CircleAvatar(child: FlutterLogo(size: 100.00), radius: 100);
+      return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
     }
+  }
+
+  void recommend(String user, String userRecommended) async {
+    await userService.recommendUser(user, userRecommended).then((value) async {
+      if (value == 0) {
+        setState(() {
+          _iconColor = Colors.yellow;
+        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Successfully recommended')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('You can not recommend again')));
+      }
+    });
   }
 
   String buildProjectsOwned(List<Project> projectsOwned) {
