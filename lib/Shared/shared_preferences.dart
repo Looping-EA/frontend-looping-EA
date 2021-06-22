@@ -12,18 +12,6 @@ Future<String?> getUsernameFromSharedPref() async {
   return username;
 }
 
-Future<void> setCandidateUsernameToSharedPref(String uname) async {
-  print("setting candidate $uname");
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('candidate', uname);
-}
-
-Future<String?> getCandidateUsernameFromSharedPref() async {
-  final prefs = await SharedPreferences.getInstance();
-  final candidate = await prefs.getString('candidate');
-  return candidate;
-}
-
 Future<void> setTokenToSharedPref(String token) async {
   print("setting token $token");
   final prefs = await SharedPreferences.getInstance();

@@ -36,14 +36,16 @@ class _SideMenuState extends State<SideMenu> {
         child: ListView(
       children: <Widget>[
         UserAccountsDrawerHeader(
-            accountName: new Text(this.user.fullname,
-                style: TextStyle(fontSize: 20.0, color: Colors.white)),
-            accountEmail: new Text(this.user.email,
-                style: TextStyle(fontSize: 15.0, color: Colors.white)),
-            decoration: BoxDecoration(
-              color: Colors.grey,
-            ),
-            currentAccountPicture: buildPhoto(user)),
+          accountName: new Text(this.user.fullname,
+              style: TextStyle(fontSize: 20.0, color: Colors.white)),
+          accountEmail: new Text(this.user.email,
+              style: TextStyle(fontSize: 15.0, color: Colors.white)),
+          decoration: BoxDecoration(
+            color: Colors.grey,
+          ),
+          currentAccountPicture:
+              const CircleAvatar(child: FlutterLogo(size: 42.00)),
+        ),
         ListTile(
           title: Text("HOME",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
@@ -154,24 +156,6 @@ class _SideMenuState extends State<SideMenu> {
         )
       ],
     ));
-  }
-
-  CircleAvatar buildPhoto(User user) {
-    try {
-      if ((user.photo == null) || (user.photo == "")) {
-        return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
-      } else {
-        try {
-          return CircleAvatar(backgroundImage: NetworkImage(user.photo!));
-        } catch (e) {
-          print(e);
-          return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
-        }
-      }
-    } catch (e) {
-      print(e);
-      return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
-    }
   }
 
   Future<void> _createAlertDialog(BuildContext context, String uname) {
