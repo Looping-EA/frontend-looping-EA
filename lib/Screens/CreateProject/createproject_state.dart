@@ -28,7 +28,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
 
         //The drawer opens a side menu
         drawer: SideMenu(user: this.user),
-        backgroundColor: Styles.colorBackground,
+        backgroundColor: Colors.blueGrey,
         body: Center(
             child: Container(
                 width: 700,
@@ -108,7 +108,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
                             child: ElevatedButton(
                                 onPressed: _onPressButton,
                                 style: ElevatedButton.styleFrom(
-                                  primary: Styles.colorBackground,
+                                  primary: Styles.colorBackground2,
                                 ),
                                 child: Text(
                                   'Create',

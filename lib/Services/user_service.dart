@@ -24,11 +24,10 @@ class UserService {
       'Authorization': 'Bearer $token'
     });
     if (response.statusCode == 200) {
-      print(response.body);
       User u = User.grabUnameFromJSON(json.decode(response.body));
       return u;
     } else
-      return new User("", "", "", "", "", "", [], [], "");
+      return new User("", "", "", "", "", "", [], [], [], "");
   }
 
   Future<int> getUsers() async {
@@ -52,7 +51,6 @@ class UserService {
           'Authorization': 'Bearer $token'
         });
     if (response.statusCode == 201) {
-      print(response.body);
       var users = json.decode(response.body);
       int cont = 0;
       try {
@@ -90,7 +88,6 @@ class UserService {
         },
         body: bodyParsed);
 
-    print(response.statusCode);
     if (response.statusCode == 201) {
       return exito;
     } else
@@ -111,9 +108,32 @@ class UserService {
       "aboutMe": aboutMe,
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     final response = await http.post(
         Uri.parse(_environment.url() + 'users/updateAboutMe'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: bodyParsed);
+    if (response.statusCode == 201) {
+      return 0;
+    } else
+      return 1;
+  }
+
+  Future<int> recommendUser(String uname, String userRecommended) async {
+    String? token;
+    Environment _environment = Environment();
+    try {
+      await getTokenFromSharedPrefs().then((value) => token = value);
+    } catch (err) {
+      print(err);
+    }
+    final body = {"user": uname, "userRecommended": userRecommended};
+    final bodyParsed = json.encode(body);
+    print(bodyParsed);
+    final response = await http.post(
+        Uri.parse(_environment.url() + 'users/recommend'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token'
@@ -137,7 +157,6 @@ class UserService {
     }
     final body = {"notification": notification, "user": user};
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     final response = await http.delete(
         Uri.parse(_environment.url() + 'notification/delete'),
         headers: {
@@ -156,13 +175,11 @@ class UserService {
     Environment _environment = Environment();
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
-      print(token);
     } catch (err) {
       print(err);
     }
     final body = {"user": user, "imagePath": url};
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     final response = await http.post(
         Uri.parse(_environment.url() + 'photo/create'),
         headers: {
@@ -190,7 +207,6 @@ class UserService {
       "skills": skills,
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     final response = await http.post(
         Uri.parse(_environment.url() + 'users/updateSkills'),
         headers: {
@@ -255,7 +271,7 @@ class UserService {
         User u = User.fromJson(payload);
         return u;
       } else {
-        return new User("", "", "", "", "", "", [], [], "");
+        return new User("", "", "", "", "", "", [], [], [], "");
       }
     });
   }
@@ -268,7 +284,6 @@ class UserService {
       "pswd": user.pswrd,
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
 
     // finally the POST HTTP operation
     final response = await http.post(
@@ -277,15 +292,13 @@ class UserService {
         body: bodyParsed);
     if (response.statusCode == 201) {
       var token = json.decode(response.body);
-      print(token["accessToken"].toString());
       await setTokenToSharedPref(token["accessToken"].toString());
       Map<String, dynamic> payload =
           Jwt.parseJwt(token["accessToken"].toString());
-      print(payload);
       User u = User.grabUnameFromJSON(payload);
       return u;
     } else {
-      return new User("", "", "", "", "", "", [], [], "");
+      return new User("", "", "", "", "", "", [], [], [], "");
     }
   }
 

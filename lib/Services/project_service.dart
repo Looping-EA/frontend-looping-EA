@@ -13,8 +13,6 @@ class ProjectService {
     Environment _environment = Environment();
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
-      print(token);
-      print("token printed above");
     } catch (err) {
       print(err);
     }
@@ -28,13 +26,18 @@ class ProjectService {
       try {
         for (var projectJson in projectsJson) {
           User owner = User.fromJSONnoPass(projectJson["owner"]);
+          var collabObjsJson = projectJson['collaboration'] as List;
+          List<User> _collaboration = collabObjsJson
+              .map((collabJson) => User.fromJSONnoPass(collabJson))
+              .toList();
           print(projectJson["name"]);
+
           projects.add(Project(
               projectJson["name"],
               [],
               projectJson["creationDate"],
               projectJson["description"],
-              [],
+              _collaboration,
               owner,
               []));
         }
@@ -70,7 +73,6 @@ class ProjectService {
       "entry": []
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     // finally the POST HTTP operation
     return await http
         .post(Uri.parse(_environment.url() + "projects/add"),
@@ -94,8 +96,6 @@ class ProjectService {
 
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
-      print(token);
-      print("token printed above");
     } catch (err) {
       print(err);
     }
@@ -105,7 +105,6 @@ class ProjectService {
       "projectName": p.name,
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     final response = await http.post(
         Uri.parse(_environment.url() + 'projects/apply'),
         headers: {
@@ -132,8 +131,6 @@ class ProjectService {
 
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
-      print(token);
-      print("token printed above");
     } catch (err) {
       print(err);
     }
@@ -143,7 +140,6 @@ class ProjectService {
       "uname": uname,
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     final response = await http.post(
         Uri.parse(_environment.url() + 'projects/acceptMember'),
         headers: {
@@ -170,8 +166,6 @@ class ProjectService {
 
     try {
       await getTokenFromSharedPrefs().then((value) => token = value);
-      print(token);
-      print("token printed above");
     } catch (err) {
       print(err);
     }
@@ -181,7 +175,6 @@ class ProjectService {
       "uname": uname,
     };
     final bodyParsed = json.encode(body);
-    print(bodyParsed);
     final response = await http.post(
         Uri.parse(_environment.url() + 'projects/rejectMember'),
         headers: {
