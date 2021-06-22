@@ -1,5 +1,7 @@
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/ProfileView/profileView_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
+import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:frontend_looping_ea/styles.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +90,15 @@ class NotificationsState extends State<NotificationsScreen> {
                           style: Styles.projectText,
                         ))),
                 SizedBox(height: height * 0.1),
+                SizedBox(
+                    width: width * 0.18,
+                    height: height * 0.05,
+                    child: ElevatedButton(
+                        onPressed: visitProfile,
+                        style: ElevatedButton.styleFrom(
+                          primary: Styles.colorBackground,
+                        ),
+                        child: Text('View Profile', style: Styles.button_big)))
               ],
             )));
   }
@@ -106,6 +117,13 @@ class NotificationsState extends State<NotificationsScreen> {
       return "";
     }
   }*/
+
+  void visitProfile() async {
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new ProfileView(user, notif.user!)));
+  }
 
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(

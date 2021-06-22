@@ -28,6 +28,10 @@ class ProjectService {
       try {
         for (var projectJson in projectsJson) {
           User owner = User.fromJSONnoPass(projectJson["owner"]);
+          var collabObjsJson = projectJson['collaboration'] as List;
+          List<User> _collaboration = collabObjsJson
+              .map((collabJson) => User.fromJSONnoPass(collabJson))
+              .toList();
           print(projectJson["name"]);
           projects.add(Project(
               projectJson["name"],
@@ -36,7 +40,7 @@ class ProjectService {
               [],
               [],
               projectJson["description"],
-              [],
+              _collaboration,
               owner));
         }
       } catch (e) {
