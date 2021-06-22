@@ -1,5 +1,7 @@
 import 'package:frontend_looping_ea/Models/user.dart';
+import 'package:frontend_looping_ea/Screens/ProfileView/profileView_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
+import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
 import 'package:frontend_looping_ea/styles.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +90,15 @@ class NotificationsState extends State<NotificationsScreen> {
                           style: Styles.projectText,
                         ))),
                 SizedBox(height: height * 0.1),
+                SizedBox(
+                    width: width * 0.18,
+                    height: height * 0.05,
+                    child: ElevatedButton(
+                        onPressed: visitProfile,
+                        style: ElevatedButton.styleFrom(
+                          primary: Styles.colorBackground,
+                        ),
+                        child: Text('View Profile', style: Styles.button_big)))
               ],
             )));
   }
@@ -106,6 +117,13 @@ class NotificationsState extends State<NotificationsScreen> {
       return "";
     }
   }*/
+
+  void visitProfile() async {
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new ProfileView(user, notif.user!)));
+  }
 
   PreferredSizeWidget _buildBar(BuildContext context) {
     return AppBar(
@@ -126,11 +144,6 @@ class NotificationsState extends State<NotificationsScreen> {
       if (value == 2) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('You already handled this request')));
-      }
-      if (value == 3) {
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error sending the application')));
       }
     });
     await userService.getUser(user.uname).then((value) async {
@@ -154,11 +167,12 @@ class NotificationsState extends State<NotificationsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('You already handled this request')));
       }
-      if (value == 3) {
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error sending the application')));
-      }
+    });
+    await userService.getUser(user.uname).then((value) async {
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => new FeedProyectos(user: value)));
     });
   }
 }
