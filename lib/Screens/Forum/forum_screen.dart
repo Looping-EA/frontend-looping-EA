@@ -4,8 +4,8 @@ import 'package:frontend_looping_ea/Services/user_service.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
 import 'package:frontend_looping_ea/Models/entry.dart';
 import 'package:frontend_looping_ea/Shared/side_menu.dart';
-import 'package:frontend_looping_ea/Screens/Entry/entry_screen.dart';
 import 'package:frontend_looping_ea/Models/project.dart';
+import 'package:frontend_looping_ea/Screens/Forum/projectentry_screen.dart';
 
 class ForumScreen extends StatefulWidget {
   final User user;
@@ -28,6 +28,7 @@ class _ForumState extends State<ForumScreen> {
   List<Project> filteredNames = [];
   Icon _searchIcon = new Icon(Icons.search);
   UserService userService = new UserService();
+  Widget _appBarTitle = new Text('Forums Available');
 
   ProjectService projectService = new ProjectService();
 
@@ -87,7 +88,7 @@ class _ForumState extends State<ForumScreen> {
   }
 
   PreferredSizeWidget _buildBar(BuildContext context) {
-    return AppBar(centerTitle: true, title: new Text('$user.uname Projects'));
+    return AppBar(centerTitle: true, title: this._appBarTitle);
   }
 
   void _searchPressed() {
@@ -147,7 +148,7 @@ class _ForumState extends State<ForumScreen> {
   // Al clicar en un proyecto entrar en el
   void _navigationToProject(BuildContext context,Project entry, User user) {
     /*Navigator.push(context,
-        MaterialPageRoute(builder: (context) => EntryScreen(entry: entry, user: user)));
+        MaterialPageRoute(builder: (context) => ProjectEntry(entry: entry, user: user)));
   */}
 
 }

@@ -5,6 +5,7 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/environment.dart';
 import 'package:frontend_looping_ea/Models/project.dart';
+import 'dart:core';
 
 class UserService {
   Future<User> getUser(uname) async {
@@ -289,7 +290,7 @@ class UserService {
     }
   }
 
-  Future <List<Project>> getUserProject(String uname) async {
+  Future<List<Project>> getUserProject(String uname) async {
     String? token;
     Environment _environment = Environment();
     List<Project> _projects = [];
@@ -314,6 +315,8 @@ class UserService {
         return [];
       }
       return _projects;
+    } else {
+      return [];
     }
   }
 }

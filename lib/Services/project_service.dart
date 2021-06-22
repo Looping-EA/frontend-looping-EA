@@ -24,10 +24,14 @@ class ProjectService {
           'Content-Type': 'application/json'
         });
     if (response.statusCode == 201) {
+      print('*** response');
+      print(response.body);
       var projectsJson = json.decode(response.body);
       try {
         for (var projectJson in projectsJson) {
+          print('*** starting to parse');
           User owner = User.fromJSONnoPass(projectJson["owner"]);
+          print(owner.toString());
           print(projectJson["name"]);
           projects.add(Project(
               projectJson["name"],
