@@ -312,23 +312,31 @@ class UserService {
     } catch (err) {
       print(err);
     }
-    final response = await http.get(
+    try{
+    await http.get(
         Uri.parse(_environment.url() + "users/$uname/getProjects"),
         headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'},
-        );
-    if(response.statusCode == 200){
-      var projectsJson = json.decode(response.body);
-      try{
-        for (var projectJson in projectsJson){
-         Project project = Project.fromJson(projectJson);
-         _projects.add(project);
+        ).then((http.Response response) async {
+          if(response.statusCode == 200){
+            var projectsJson = json.decode(response.body);
+            try{
+              for (var projectJson in projectsJson){
+               Project project = Project.fromJson(projectJson);
+               _projects.add(project);
+              }
+            } catch (e) {
+              print(e);
+              return [];
+            }
+            return _projects;
+          } else {
+            return [];
+          }
         }
-      } catch (e) {
-        print(e);
-        return [];
-      }
-      return _projects;
-    } else {
+      );
+    return [];
+    } catch (err){
+      print(err);
       return [];
     }
   }
