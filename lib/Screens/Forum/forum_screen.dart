@@ -9,9 +9,10 @@ import 'package:frontend_looping_ea/Screens/Forum/projectentry_screen.dart';
 
 class ForumScreen extends StatefulWidget {
   final User user;
-  ForumScreen({key, required this.user}) : super(key: key);
+  final List<Project> projects;
+  ForumScreen({key, required this.user, required this.projects}) : super(key: key);
 
-  _ForumState createState() => _ForumState(this.user);
+  _ForumState createState() => _ForumState(this.user, );
 }
 
 //TODO: implement ForumState, that is able to show a list of the different
@@ -21,7 +22,7 @@ class ForumScreen extends StatefulWidget {
 class _ForumState extends State<ForumScreen> {
   int notifications = 0;
   final User user;
-  late Future<List<Project>> projects;
+  late List<Project> projects;
   List <Project> projectName= [];
   final TextEditingController _filter = new TextEditingController();
   String _searchText = "";
@@ -49,18 +50,13 @@ class _ForumState extends State<ForumScreen> {
   @override
   void initState() {
     super.initState();
-    // try {
-    userService.getUserProject(user.uname).then((result) {
-      setState(() {
-        projectName = result;
-        filteredNames = projectName;
-        notifications = user.notifications.length;
+    userService.getUserProject(user.uname).then((val) {
+      setState((){
+        this.projects = val;
+        this.filteredNames = this.projects;
       });
     });
-    // } catch (e) {
-    //   print(e);
   }
-//}
 
   @override
   Widget build(BuildContext context) {

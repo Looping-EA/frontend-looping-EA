@@ -93,10 +93,12 @@ class _SideMenuState extends State<SideMenu> {
             title: Text("FORUMS",
                 style: TextStyle(fontSize: 18.0, color: Colors.black)),
             leading: const Icon(Icons.forum),
-            onTap: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      ForumScreen(user: this.user)));
+            onTap: () async {
+              await userService.getUserProject(user.uname).then((projects) async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        ForumScreen(user: this.user, projects: projects)));
+              });
             }),
         ListTile(
           title: Text("CONTACT",               

@@ -321,7 +321,7 @@ class UserService {
             var projectsJson = json.decode(response.body);
             try{
               for (var projectJson in projectsJson){
-               Project project = Project.fromJson(projectJson);
+               Project project = Project.fromJsonHereditary(projectJson);
                _projects.add(project);
               }
             } catch (e) {
