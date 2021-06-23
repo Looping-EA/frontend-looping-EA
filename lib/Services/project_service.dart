@@ -36,11 +36,10 @@ class ProjectService {
               projectJson["name"],
               [],
               projectJson["creationDate"],
-              [],
-              [],
               projectJson["description"],
               _collaboration,
-              owner));
+              owner,
+              []));
         }
       } catch (e) {
         print(e);
@@ -68,11 +67,10 @@ class ProjectService {
       "name": project.name,
       "chats": [],
       "creationDate": formattedDate,
-      "teams": [],
-      "tasks": [],
       "description": project.description,
       "collaboration": [],
-      "owner": uname
+      "owner": uname,
+      "entry": []
     };
     final bodyParsed = json.encode(body);
     // finally the POST HTTP operation

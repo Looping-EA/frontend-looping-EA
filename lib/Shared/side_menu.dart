@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:frontend_looping_ea/Screens/Faqs/faqs_screen.dart';
@@ -11,7 +9,6 @@ import 'package:frontend_looping_ea/Screens/SearchUser/searchUser_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Screens/Configuration/configuration_screen.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
-import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/Stadistics/stadistics_screen.dart';
 import 'package:frontend_looping_ea/Screens/Contacto/contactoscreen.dart';
