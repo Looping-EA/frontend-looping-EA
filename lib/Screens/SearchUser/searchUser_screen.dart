@@ -31,7 +31,7 @@ class _SearchUsersState extends State<SearchUsers> {
   String _searchText = "";
   List<User> filteredNames = [];
   Icon _searchIcon = new Icon(Icons.search);
-  Widget _appBarTitle = new Text('Projects proposed by the community');
+  Widget _appBarTitle = new Text('Looping users');
   UserService userService = new UserService();
 
   ProjectService projectService = new ProjectService();
@@ -152,7 +152,7 @@ class _SearchUsersState extends State<SearchUsers> {
                 hintText: 'Search projects...'));
       } else {
         this._searchIcon = new Icon(Icons.search, color: Colors.white);
-        this._appBarTitle = new Text('Projects proposed by the community');
+        this._appBarTitle = new Text('Looping users');
         filteredNames = projectNames;
         _filter.clear();
       }

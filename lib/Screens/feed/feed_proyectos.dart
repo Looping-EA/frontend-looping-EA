@@ -98,50 +98,47 @@ class _FeedProyectosState extends State<FeedProyectos> {
                         _searchPressed();
                       }),
                 ),
-                FloatingActionButton(
-                    heroTag: "search",
-                    //backgroundColor: Colors.blueGrey,
-                    child: Icon(Icons.search),
-                    onPressed: () {
-                      _searchPressed();
-                    }),
               ],
             )));
   }
 
   PreferredSizeWidget _buildBar(BuildContext context) {
-    return AppBar(centerTitle: true, backgroundColor: Colors.blueGrey, title: _appBarTitle, actions: <Widget>[
-      new Stack(children: <Widget>[
-        new IconButton(
-          icon: Icon(Icons.notifications),
-          onPressed: () {
-            setState(() {
-              notifications = 0;
-              _showDialog();
-            });
-          },
-        ),
-        notifications != 0
-            ? new Positioned(
-                right: 11,
-                top: 11,
-                child: new Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: new BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  constraints: BoxConstraints(minWidth: 14, minHeight: 14),
-                  child: Text(
-                    '$notifications',
-                    style: TextStyle(color: Colors.white, fontSize: 8),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              )
-            : new Container()
-      ])
-    ]);
+    return AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.blueGrey,
+        title: _appBarTitle,
+        actions: <Widget>[
+          new Stack(children: <Widget>[
+            new IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                setState(() {
+                  notifications = 0;
+                  _showDialog();
+                });
+              },
+            ),
+            notifications != 0
+                ? new Positioned(
+                    right: 11,
+                    top: 11,
+                    child: new Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: new BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      constraints: BoxConstraints(minWidth: 14, minHeight: 14),
+                      child: Text(
+                        '$notifications',
+                        style: TextStyle(color: Colors.white, fontSize: 8),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                : new Container()
+          ])
+        ]);
   }
 
   void _searchPressed() {
