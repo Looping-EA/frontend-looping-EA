@@ -6,18 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:frontend_looping_ea/Models/project.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../../Models/project.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
-import '../../Shared/shared_preferences.dart';
 
 class CreateProjectState extends State<CreateProjectScreen> {
   final User user;
   CreateProjectState(this.user);
   ProjectService projectService = new ProjectService();
   final _formKey = GlobalKey<FormBuilderState>();
-  late final _project = Project("", [], "", [], [], "", [], user);
+  late final _project = Project("", [], "", "", [], user, []);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +28,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
 
         //The drawer opens a side menu
         drawer: SideMenu(user: this.user),
-        backgroundColor: Styles.colorBackground,
+        backgroundColor: Colors.blueGrey,
         body: Center(
             child: Container(
                 width: 700,
@@ -111,7 +108,7 @@ class CreateProjectState extends State<CreateProjectScreen> {
                             child: ElevatedButton(
                                 onPressed: _onPressButton,
                                 style: ElevatedButton.styleFrom(
-                                  primary: Styles.colorBackground,
+                                  primary: Styles.colorBackground2,
                                 ),
                                 child: Text(
                                   'Create',

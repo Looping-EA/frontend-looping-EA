@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Models/notification.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
+import 'package:frontend_looping_ea/Screens/ProfileView/profileView_screen.dart';
 import 'package:frontend_looping_ea/Screens/Project/project_screen.dart';
 import 'package:frontend_looping_ea/Services/project_service.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
@@ -13,29 +14,29 @@ import 'package:frontend_looping_ea/Screens/Notifications/notifications_screen.d
 import 'dart:convert';
 import '../../styles.dart';
 
-class FeedProyectos extends StatefulWidget {
+class SearchUsers extends StatefulWidget {
   final User user;
-  FeedProyectos({Key? key, required this.user}) : super(key: key);
+  SearchUsers({Key? key, required this.user}) : super(key: key);
 
   @override
-  _FeedProyectosState createState() => _FeedProyectosState(this.user);
+  _SearchUsersState createState() => _SearchUsersState(this.user);
 }
 
-class _FeedProyectosState extends State<FeedProyectos> {
+class _SearchUsersState extends State<SearchUsers> {
   int notifications = 0;
   final User user;
-  late Future<List<Project>> projects;
-  List<Project> projectNames = [];
+  late Future<List<User>> users;
+  List<User> projectNames = [];
   final TextEditingController _filter = new TextEditingController();
   String _searchText = "";
-  List<Project> filteredNames = [];
+  List<User> filteredNames = [];
   Icon _searchIcon = new Icon(Icons.search);
   Widget _appBarTitle = new Text('Projects proposed by the community');
   UserService userService = new UserService();
 
   ProjectService projectService = new ProjectService();
 
-  _FeedProyectosState(this.user) {
+  _SearchUsersState(this.user) {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
         setState(() {
@@ -53,7 +54,7 @@ class _FeedProyectosState extends State<FeedProyectos> {
   void initState() {
     super.initState();
     // try {
-    projectService.getProjectsAndOwners().then((result) {
+    userService.getUsersObjects().then((result) {
       setState(() {
         projectNames = result;
         filteredNames = projectNames;
@@ -68,7 +69,6 @@ class _FeedProyectosState extends State<FeedProyectos> {
   @override
   Widget build(BuildContext context) {
     print(this.user.uname);
-
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Feed Proyectos',
@@ -83,7 +83,6 @@ class _FeedProyectosState extends State<FeedProyectos> {
               children: [
                 FloatingActionButton(
                     heroTag: "add",
-                    //backgroundColor: Colors.blueGrey,
                     child: Icon(Icons.add),
                     backgroundColor: Colors.blueGrey,
                     onPressed: () {
@@ -98,50 +97,47 @@ class _FeedProyectosState extends State<FeedProyectos> {
                         _searchPressed();
                       }),
                 ),
-                FloatingActionButton(
-                    heroTag: "search",
-                    //backgroundColor: Colors.blueGrey,
-                    child: Icon(Icons.search),
-                    onPressed: () {
-                      _searchPressed();
-                    }),
               ],
             )));
   }
 
   PreferredSizeWidget _buildBar(BuildContext context) {
-    return AppBar(centerTitle: true, backgroundColor: Colors.blueGrey, title: _appBarTitle, actions: <Widget>[
-      new Stack(children: <Widget>[
-        new IconButton(
-          icon: Icon(Icons.notifications),
-          onPressed: () {
-            setState(() {
-              notifications = 0;
-              _showDialog();
-            });
-          },
-        ),
-        notifications != 0
-            ? new Positioned(
-                right: 11,
-                top: 11,
-                child: new Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: new BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  constraints: BoxConstraints(minWidth: 14, minHeight: 14),
-                  child: Text(
-                    '$notifications',
-                    style: TextStyle(color: Colors.white, fontSize: 8),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              )
-            : new Container()
-      ])
-    ]);
+    return AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.blueGrey,
+        title: _appBarTitle,
+        actions: <Widget>[
+          new Stack(children: <Widget>[
+            new IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                setState(() {
+                  notifications = 0;
+                  _showDialog();
+                });
+              },
+            ),
+            notifications != 0
+                ? new Positioned(
+                    right: 11,
+                    top: 11,
+                    child: new Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: new BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      constraints: BoxConstraints(minWidth: 14, minHeight: 14),
+                      child: Text(
+                        '$notifications',
+                        style: TextStyle(color: Colors.white, fontSize: 8),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                : new Container()
+          ])
+        ]);
   }
 
   void _searchPressed() {
@@ -189,10 +185,10 @@ class _FeedProyectosState extends State<FeedProyectos> {
 
   Widget _buildList() {
     if ((_searchText.isNotEmpty)) {
-      List<Project> tempList = [];
+      List<User> tempList = [];
       for (int i = 0; i < filteredNames.length; i++) {
         if (filteredNames[i]
-            .name
+            .uname
             .toLowerCase()
             .contains(_searchText.toLowerCase())) {
           tempList.add(filteredNames[i]);
@@ -204,10 +200,10 @@ class _FeedProyectosState extends State<FeedProyectos> {
       itemCount: projectNames == null ? 0 : filteredNames.length,
       itemBuilder: (BuildContext context, int index) {
         return new ListTile(
-          title: Text(filteredNames[index].name),
-          subtitle: Text(filteredNames[index].owner.uname),
+          title: Text(filteredNames[index].uname),
+          subtitle: Text(filteredNames[index].fullname),
           onTap: () {
-            _navigationToProject(context, filteredNames[index], user);
+            _navigationToUser(context, user, filteredNames[index].uname);
           },
         );
       },
@@ -240,9 +236,9 @@ class _FeedProyectosState extends State<FeedProyectos> {
   }
 
   // Al clicar en un proyecto entrar en el
-  void _navigationToProject(BuildContext context, Project project, User user) {
+  void _navigationToUser(BuildContext context, User user, String visited) {
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ProjectScreen(project, user)));
+        MaterialPageRoute(builder: (context) => ProfileView(user, visited)));
   }
 
   void _navigationToNotification(

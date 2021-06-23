@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:frontend_looping_ea/Screens/CreateProject/createproject_screen.dart';
 import 'package:frontend_looping_ea/Screens/Faqs/faqs_screen.dart';
@@ -7,10 +5,10 @@ import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
 import 'package:frontend_looping_ea/Screens/Map/map_screen.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
+import 'package:frontend_looping_ea/Screens/SearchUser/searchUser_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Screens/Configuration/configuration_screen.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
-import 'package:frontend_looping_ea/Shared/shared_preferences.dart';
 import 'package:frontend_looping_ea/Models/user.dart';
 import 'package:frontend_looping_ea/Screens/Stadistics/stadistics_screen.dart';
 import 'package:frontend_looping_ea/Screens/Contacto/contactoscreen.dart';
@@ -32,21 +30,18 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   Widget build(BuildContext context) {
-    print(this.user.uname);
     return new Drawer(
         child: ListView(
       children: <Widget>[
         UserAccountsDrawerHeader(
-          accountName: new Text(this.user.fullname,
-              style: TextStyle(fontSize: 20.0, color: Colors.white)),
-          accountEmail: new Text(this.user.email,
-              style: TextStyle(fontSize: 15.0, color: Colors.white)),
-          decoration: BoxDecoration(
-            color: Colors.grey,
-          ),
-          currentAccountPicture:
-              const CircleAvatar(child: FlutterLogo(size: 42.00)),
-        ),
+            accountName: new Text(this.user.fullname,
+                style: TextStyle(fontSize: 20.0, color: Colors.white)),
+            accountEmail: new Text(this.user.email,
+                style: TextStyle(fontSize: 15.0, color: Colors.white)),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+            ),
+            currentAccountPicture: buildPhoto(user)),
         ListTile(
           title: Text("HOME",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
@@ -63,7 +58,7 @@ class _SideMenuState extends State<SideMenu> {
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.account_box),
           onTap: () async {
-            await getUser(user.uname).then((value) async {
+            await userService.getUser(user.uname).then((value) async {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
@@ -72,18 +67,9 @@ class _SideMenuState extends State<SideMenu> {
           },
         ),
         ListTile(
-          title: Text("FAQS",
-              style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.account_box),
-          onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => FaqsScreen()));
-          },
-        ),
-        ListTile(
           title: Text("CREATE PROJECT",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.chat),
+          leading: const Icon(Icons.add),
           onTap: () {
             Navigator.push(
                 context,
@@ -93,14 +79,14 @@ class _SideMenuState extends State<SideMenu> {
           },
         ),
         ListTile(
-          title: Text("CONTACT",
+          title: Text("SEARCH USERS",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.chat),
+          leading: const Icon(Icons.add),
           onTap: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ContactoScreen(user: this.user)));
+                    builder: (context) => SearchUsers(user: user)));
           },
         ),
         ListTile(
@@ -109,22 +95,25 @@ class _SideMenuState extends State<SideMenu> {
           leading: const Icon(Icons.forum),
         ),
         ListTile(
-            title: Text("LOG OUT",
-                style: TextStyle(fontSize: 18.0, color: Colors.black)),
-            leading: const Icon(Icons.exit_to_app),
-            onTap: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => LoginPage()));
-            }),
-        ListTile(
           title: Text("MAP",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
-          leading: const Icon(Icons.chat),
+          leading: const Icon(Icons.map),
           onTap: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => MapScreen(user: this.user)));
+          },
+        ),
+        ListTile(
+          title: Text("CONTACT",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.contact_page),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ContactoScreen(user: this.user)));
           },
         ),
         ListTile(
@@ -140,6 +129,14 @@ class _SideMenuState extends State<SideMenu> {
           },
         ),
         ListTile(
+            title: Text("LOG OUT",
+                style: TextStyle(fontSize: 18.0, color: Colors.black)),
+            leading: const Icon(Icons.exit_to_app),
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => LoginPage()));
+            }),
+        ListTile(
           title: Text("DELETE ACCOUNT",
               style: TextStyle(fontSize: 18.0, color: Colors.black)),
           leading: const Icon(Icons.delete_forever_sharp),
@@ -154,9 +151,36 @@ class _SideMenuState extends State<SideMenu> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => StadisticsScreen(user: this.user)));
-            })
+            }),
+        ListTile(
+          title: Text("FAQS",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.help),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => FaqsScreen()));
+          },
+        )
       ],
     ));
+  }
+
+  CircleAvatar buildPhoto(User user) {
+    try {
+      if ((user.photo == null) || (user.photo == "")) {
+        return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
+      } else {
+        try {
+          return CircleAvatar(backgroundImage: NetworkImage(user.photo!));
+        } catch (e) {
+          print(e);
+          return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
+        }
+      }
+    } catch (e) {
+      print(e);
+      return CircleAvatar(child: FlutterLogo(size: 42.00), radius: 42);
+    }
   }
 
   Future<void> _createAlertDialog(BuildContext context, String uname) {

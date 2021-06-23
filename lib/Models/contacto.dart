@@ -1,9 +1,3 @@
-import '../Models/user.dart';
-import '../Models/chat.dart';
-import '../Models/team.dart';
-import '../Models/task.dart';
-import '../Models/project.dart';
-
 class Contacto {
   String uname;
   String date;
@@ -13,8 +7,9 @@ class Contacto {
 
   factory Contacto.fromJson(dynamic json) {
     return Contacto(
-        json['uname'] as String,
-        json['date'] as String,
-        json['message'] as String,);
+      json['uname'] as String,
+      json['date'] as String,
+      json['message'] as String,
+    );
   }
 }

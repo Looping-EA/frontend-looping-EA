@@ -55,7 +55,7 @@ class _FaqsScreenState extends State<FaqsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Faqs", style: Styles.projectText)),
+      appBar: AppBar(title: Text("Faqs", style: TextStyle(color: Colors.white)), backgroundColor: Colors.blueGrey,),
       body: ListView.builder(
         itemCount: this.faqslist.length,
         itemBuilder: _listViewItemBuilder,
