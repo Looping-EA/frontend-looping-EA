@@ -39,11 +39,6 @@ class UserService {
     } catch (err) {
       print(err);
     }
-    try {
-      await getTokenFromSharedPrefs().then((value) => token = value);
-    } catch (err) {
-      print(err);
-    }
     print("getting users");
     final response = await http.get(Uri.parse(_environment.url() + 'users/'),
         headers: {
@@ -63,6 +58,37 @@ class UserService {
       return cont;
     } else
       return 0;
+  }
+
+  Future<List<User>> getUsersObjects() async {
+    String? token;
+    Environment _environment = Environment();
+    List<User> usersT = [];
+    try {
+      await getTokenFromSharedPrefs().then((value) => token = value);
+    } catch (err) {
+      print(err);
+    }
+    print("getting users");
+    final response = await http.get(Uri.parse(_environment.url() + 'users/'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        });
+    if (response.statusCode == 201) {
+      var users = json.decode(response.body);
+      print(users);
+      try {
+        for (var userJson in users) {
+          User u = User.fromJSONnoPass(userJson);
+          usersT.add(u);
+        }
+      } catch (e) {
+        print("sjvfdpje holaa");
+        print(e);
+      }
+    }
+    return usersT;
   }
 
   Future<String> deleteUser(uname) async {

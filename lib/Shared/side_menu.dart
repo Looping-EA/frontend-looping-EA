@@ -7,6 +7,7 @@ import 'package:frontend_looping_ea/Screens/Login/login_page.dart';
 import 'package:frontend_looping_ea/Screens/Map/map_screen.dart';
 import 'package:frontend_looping_ea/Screens/Profile/profile_screen.dart';
 import 'package:frontend_looping_ea/Screens/Register/register_screen.dart';
+import 'package:frontend_looping_ea/Screens/SearchUser/searchUser_screen.dart';
 import 'package:frontend_looping_ea/Screens/feed/feed_proyectos.dart';
 import 'package:frontend_looping_ea/Screens/Configuration/configuration_screen.dart';
 import 'package:frontend_looping_ea/Services/user_service.dart';
@@ -78,6 +79,17 @@ class _SideMenuState extends State<SideMenu> {
                 MaterialPageRoute(
                     builder: (context) =>
                         CreateProjectScreen(user: this.user)));
+          },
+        ),
+        ListTile(
+          title: Text("SEARCH USERS",
+              style: TextStyle(fontSize: 18.0, color: Colors.black)),
+          leading: const Icon(Icons.add),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SearchUsers(user: user)));
           },
         ),
         ListTile(

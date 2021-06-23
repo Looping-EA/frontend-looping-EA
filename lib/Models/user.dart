@@ -51,7 +51,6 @@ class User {
   }
 
   factory User.fromJSONnoPass(dynamic json) {
-    Photo p = new Photo("");
     return User(
         json['uname'] as String,
         "",
